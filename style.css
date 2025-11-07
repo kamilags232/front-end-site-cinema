@@ -1,20 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
 
 body {
-  font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top, #121212, #0a0a0a);
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #141414, #0a0a0a);
   color: #fff;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
+/* Header */
 header {
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
-  color: white;
-  box-shadow: 0 0 20px rgba(255, 75, 43, 0.4);
+  box-shadow: 0 0 25px rgba(255, 75, 43, 0.4);
 }
+
+header .logo {
+  width: 1000px; 
+  height: auto;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 75, 43, 0.6));
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 6px rgba(255, 75, 43, 0.4)); }
+  to { filter: drop-shadow(0 0 18px rgba(255, 75, 43, 0.8)); }
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #fff;
+  opacity: 0.9;
+}
+
 
 main {
   display: flex;
@@ -22,76 +44,105 @@ main {
   padding: 2rem;
 }
 
-.movie-selection, .checkout-section {
-  max-width: 1000px;
-  width: 100%;
+.movie-selection {
+  max-width: 1100px;
   text-align: center;
 }
 
+.movie-selection h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #ff6f61;
+}
+
 .movie-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.5rem;
+  display: flex;              /* ativa o layout em linha */
+  flex-wrap: wrap;            /* permite quebrar linha quando faltar espaço */
+  justify-content: center;    /* centraliza horizontalmente */
+  gap: 1.5rem;                /* espaço entre os cards */
   margin-top: 2rem;
 }
 
 .movie-card {
-  background: #1e1e22;
-  border-radius: 12px;
+  background: #1b1b1f;
+  border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  width: 220px;               /* define o tamanho fixo do card */
+  cursor: pointer;
+  transition: 0.3s;
 }
+
 
 .movie-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px #ff4b2b;
+  box-shadow: 0 0 25px rgba(255, 75, 43, 0.4);
 }
 
 .movie-card img {
   width: 100%;
-  height: 300px;
+  height: 320px;
   object-fit: cover;
+  border-bottom: 3px solid #ff4b2b;
 }
 
 .movie-card h3 {
-  margin: 0.5rem 0;
+  margin: 1rem 0 0.5rem;
+  color: #fff;
 }
 
 .buy-btn {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
   color: white;
-  cursor: pointer;
   font-weight: 600;
-  margin-bottom: 1rem;
-  transition: 0.3s;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s, opacity 0.3s;
 }
 
 .buy-btn:hover {
-  opacity: 0.85;
   transform: scale(1.05);
+  opacity: 0.9;
 }
 
-/* Checkout Page */
+.checkout-section {
+  text-align: center;
+  background: #1a1a1d;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 0 20px rgba(255, 75, 43, 0.3);
+}
+
+.checkout-section h2 {
+  color: #ff6f61;
+  font-size: 2rem;
+}
+
 .checkout-section select,
 .checkout-section input {
   width: 80%;
-  padding: 0.6rem;
-  margin: 0.5rem 0 1rem;
+  padding: 0.7rem;
+  margin: 0.5rem 0 1.2rem;
   border: none;
   border-radius: 8px;
   outline: none;
+  background: #222;
+  color: #fff;
 }
 
 button {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  padding: 0.9rem 1.6rem;
+  border-radius: 10px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -105,17 +156,20 @@ button:hover {
   grid-template-columns: repeat(8, 1fr);
   gap: 10px;
   justify-content: center;
-  margin: 1rem auto;
-  width: fit-content;
+  margin: 1.5rem auto;
 }
 
 .seat {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: #333;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.seat:hover {
+  background: #ff6f61;
 }
 
 .seat.selected {
@@ -128,20 +182,23 @@ button:hover {
 }
 
 .summary-box {
-  background: #1e1e22;
+  background: #1b1b1f;
   border-radius: 10px;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  box-shadow: 0 0 15px rgba(255, 75, 43, 0.2);
+  margin-top: 1.8rem;
+  padding: 1rem 1.5rem;
   text-align: left;
   width: 80%;
   margin-inline: auto;
+  box-shadow: 0 0 15px rgba(255, 75, 43, 0.2);
+  color: #eee;
 }
 
 footer {
   text-align: center;
-  padding: 1rem;
+  padding: 1.5rem;
   background: #111;
-  color: #888;
+  color: #aaa;
   font-size: 0.9rem;
+  margin-top: 2rem;
+  border-top: 1px solid #222;
 }

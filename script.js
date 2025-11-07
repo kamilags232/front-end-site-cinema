@@ -1,4 +1,3 @@
-// Página principal (index.html)
 const buyButtons = document.querySelectorAll(".buy-btn");
 
 buyButtons.forEach(btn => {
@@ -9,13 +8,11 @@ buyButtons.forEach(btn => {
   });
 });
 
-// Página de checkout
 if (window.location.pathname.includes("checkout.html")) {
   const movieTitleEl = document.getElementById("movie-title");
   const movieName = localStorage.getItem("selectedMovie");
   if (movieName) movieTitleEl.textContent = `🎬 ${movieName}`;
 
-  // Geração de assentos
   const seatsContainer = document.getElementById("seats");
   if (seatsContainer) {
     const rows = 5;

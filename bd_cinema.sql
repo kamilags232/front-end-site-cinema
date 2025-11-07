@@ -4,7 +4,9 @@ use bd_cinema;
 
 create table tb_cliente
 (cd_cliente int not null primary key,
+cpf char(14),
 cliente char(50),
+telefone char(12),
 email char (50));
 
 create table tb_sala

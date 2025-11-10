@@ -5,14 +5,16 @@ import persistencia.PessoaDAO;
 public class Pessoa {
 
     private int cdCliente;
+    private String cpf;
     private String nome;
     private String telefone;
     private String email;
 
     public Pessoa() {}
 
-    public Pessoa(int cdCliente, String nome, String telefone, String email) {
+    public Pessoa(int cdCliente, String cpf, String nome, String telefone, String email) {
         this.cdCliente = cdCliente;
+        this.cpf = cpf;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -24,6 +26,14 @@ public class Pessoa {
 
     public void setCdCliente(int cdCliente) {
         this.cdCliente = cdCliente;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getNome() {

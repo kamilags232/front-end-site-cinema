@@ -4,10 +4,10 @@ use bd_cinema;
 
 create table tb_cliente
 (cd_cliente int not null primary key,
-cpf char(14),
 cliente char(50),
-telefone char(12),
-email char (50));
+telefone char(15),
+email char (50),
+cpf char(14));
 
 create table tb_sala
 (cd_sala int not null primary key,
@@ -85,3 +85,4 @@ alter table rl_venda_lanche
 add constraint fk_lanche foreign key (cd_lanche)
 references tb_lanche (cd_lanche);
 
+SELECT * FROM tb_cliente;

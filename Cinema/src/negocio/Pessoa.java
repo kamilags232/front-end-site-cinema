@@ -8,14 +8,17 @@ public class Pessoa {
     private String cliente;
     private String telefone;
     private String email;
+    private String cpf;
+
 
     public Pessoa() {}
 
-    public Pessoa(int cdCliente, String cliente, String telefone, String email) {
+    public Pessoa(int cdCliente, String cliente, String telefone, String email, String cpf) {
         this.cdCliente = cdCliente;
         this.cliente = cliente;
         this.telefone = telefone;
         this.email = email;
+        this.cpf = cpf;
     }
 
     public int getCdCliente() {
@@ -48,6 +51,14 @@ public class Pessoa {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public void persistir() throws Exception {

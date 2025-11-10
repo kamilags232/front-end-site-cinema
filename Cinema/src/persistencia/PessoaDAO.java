@@ -7,7 +7,7 @@ import negocio.Pessoa;
 public class PessoaDAO {
 
     public void persistir(Pessoa objPessoa) throws Exception {
-        String sql = "INSERT INTO tb_cliente (cliente, telefone, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO tb_cliente (cliente, telefone, email, cpf) VALUES (?, ?, ?, ?)";
         BancoDeDados db = new BancoDeDados();
 
         try (Connection conn = db.conectar();
@@ -16,6 +16,7 @@ public class PessoaDAO {
             ps.setString(1, objPessoa.getCliente());
             ps.setString(2, objPessoa.getTelefone());
             ps.setString(3, objPessoa.getEmail());
+            ps.setString(4, objPessoa.getCpf());
 
             ps.executeUpdate();
         }

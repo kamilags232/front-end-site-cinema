@@ -140,11 +140,11 @@ main {
 
 button {
   display: block;
-  margin: 40px auto 20px auto; /* 🔹 espaçamento: topo e base maiores */
-  padding: 18px 50px;          /* 🔹 botão maior */
-  font-size: 1.2rem;           /* 🔹 texto maior */
+  margin: 40px auto 20px auto; 
+  padding: 18px 50px;         
+  font-size: 1.2rem;          
   font-weight: 700;
-  background: linear-gradient(90deg, #ff4b2b, #ff416c); /* 🔹 gradiente bonito */
+  background: linear-gradient(90deg, #ff4b2b, #ff416c); 
   color: white;
   border: none;
   border-radius: 12px;

@@ -17,11 +17,20 @@ if (window.location.pathname.includes("checkout.html")) {
   if (seatsContainer) {
     const rows = 5;
     const cols = 8;
-    for (let i = 0; i < rows * cols; i++) {
-      const seat = document.createElement("div");
-      seat.classList.add("seat");
-      if (Math.random() < 0.1) seat.classList.add("occupied");
-      seatsContainer.appendChild(seat);
+    const rowLetters = ["A", "B", "C", "D", "E"];
+
+    // criar assentos por fileira (A1..A8, B1..B8, ...)
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const seat = document.createElement("div");
+        seat.classList.add("seat");
+        const label = `${rowLetters[r]}${c + 1}`;
+        seat.dataset.id = label; // identifica o assento pelo rótulo
+        seat.textContent = label;
+        seat.title = `Assento ${label}`;
+        if (Math.random() < 0.1) seat.classList.add("occupied");
+        seatsContainer.appendChild(seat);
+      }
     }
 
     seatsContainer.addEventListener("click", (e) => {
@@ -171,8 +180,24 @@ if (window.location.pathname.includes("checkout.html")) {
       const cpf = document.getElementById("cpf").value;
       const payment = document.querySelector('input[name="payment"]:checked')?.value;
 
-      if (!name || !cpf || !showtime || !sessionType || !email || !payment || selectedSeats.length === 0) {
-        alert("⚠️ Por favor, preencha todos os campos e selecione um método de pagamento.");
+      // Verificar se um filme foi selecionado
+      if (!movieName) {
+        alert("⚠️ Por favor, selecione um filme antes de finalizar a compra.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      // CPF não é mais obrigatório — removido da validação
+      // Validar formato de email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValidEmail = emailRegex.test(email);
+
+      if (!name || !showtime || !sessionType || !email || !isValidEmail || !payment || selectedSeats.length === 0) {
+        if (!isValidEmail && email) {
+          alert("⚠️ Por favor, insira um e-mail válido (exemplo: exemplo@email.com).");
+        } else {
+          alert("⚠️ Por favor, preencha todos os campos e selecione um método de pagamento.");
+        }
         return;
       }
 
@@ -449,5 +474,3 @@ if (window.location.pathname.includes("checkout.html")) {
     });
   }
 }
-
-

@@ -273,7 +273,9 @@ footer {
   height: 35px;
   padding: 0;
   border-radius: 50%;
-  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   border: none;
   font-size: 20px;

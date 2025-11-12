@@ -173,8 +173,10 @@ if (window.location.pathname.includes("checkout.html")) {
   if (finalizarBtn) {
     finalizarBtn.addEventListener("click", () => {
       const selectedSeats = document.querySelectorAll(".seat.selected");
-      const showtime = document.getElementById("showtime").value;
-      const sessionType = document.getElementById("session-type").value;
+  const showtime = document.getElementById("showtime").value;
+  const sessionSelect = document.getElementById("session-type");
+  const sessionValue = sessionSelect ? sessionSelect.value : "";
+  const sessionTypeLabel = sessionSelect ? sessionSelect.options[sessionSelect.selectedIndex]?.text : "";
       const email = document.getElementById("email").value;
       const name = document.getElementById("nome").value;
       const cpf = document.getElementById("cpf").value;
@@ -192,7 +194,7 @@ if (window.location.pathname.includes("checkout.html")) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailRegex.test(email);
 
-      if (!name || !showtime || !sessionType || !email || !isValidEmail || !payment || selectedSeats.length === 0) {
+  if (!name || !showtime || !sessionValue || !email || !isValidEmail || !payment || selectedSeats.length === 0) {
         if (!isValidEmail && email) {
           alert("⚠️ Por favor, insira um e-mail válido (exemplo: exemplo@email.com).");
         } else {
@@ -204,9 +206,10 @@ if (window.location.pathname.includes("checkout.html")) {
       // preço base: 20 reais por assento
       let basePrice = 20;
 
-      // aplica acréscimos por tipo de sessão
-      if (sessionType === "3D") basePrice *= 1.12;
-      else if (sessionType === "IMAX") basePrice *= 1.25;
+  // aplica acréscimos por tipo de sessão — sessionValue é algo como '3D-dub' ou 'IMAX-leg'
+  const baseSession = sessionValue.split('-')[0];
+  if (baseSession === "3D") basePrice *= 1.12;
+  else if (baseSession === "IMAX") basePrice *= 1.25;
 
       basePrice = Math.round(basePrice);
 
@@ -253,7 +256,7 @@ if (window.location.pathname.includes("checkout.html")) {
           ">
             <h2 style="margin-bottom: 15px;">Confirme sua compra</h2>
             <p><b>Filme:</b> ${movieName}</p>
-            <p><b>Sessão:</b> ${sessionType}</p>
+            <p><b>Sessão:</b> ${sessionTypeLabel}</p>
             <p><b>Horário:</b> ${showtime}</p>
             <p><b>Assentos:</b> ${selectedSeats.length}</p>
             <p><b>Lanches:</b> ${snackNames}</p>
@@ -332,8 +335,10 @@ if (window.location.pathname.includes("checkout.html")) {
 
   function updateSummary() {
     const selectedSeats = document.querySelectorAll(".seat.selected");
-    const showtime = document.getElementById("showtime").value || "—";
-    const sessionType = document.getElementById("session-type").value || "—";
+  const showtime = document.getElementById("showtime").value || "—";
+  const sessionSelect = document.getElementById("session-type");
+  const sessionValue = sessionSelect ? sessionSelect.value : "";
+  const sessionType = sessionSelect ? sessionSelect.options[sessionSelect.selectedIndex]?.text || "—" : "—";
     const payment = document.querySelector('input[name="payment"]:checked')?.value || "—";
 
     // Preços base por tipo de ingresso
@@ -349,8 +354,10 @@ if (window.location.pathname.includes("checkout.html")) {
 
     // Aplicar acréscimos por tipo de sessão
     const applySessionMultiplier = (basePrice) => {
-      if (sessionType === "3D") return Math.round(basePrice * 1.12);
-      else if (sessionType === "IMAX") return Math.round(basePrice * 1.25);
+      // sessionValue contém valor como '3D-dub' ou 'IMAX-leg'
+      const baseSession = sessionSelect ? (sessionSelect.value.split('-')[0]) : "";
+      if (baseSession === "3D") return Math.round(basePrice * 1.12);
+      else if (baseSession === "IMAX") return Math.round(basePrice * 1.25);
       return basePrice;
     };
 

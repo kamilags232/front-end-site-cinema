@@ -167,10 +167,16 @@ VALUES ('Sessão 14h', '2025-01-20 14:00:00', 1, 3),
        
 INSERT INTO tb_lanche (lanche, valor_lanche)
 VALUES
-('Combo pipoca + refri', 35.00),
+('Combo Pipoca Média + Refri 500ml',25.00),
+('Pipoca Pequena', 15.00),
 ('Pipoca média', 20.00),
-('Refrigerante', 12.00),
-('Doce', 10.00);
+('Pipoca Grande', 25.00),
+('Refrigerante 300ml', 5.00),
+('refrigerante 500ml', 10.00),
+('Refrigerante 700ml', 15.00),
+('Barra de choclate 90g', 7.00),
+('M&M 80g', 8.00),
+('Fini 80g (Tubes, Beijo, Dentadura)', 7.50);
 
-SELECT * FROM tb_cliente;
+
 

@@ -14,6 +14,15 @@
    pela URL real do seu endpoint Node.js quando souber.
 */
 const API_URL = "http://localhost:3000/usuarios";
+const API_Cliente = "http://localhost:3000/cliente";
+const API_Filme = "http://localhost:3000/filme";
+const API_Sala = "http://localhost:3000/sala";
+const API_Sessao = "http://localhost:3000/sessao";
+const API_Venda = "http://localhost:3000/venda";
+const API_Ingresso = "http://localhost:3000/ingresso";
+const API_Lanche = "http://localhost:3000/lanche";
+const API_VendaLanche = "http://localhost:3000/venda-lanche";
+const API_Assento = "http://localhost:3000/assento";
 
 /*  Função para enviar os dados da compra ao back-end */
 async function enviarPedido(dadosCompra) {

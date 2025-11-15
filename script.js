@@ -39,7 +39,7 @@ buyButtons.forEach(btn => {
     
     async function gerarSessaoId() {
       try {
-        const resposta = await fetch("http://localhost:3000/sessoes/gerar", { method: "GET" });
+        const resposta = await fetch(API_Sessao, { method: "GET" });
         if (resposta.ok) {
           const data = await resposta.json();
           sessaoIdGlobal = data.sessaoId; // armazena o ID gerado pelo servidor
@@ -78,7 +78,7 @@ buyButtons.forEach(btn => {
         // Limpa ocupados anteriores antes de aplicar os novos
         document.querySelectorAll('.seat.occupied').forEach(s => s.classList.remove('occupied'));
 
-        const url = `http://localhost:3000/assentos/ocupados?${params.toString()}`;
+        const url = `${API_Assento}/sessao/${params.get("sessaoId")}`;
         const resposta = await fetch(url);
         if (resposta.ok) {
           const data = await resposta.json();

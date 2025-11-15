@@ -10,8 +10,9 @@ import lancheRoutes from './routes/lanche.js'
 import vendaLancheRoutes from './routes/venda_lanche.js'
 import assentoRoutes from './routes/assento.js';
 
-app.use(cors())
+
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 app.use('/cliente', clienteRoutes)

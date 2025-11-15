@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import clienteRoutes from './routes/cliente.js'
 import filmeRoutes from './routes/filme.js'
 import salaRoutes from './routes/sala.js'
@@ -9,6 +10,7 @@ import lancheRoutes from './routes/lanche.js'
 import vendaLancheRoutes from './routes/venda_lanche.js'
 import assentoRoutes from './routes/assento.js';
 
+app.use(cors())
 const app = express()
 app.use(express.json())
 

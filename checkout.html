@@ -77,7 +77,7 @@
     <section class="checkout-section">
       <h2 id="movie-title"></h2>
 
-      <label for="showtime"> ⏰ Escolha o horário:</label>
+      <label for="showtime">⏰ Escolha o horário: <span style="color:red;">*</span></label>
       <select id="showtime" required>
         <option value="">Selecione</option>
         <option value="14:00">14:00</option>
@@ -88,7 +88,7 @@
 
    <!-- NOVA SEÇÃO: TIPO DE SESSÃO -->
   <div class="session-type-section">
-    <label for="session-type">📽️ Tipo de Sessão</label>
+    <label for="session-type">📽️ Tipo de Sessão <span style="color:red;">*</span></label>
     <select id="session-type" required>
       <option value="">Selecione</option>
       <option value="2D-dub">2D Dublado</option>
@@ -278,16 +278,16 @@
   </div>
 </div>
 
-      <label for="nome">Nome completo:</label>
+      <label for="nome">Nome completo: <span style="color:red;">*</span></label>
       <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
 
   <label for="cpf">CPF:</label>
   <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
 
-      <label for="email">E-mail para confirmação:</label>
+      <label for="email">E-mail para confirmação: <span style="color:red;">*</span></label>
       <input type="email" id="email" placeholder="exemplo@email.com" required>
 
-      <h3>Método de Pagamento</h3>
+      <h3>Método de Pagamento <span style="color:red;">*</span></h3>
 <div class="payment-methods">
   <label class="payment-option">
     <input type="radio" name="payment" value="Pix">

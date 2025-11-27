@@ -1,8 +1,7 @@
-import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { Router } from 'express'
+import { prisma } from '../prisma.js'
 
-const router = express.Router();
-const prisma = new PrismaClient();
+const router = Router()
 
 /* Criar assento */
 router.post("/", async (req, res) => {

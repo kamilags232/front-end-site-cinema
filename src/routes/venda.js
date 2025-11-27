@@ -92,4 +92,16 @@ router.put('/recalcular/:nr_recibo', async (req, res) => {
     }
 })
 
+// Criar venda
+router.post('/', ...)
+
+// Listar vendas
+router.get('/', ...)
+
+// Editar venda
+router.put('/:nr_recibo', ...)
+
+// Deletar venda
+router.delete('/:nr_recibo', ...)
+
 export default router

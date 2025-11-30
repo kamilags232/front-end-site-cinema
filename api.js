@@ -117,7 +117,7 @@ async function enviarPedido(dadosCompra) {
     console.log("✅ Sessão validada:", sessaoSelecionada);
 
     // 5️⃣ Criar ingressos (um para cada assento)
-const valorPorAssento = dadosCompra.total / dadosCompra.quantidadeAssentos;
+const valorPorAssento = dadosCompra.totalIngressos / dadosCompra.quantidadeAssentos;
 
 for (let i = 0; i < dadosCompra.assentos.length; i++) {
     const assentoNumero = dadosCompra.assentos[i]; // ex: "A1"

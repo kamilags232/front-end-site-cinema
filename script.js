@@ -616,6 +616,8 @@ function mapTipoSessao(tipoSessao) {
           lanches: snackNames,
           pagamento: payment,
           total: total,
+          totalIngressos: seatTotal,  // total só dos ingressos
+          totalLanches: snackTotal,   // total só dos lanches
           sessoesDoFilme: sessoesDoFilme  // passa as sessões filtradas para o api.js
       };
 

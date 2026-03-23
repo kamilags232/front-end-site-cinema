@@ -163,8 +163,11 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 10px;
+  column-gap: 8px;
+  row-gap: 10px;
   justify-content: center;
   margin: 1.5rem auto;
+  max-width: fit-content;
 }
 
 .seat {
@@ -185,7 +188,48 @@ button:hover {
 }
 
 .seat.occupied {
-  background: #555;
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Assentos especiais */
+.seat.special-mr {
+  background: #4a90e2;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.seat.special-mr:hover {
+  background: #357abd;
+}
+
+.seat.special-mr.selected {
+  background: #2563ab;
+}
+
+.seat.special-mr.occupied {
+  background: #888;
+  cursor: not-allowed;
+}
+
+.seat.special-ob {
+  background: #9b59b6;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.seat.special-ob:hover {
+  background: #7d3c98;
+}
+
+.seat.special-ob.selected {
+  background: #6c2c7c;
+}
+
+.seat.special-ob.occupied {
+  background: #888;
   cursor: not-allowed;
 }
 

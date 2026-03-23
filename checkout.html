@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CineStar — Checkout</title>
+  <title>Cinemonroll — Checkout</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
@@ -57,7 +57,11 @@
       border: none;
       padding: 0.7rem 1.2rem;
       border-radius: 8px;
-      font-weight: bold;
+      font-weight: bold;      width: 100%;
+      max-width: 600px;
+      height: 80px;      width: 100%;
+      max-width: 600px;
+      height: 80px;
       cursor: pointer;
       transition: background 0.2s;
     }
@@ -70,35 +74,31 @@
 
 <body>
   <header>
-    <h1>Checkout — CineStar</h1>
+    <h1>Checkout — Cinemonroll</h1>
   </header>
 
   <main>
     <section class="checkout-section">
       <h2 id="movie-title"></h2>
 
-      <label for="showtime">⏰ Escolha o horário: <span style="color:red;">*</span></label>
-      <select id="showtime" required>
-        <option value="">Selecione</option>
-        <option value="14:00">14:00</option>
-        <option value="16:30">16:30</option>
-        <option value="19:00">19:00</option>
-        <option value="21:30">21:30</option>
-      </select>
-
-   <!-- NOVA SEÇÃO: TIPO DE SESSÃO -->
+         <!-- NOVA SEÇÃO: TIPO DE SESSÃO -->
   <div class="session-type-section">
     <label for="session-type">📽️ Tipo de Sessão <span style="color:red;">*</span></label>
     <select id="session-type" required>
       <option value="">Selecione</option>
       <option value="2D-dub">2D Dublado</option>
       <option value="2D-leg">2D Legendado</option>
-      <option value="3D-dub">3D Dublado</option>
-       <option value="3D-leg">3D Legendado</option>
-      <option value="IMAX-dub">IMAX Dublado</option>
-      <option value="IMAX-leg">IMAX Legendado</option>
+      <option value="3D-dub">3D Dublado +12%</option>
+       <option value="3D-leg">3D Legendado +12%</option>
+      <option value="IMAX-dub">IMAX Dublado +25%</option>
+      <option value="IMAX-leg">IMAX Legendado +25%</option>
     </select>
   </div>
+
+      <label for="showtime">⏰ Escolha o horário: <span style="color:red;">*</span></label>
+      <select id="showtime" required>
+        <option value="">Selecione</option>
+      </select>
 
       <h3>Selecione seus assentos</h3>
       <div id="seats" class="seats"></div>
@@ -320,13 +320,13 @@
   </main>
 
   <footer>
-    <p>© 2025 CineStar</p>
+    <p>© 2025 Cinemonroll</p>
   </footer>
 
   <div class="modal-overlay" id="confirmation-modal">
     <div class="modal">
       <h2>Compra Confirmada! 🎉</h2>
-      <p id="modal-text">Obrigado por comprar com a CineStar!</p>
+      <p id="modal-text">Obrigado por comprar com a Cinemonroll!</p>
       <button id="fechar-modal">OK</button>
     </div>
   </div>

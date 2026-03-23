@@ -12,19 +12,49 @@
   - Mostrar modal de confirmação e modal de sucesso
 */
 
-// --- Botões de compra na página principal ---
-// Seleciona todos os botões .buy-btn e adiciona handler para salvar o filme escolhido
+// --- Botões de compra na página principal (index.html) ---
+// Salva APENAS o filme escolhido, SEM definir sessão
 const buyButtons = document.querySelectorAll(".buy-btn");
 
 buyButtons.forEach(btn => {
-  // Ao clicar em um botão de compra, guardamos o nome do filme no localStorage
-  // e navegamos para a página de checkout
   btn.addEventListener("click", () => {
     const selectedMovie = btn.dataset.movie;
+    // Salva apenas o título do filme
     localStorage.setItem("selectedMovie", selectedMovie);
+    // Redireciona para checkout onde o usuário escolherá a sessão
     window.location.href = "checkout.html";
   });
 });
+
+// === MAPEAMENTO DE FILMES PARA cd_filme ===
+// Converte título do filme para o ID no banco de dados
+function mapFilme(titulo) {
+  const mapa = {
+    "Vingadores: Ultimato": 1,
+    "The Batman": 2,
+    "Oppenheimer": 3,
+    "Avatar: O Caminho da Água": 4,
+    "Coringa": 5,
+    "Homem-Aranha no Aranhaverso": 6,
+    "Frozen II": 7,
+    "Barbie": 8
+  };
+  return mapa[titulo] || null;
+}
+
+// === MAPEAMENTO DE TIPO DE SESSÃO PARA cd_sala ===
+// Converte o tipo de sessão (ex: "2D-dub") para o código da sala no banco
+function mapTipoSessao(tipoSessao) {
+  const mapa = {
+    "2D-dub": 1,
+    "2D-leg": 2,
+    "3D-dub": 3,
+    "3D-leg": 4,
+    "IMAX-dub": 5,
+    "IMAX-leg": 6
+  };
+  return mapa[tipoSessao] || null;
+}
 
   // === Código executado apenas na página de checkout ===
   if (window.location.pathname.includes("checkout.html")) {
@@ -34,72 +64,129 @@ buyButtons.forEach(btn => {
     const movieName = localStorage.getItem("selectedMovie");
     if (movieName) movieTitleEl.textContent = movieName;
 
-    // --- Gerar ou recuperar sessaoId do backend ---
-    let sessaoIdGlobal = localStorage.getItem("sessaoId");
+    // Variável global para armazenar o ID da sessão escolhida
+    let sessaoIdGlobal = null;
+    // Variável global para armazenar as sessões filtradas (será usada ao enviar pedido)
+    let sessoesDoFilme = [];
     
-    async function gerarSessaoId() {
+    // --- Buscar e popular sessões disponíveis ---
+    async function carregarSessoesDisponiveis() {
       try {
-        const resposta = await fetch(API_Sessao, { method: "GET" });
-        if (resposta.ok) {
-          const data = await resposta.json();
-          sessaoIdGlobal = data.sessaoId; // armazena o ID gerado pelo servidor
-          localStorage.setItem("sessaoId", sessaoIdGlobal);
-          console.log("✅ SessãoId gerado pelo servidor:", sessaoIdGlobal);
-          return sessaoIdGlobal;
-        } else {
-          console.warn("⚠️ Erro ao gerar sessaoId");
-          // fallback: gera um ID local (UUID simples)
-          sessaoIdGlobal = "local-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem("sessaoId", sessaoIdGlobal);
-          return sessaoIdGlobal;
+        const cd_filme = mapFilme(movieName);
+        if (!cd_filme) {
+          alert("❌ Filme não encontrado no sistema.");
+          window.location.href = "index.html";
+          return;
         }
+
+        // Pega o tipo de sessão selecionado
+        const sessionTypeEl = document.getElementById("session-type");
+        const tipoSessao = sessionTypeEl ? sessionTypeEl.value : "";
+        
+        if (!tipoSessao) {
+          // Se não selecionou tipo de sessão ainda, limpa o select de horários
+          const showtimeSelect = document.getElementById("showtime");
+          showtimeSelect.innerHTML = '<option value="">Primeiro selecione o tipo de sessão</option>';
+          return;
+        }
+
+        const cd_sala = mapTipoSessao(tipoSessao);
+        if (!cd_sala) {
+          alert("❌ Tipo de sessão inválido.");
+          return;
+        }
+
+        const resposta = await fetch(API_Sessao, { method: "GET" });
+        if (!resposta.ok) {
+          alert("❌ Erro ao buscar sessões. Verifique se o back-end está rodando.");
+          return;
+        }
+
+        const todasSessoes = await resposta.json();
+        // Filtra sessões pelo filme E pela sala (tipo de sessão)
+        const sessoesFiltradasPorFilmeESala = todasSessoes.filter(s => 
+          s.cd_filme === cd_filme && s.cd_sala === cd_sala
+        );
+
+        // Atualiza a variável global com as sessões filtradas
+        sessoesDoFilme = sessoesFiltradasPorFilmeESala;
+
+        if (sessoesFiltradasPorFilmeESala.length === 0) {
+          const showtimeSelect = document.getElementById("showtime");
+          showtimeSelect.innerHTML = '<option value="">Nenhuma sessão disponível para este tipo</option>';
+          console.log("⚠️ Nenhuma sessão encontrada para:", { cd_filme, cd_sala });
+          return;
+        }
+
+        // Popular o select de horários apenas com as sessões filtradas
+        const showtimeSelect = document.getElementById("showtime");
+        showtimeSelect.innerHTML = '<option value="">Selecione um horário</option>';
+        
+        sessoesFiltradasPorFilmeESala.forEach(sessao => {
+          const option = document.createElement("option");
+          option.value = sessao.cd_sessao; // ID numérico real
+          // Extrair horário diretamente da string do banco (evita problema de timezone)
+          // data_hora vem no formato ISO: "2024-11-28T14:00:00.000Z"
+          const dataHoraStr = sessao.data_hora;
+          const horarioParts = dataHoraStr.match(/T(\d{2}):(\d{2})/);
+          const horario = horarioParts ? `${horarioParts[1]}:${horarioParts[2]}` : dataHoraStr;
+          option.textContent = horario;
+          showtimeSelect.appendChild(option);
+        });
+
+        console.log("✅ Sessões carregadas (filme + sala):", sessoesFiltradasPorFilmeESala);
       } catch (erro) {
-        console.error("❌ Erro ao conectar para gerar sessaoId:", erro);
-        // fallback: cria um ID local
-        sessaoIdGlobal = "local-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("sessaoId", sessaoIdGlobal);
-        return sessaoIdGlobal;
+        console.error("❌ Erro ao carregar sessões:", erro);
+        alert("❌ Erro de conexão com o servidor.");
       }
     }
 
+    // Sessões serão carregadas quando o usuário selecionar o tipo de sessão
+
     // --- Função para carregar assentos ocupados do backend ---
-    // Busca a lista de assentos já comprados no banco de dados
     async function carregarAssentosOcupados() {
       try {
-        // Usa o sessaoId do servidor (ou fallback local)
+        // Usa o sessaoId selecionado pelo usuário
         if (!sessaoIdGlobal) {
-          await gerarSessaoId();
+          console.warn("⚠️ Nenhuma sessão selecionada ainda.");
+          return;
         }
 
-        const params = new URLSearchParams({
-          sessaoId: sessaoIdGlobal
-        });
-
-        // Limpa ocupados anteriores antes de aplicar os novos
+        // Limpa ocupados anteriores
         document.querySelectorAll('.seat.occupied').forEach(s => s.classList.remove('occupied'));
 
-        const url = `${API_Assento}/sessao/${params.get("sessaoId")}`;
+        const url = `${API_Assento}/sessao/${sessaoIdGlobal}`;
+        console.log("🔍 Buscando assentos ocupados:", url);
+        
         const resposta = await fetch(url);
         if (resposta.ok) {
           const data = await resposta.json();
-          const assentosOcupados = data.assentos || []; // esperado: ["A1", "B2", "C3", ...]
+          let assentosOcupados = [];
+          
+          if (Array.isArray(data)) {
+            assentosOcupados = data
+              .filter(a => a.ocupado === true)
+              .map(a => a.numero_assento ?? a.assento ?? a);
+          } else if (Array.isArray(data.assentos)) {
+            assentosOcupados = data.assentos;
+          }
 
-          // marca cada assento como ocupado
           assentosOcupados.forEach(id => {
             const seatElement = document.querySelector(`[data-id="${id}"]`);
             if (seatElement) {
               seatElement.classList.add("occupied");
-              // se estiver selecionado, remove seleção para evitar conflito
               seatElement.classList.remove('selected');
             }
           });
 
-          console.log("✅ Assentos ocupados carregados:", { sessaoId: sessaoIdGlobal, assentosOcupados });
+          console.log("✅ Assentos ocupados:", assentosOcupados);
+        } else if (resposta.status === 404) {
+          console.log("ℹ️ Todos os assentos disponíveis.");
         } else {
-          console.warn("⚠️ Erro ao carregar assentos ocupados", resposta.status);
+          console.warn("⚠️ Erro ao carregar assentos:", resposta.status);
         }
       } catch (erro) {
-        console.error("❌ Erro ao conectar com servidor de assentos:", erro);
+        console.error("❌ Erro ao conectar:", erro);
       }
     }  // --- Geração da planta de assentos ---
   // Busca o container dos assentos e cria um grid (A1..E8) em ordem de linhas (horizontal)
@@ -109,26 +196,94 @@ buyButtons.forEach(btn => {
     const cols = 8;
     const rowLetters = ["A", "B", "C", "D", "E"];
 
-    // criar assentos por fileira (A1..A8, B1..B8, ...)
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
+    // criar assentos por fileira INVERTIDA (E8..E1, D8..D1, ..., A8..A1)
+    // Inverte a ordem das fileiras (E->D->C->B->A) e das colunas (8->1)
+    for (let r = rows - 1; r >= 0; r--) {
+      for (let c = cols - 1; c >= 0; c--) {
         const seat = document.createElement("div");
         seat.classList.add("seat");
         const label = `${rowLetters[r]}${c + 1}`;
-        // armazenamos o rótulo legível (ex: A1) em data-id para uso posterior
+        
+        // Marcar assentos especiais
+        if (label === "C1") {
+          seat.classList.add("special-mr");
+          seat.textContent = "MR";
+          seat.title = "Assento para Mobilidade Reduzida";
+          seat.dataset.special = "mr";
+        } else if (label === "E8") {
+          seat.classList.add("special-ob");
+          seat.textContent = "OB";
+          seat.title = "Assento para Obeso";
+          seat.dataset.special = "ob";
+        } else {
+          seat.textContent = label;
+          seat.title = `Assento ${label}`;
+        }
+        
         seat.dataset.id = label;
-        // mostrar o rótulo visível no próprio elemento
-        seat.textContent = label;
-        seat.title = `Assento ${label}`;
         seatsContainer.appendChild(seat);
       }
     }
 
-  // Gera o sessaoId no servidor ANTES de carregar assentos (não bloqueia; se não existir será criado on-demand)
-  if (!sessaoIdGlobal) { gerarSessaoId().catch(console.error); }
+    // Adicionar elemento de tela ABAIXO da linha A (após o container de assentos)
+    const screenDiv = document.createElement("div");
+    screenDiv.className = "screen";
+    screenDiv.textContent = "TELA";
+    screenDiv.style.cssText = `
+      width: 60%;
+      max-width: 550px;
+      height: 18px;
+      background: linear-gradient(to bottom, #fff, #ccc);
+      border-radius: 50% 50% 0 0;
+      margin: 15px auto 0;
+      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: bold;
+      display: block;
+    `;
+    seatsContainer.insertAdjacentElement('afterend', screenDiv);
 
-    // Carrega assentos ocupados do backend APÓS criar os assentos
-    carregarAssentosOcupados();    // Delegação de clique para selecionar/deselecionar assentos
+    // Adicionar legenda abaixo da tela
+    const legendDiv = document.createElement("div");
+    legendDiv.className = "seat-legend";
+    legendDiv.style.cssText = `
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px auto;
+      font-size: 13px;
+      flex-wrap: wrap;
+    `;
+    legendDiv.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 5px;">
+        <div style="width: 20px; height: 20px; background: #333; border-radius: 4px;"></div>
+        <span>Disponível</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 5px;">
+        <div style="width: 20px; height: 20px; background: #ff6f61; border-radius: 4px;"></div>
+        <span>Selecionado</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 5px;">
+        <div style="width: 20px; height: 20px; background: #666; border-radius: 4px;"></div>
+        <span>Ocupado</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 5px;">
+        <div style="width: 20px; height: 20px; background: #4a90e2; border-radius: 4px; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">MR</div>
+        <span>Mobilidade Reduzida</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 5px;">
+        <div style="width: 20px; height: 20px; background: #9b59b6; border-radius: 4px; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">OB</div>
+        <span>Obeso</span>
+      </div>
+    `;
+    screenDiv.insertAdjacentElement('afterend', legendDiv);
+
+  // NÃO carrega assentos automaticamente - aguarda usuário escolher horário
+
+    // Delegação de clique para selecionar/deselecionar assentos
     seatsContainer.addEventListener("click", (e) => {
       if (e.target.classList.contains("seat") && !e.target.classList.contains("occupied")) {
         // alterna estado .selected e atualiza UI relacionada
@@ -152,21 +307,27 @@ buyButtons.forEach(btn => {
     });
   }
 
-  // Atualiza resumo e recarrega assentos quando o horário/tipo de sessão mudarem
+  // Quando usuário escolhe um horário, salva o sessaoId e carrega assentos
   const showtimeEl = document.getElementById("showtime");
   const sessionTypeEl = document.getElementById("session-type");
 
   if (showtimeEl) {
     showtimeEl.addEventListener("change", () => {
+      // O value agora é o cd_sessao numérico real
+      sessaoIdGlobal = parseInt(showtimeEl.value) || null;
+      if (sessaoIdGlobal) {
+        console.log("✅ Sessão selecionada:", sessaoIdGlobal);
+        carregarAssentosOcupados();
+      }
       updateSummary();
-      carregarAssentosOcupados();
     });
   }
 
   if (sessionTypeEl) {
     sessionTypeEl.addEventListener("change", () => {
+      // Quando tipo de sessão muda, recarrega os horários filtrados
+      carregarSessoesDisponiveis();
       updateSummary();
-      carregarAssentosOcupados();
     });
   }
   document.querySelectorAll("input[name='payment']").forEach(r => r.addEventListener("change", updateSummary));
@@ -295,7 +456,8 @@ buyButtons.forEach(btn => {
   if (finalizarBtn) {
     finalizarBtn.addEventListener("click", () => {
       const selectedSeats = document.querySelectorAll(".seat.selected");
-      const showtime = document.getElementById("showtime").value;
+      const showtimeSelect = document.getElementById("showtime");
+      const showtime = showtimeSelect.options[showtimeSelect.selectedIndex]?.text || "—";
       const sessionSelect = document.getElementById("session-type");
       // sessionValue = valor da option (ex: '3D-dub'), sessionTypeLabel = texto legível (ex: '3D Dublado')
       const sessionValue = sessionSelect ? sessionSelect.value : "";
@@ -316,7 +478,7 @@ buyButtons.forEach(btn => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailRegex.test(email);
 
-      if (!name || !showtime || !sessionValue || !email || !isValidEmail || !payment || selectedSeats.length === 0) {
+      if (!name || !showtimeSelect.value || !sessionValue || !email || !isValidEmail || !payment || selectedSeats.length === 0) {
         if (!isValidEmail && email) {
           alert("⚠️ Por favor, insira um e-mail válido (exemplo: exemplo@email.com).");
         } else {
@@ -325,17 +487,38 @@ buyButtons.forEach(btn => {
         return;
       }
 
-      // preço base por assento (antes de aplicar multiplicador de sessão)
-      let basePrice = 20;
+      // Preços base por tipo de ingresso
+      const ticketPrices = {
+        inteira: 20,
+        "meia-estudante": 10,
+        "meia-senior": 10,
+        "meia-pcd": 10,
+        "meia-acomp-pcd": 10,
+        "meia-prof": 10,
+        "meia-outras": 10
+      };
 
-      // aplica acréscimos por tipo de sessão — usamos a parte antes do '-' (ex: '3D' de '3D-dub')
-      const baseSession = sessionValue.split('-')[0];
-      if (baseSession === "3D") basePrice *= 1.12;
-      else if (baseSession === "IMAX") basePrice *= 1.25;
+      // Função que aplica multiplicador de sessão
+      const applySessionMultiplier = (basePrice) => {
+        const baseSession = sessionValue.split('-')[0];
+        if (baseSession === "3D") return Math.round(basePrice * 1.12);
+        else if (baseSession === "IMAX") return Math.round(basePrice * 1.25);
+        return basePrice;
+      };
 
-      basePrice = Math.round(basePrice);
-
-      const seatTotal = selectedSeats.length * basePrice;
+      // Calcular total de assentos com base nos tipos selecionados
+      let seatTotal = 0;
+      selectedSeats.forEach(seat => {
+        const seatNumber = seat.dataset.id;
+        const ticketSelect = document.querySelector(`.ticket-type-select[data-seat="${seatNumber}"]`);
+        const ticketType = ticketSelect ? ticketSelect.value : "inteira";
+        
+        if (ticketType && ticketPrices[ticketType]) {
+          const basePrice = ticketPrices[ticketType];
+          const finalPrice = applySessionMultiplier(basePrice);
+          seatTotal += finalPrice;
+        }
+      });
 
       // Cálculo dos snacks (simples somatório)
       const snackItemsAll = document.querySelectorAll(".item");
@@ -412,8 +595,15 @@ buyButtons.forEach(btn => {
         // monta o objeto com os dados da compra
         // Extrai os IDs dos assentos selecionados (ex: ["A1", "B3", "C5"])
         const assentosIds = Array.from(selectedSeats).map(seat => seat.dataset.id);
+        
+        // Extrai os tipos de ingresso correspondentes a cada assento
+        const tiposIngresso = assentosIds.map(assentoId => {
+          const ticketSelect = document.querySelector(`.ticket-type-select[data-seat="${assentoId}"]`);
+          return ticketSelect ? ticketSelect.value : "inteira";
+        });
 
         const dados = {
+          cd_cliente: 1, // valor fixo temporário
           nome: name,
           email: email,
           cpf: cpf,
@@ -421,10 +611,14 @@ buyButtons.forEach(btn => {
           sessaoId: sessaoIdGlobal,  // usa o ID gerado pelo servidor
           horario: showtime,
           assentos: assentosIds,  // agora envia os IDs específicos dos assentos
+          tiposIngresso: tiposIngresso,  // tipos de ingresso por assento
           quantidadeAssentos: selectedSeats.length,
           lanches: snackNames,
           pagamento: payment,
-          total: total
+          total: total,
+          totalIngressos: seatTotal,  // total só dos ingressos
+          totalLanches: snackTotal,   // total só dos lanches
+          sessoesDoFilme: sessoesDoFilme  // passa as sessões filtradas para o api.js
       };
 
         // Envia pedido ao back-end (função definida em api.js) e só prossegue em caso de sucesso
@@ -490,7 +684,8 @@ buyButtons.forEach(btn => {
   // --- Atualiza o resumo do pedido ---
   function updateSummary() {
     const selectedSeats = document.querySelectorAll(".seat.selected");
-    const showtime = document.getElementById("showtime").value || "—";
+    const showtimeSelect = document.getElementById("showtime");
+    const showtime = showtimeSelect.options[showtimeSelect.selectedIndex]?.text || "—";
     const sessionSelect = document.getElementById("session-type");
     const sessionValue = sessionSelect ? sessionSelect.value : ""; // ex: '3D-dub'
     const sessionType = sessionSelect ? sessionSelect.options[sessionSelect.selectedIndex]?.text || "—" : "—"; // ex: '3D Dublado'
@@ -569,6 +764,15 @@ buyButtons.forEach(btn => {
 
     const total = seatTotal + snackTotal;
 
+    // Verifica se a sessão é 3D ou IMAX para exibir taxa adicional
+    const baseSession = sessionValue.split('-')[0];
+    let taxaAdicional = "";
+    if (baseSession === "3D") {
+      taxaAdicional = '<div style="color:#ffa500;font-size:0.9rem;margin-top:5px;">⚠️ Taxa 3D: +12% no valor dos ingressos</div>';
+    } else if (baseSession === "IMAX") {
+      taxaAdicional = '<div style="color:#ffa500;font-size:0.9rem;margin-top:5px;">⚠️ Taxa IMAX: +25% no valor dos ingressos</div>';
+    }
+
     // Atualiza o HTML do resumo com os dados calculados
     const summary = document.getElementById("summary-content");
     if (summary) {
@@ -580,7 +784,7 @@ buyButtons.forEach(btn => {
         <b>Lanches:</b> ${snackNames}<br>
         <b>Forma de Pagamento:</b> ${payment}<br>
         <hr style="border:none;border-top:1px solid #444;margin:10px 0;">
-        <b>Total Assentos:</b> R$ ${seatTotal.toFixed(2).replace('.', ',')}<br>
+        <b>Total Assentos:</b> R$ ${seatTotal.toFixed(2).replace('.', ',')}${taxaAdicional}<br>
         <b>Total Lanches:</b> R$ ${snackTotal.toFixed(2).replace('.', ',')}<br>
         <div style="margin-top:10px;font-size:1.2rem;color:#ff4b2b;font-weight:bold;">
           Total Geral: R$ ${total.toFixed(2).replace('.', ',')}

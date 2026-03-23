@@ -1,0 +1,122 @@
+// =====================================
+//           CONFIGURAÇÃO
+// =====================================
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// =====================================
+//              MODELOS
+// =====================================
+
+// ----------- Cliente -----------------
+model tb_cliente {
+  cd_cliente Int           @id @default(autoincrement())
+  cliente    String?       @db.Char(50)
+  email      String?       @db.Char(50)
+  cpf        String?       @db.Char(14)
+
+  vendas     tb_venda[]
+}
+
+// ----------- Sala --------------------
+model tb_sala {
+  cd_sala    Int         @id @default(autoincrement())
+  sala       Int?
+  capacidade Int?
+  tp_sala    String?     @db.Char(5)
+  dublagem   String?     @db.Char(20)
+
+  sessoes    tb_sessao[]
+}
+
+// ----------- Filme -------------------
+model tb_filme {
+  cd_filme      Int         @id @default(autoincrement())
+  filme         String?     @db.Char(50)
+  duracao       DateTime?   @db.Time
+  classe_etaria String?     @db.Char(5)
+  tp_filme      String?     @db.Char(20)
+
+  sessoes       tb_sessao[]
+}
+
+// ----------- Sessão ------------------
+model tb_sessao {
+  cd_sessao Int        @id @default(autoincrement())
+  sessao    String?    @db.Char(50)
+  data_hora DateTime?
+  cd_filme  Int
+  cd_sala   Int
+
+  filme     tb_filme   @relation(fields: [cd_filme], references: [cd_filme])
+  sala      tb_sala    @relation(fields: [cd_sala], references: [cd_sala])
+
+  assentos  tb_assento[]
+  ingressos tb_ingresso[]
+}
+
+// ----------- Assento -----------------
+model tb_assento {
+  cd_assento    Int        @id @default(autoincrement())
+  numero_assento String?   @db.Char(3)
+  ocupado       Boolean?   @default(false)
+  cd_sessao     Int
+
+  sessao        tb_sessao  @relation(fields: [cd_sessao], references: [cd_sessao])
+  ingressos     tb_ingresso[]
+}
+
+// ----------- Venda -------------------
+model tb_venda {
+  nr_recibo    Int           @id @default(autoincrement())
+  dt_hr_venda  DateTime?
+  valor_total  Decimal?      @db.Decimal(6,2)
+  cd_cliente   Int
+  tp_pagamento String?       @db.VarChar(20)
+
+  cliente      tb_cliente    @relation(fields: [cd_cliente], references: [cd_cliente])
+  ingressos    tb_ingresso[]
+  lancheVenda  rl_venda_lanche[]
+}
+
+// ----------- Ingresso ----------------
+model tb_ingresso {
+  cd_ingresso    Int        @id @default(autoincrement())
+  valor_ingresso Decimal?   @db.Decimal(4,2)
+  tp_ingresso    String?    @db.Char(10)
+  cd_sessao      Int
+  cd_assento     Int
+  nr_recibo      Int
+
+  sessao         tb_sessao   @relation(fields: [cd_sessao], references: [cd_sessao])
+  assento        tb_assento  @relation(fields: [cd_assento], references: [cd_assento])
+  venda          tb_venda    @relation(fields: [nr_recibo], references: [nr_recibo])
+}
+
+// ----------- Lanche ------------------
+model tb_lanche {
+  cd_lanche   Int               @id @default(autoincrement())
+  lanche      String?           @db.Char(50)
+  valor_lanche Decimal?         @db.Decimal(5,2)
+
+  vendaLanche rl_venda_lanche[]
+}
+
+// ----------- Relação Venda ↔ Lanche --
+model rl_venda_lanche {
+  nr_recibo    Int
+  cd_lanche    Int
+  quantidade   Int?
+  valor_parcial Decimal?        @db.Decimal(5,2)
+
+  venda  tb_venda   @relation(fields: [nr_recibo], references: [nr_recibo])
+  lanche tb_lanche  @relation(fields: [cd_lanche], references: [cd_lanche])
+
+  @@id([nr_recibo, cd_lanche])
+}

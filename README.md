@@ -6,7 +6,7 @@ Sistema web full-stack para compra e gestão de ingressos de cinema, com catálo
 
 ## 📌 Sobre o projeto
 
-O **Cinema Web System** é uma aplicação desenvolvida com o objetivo de simular um ambiente real de venda de ingressos de cinema.
+O **Cinemoroll** é uma aplicação desenvolvida com o objetivo de simular um ambiente real de venda de ingressos de cinema.
 
 O sistema permite que usuários visualizem filmes, escolham sessões, selecionem assentos e realizem a compra de ingressos, enquanto administradores podem gerenciar filmes, salas e sessões diretamente no banco de dados.
 

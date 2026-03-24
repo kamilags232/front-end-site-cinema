@@ -1,4 +1,4 @@
-# 🎬 Cinemoroll — Sistema de Compra e Gestão de Ingressos de Cinema
+# 🎬 Cinemonroll — Sistema de Compra e Gestão de Ingressos de Cinema
 
 Sistema web full-stack para compra e gestão de ingressos de cinema, com catálogo de filmes, sessões, seleção de assentos e integração entre front-end, back-end e banco de dados. Projeto acadêmico focado em arquitetura em camadas e desenvolvimento web completo.
 
@@ -6,7 +6,7 @@ Sistema web full-stack para compra e gestão de ingressos de cinema, com catálo
 
 ## 📌 Sobre o projeto
 
-O **Cinemoroll** é uma aplicação desenvolvida com o objetivo de simular um ambiente real de venda de ingressos de cinema.
+O **Cinemonroll** é uma aplicação desenvolvida com o objetivo de simular um ambiente real de venda de ingressos de cinema.
 
 O sistema permite que usuários visualizem filmes, escolham sessões, selecionem assentos e realizem a compra de ingressos, enquanto administradores podem gerenciar filmes, salas e sessões diretamente no banco de dados.
 

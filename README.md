@@ -1,92 +1,115 @@
-# 🎬 Cinemonroll — Sistema de Compra e Gestão de Ingressos de Cinema
-
----
+# **🎬 Cinemonroll — Sistema de Gestão Comercial de Cinema (Em Evolução)**
 
 ## 📌 Sobre o projeto
 
-O **Cinemonroll** é uma aplicação desenvolvida com o objetivo de simular um ambiente real de venda de ingressos de cinema.
+O Cinemonroll iniciou como um sistema de venda de ingressos de cinema, desenvolvido em arquitetura web com Node.js. Atualmente, o projeto está em processo de evolução para um Sistema de Gestão Comercial (SGC), atendendo aos requisitos da disciplina de Desenvolvimento de Sistemas.
 
-O sistema permite que usuários visualizem filmes, escolham sessões, selecionem assentos e realizem a compra de ingressos, enquanto administradores podem gerenciar filmes, salas e sessões diretamente no banco de dados.
+A nova versão do sistema tem como objetivo simular um ambiente real de comércio, com foco em controle de clientes, produtos, vendas e autenticação de usuários, utilizando uma arquitetura robusta baseada em Java e boas práticas de Engenharia de Software.
 
-O projeto foi desenvolvido com foco em arquitetura em camadas, organização de código e integração entre tecnologias web.
+### 🚧 Status do Projeto
 
----
+⚠️ O sistema está em processo de migração tecnológica e reestruturação arquitetural.
 
-## ✨ Funcionalidades
-
-### 👤 Usuário
-- Visualizar catálogo de filmes
-- Ver sessões disponíveis por filme
-- Selecionar assentos
-- Simular compra de ingressos
-- Adicionar lanches à compra
-- Ver resumo final do pedido
-
-### 🎬 Sistema
-- Controle de disponibilidade de assentos
-- Atualização automática de capacidade
-- Validação de sessões e horários
-- Cálculo automático do valor total
-
-### 🛠️ Administração
-- Cadastro de filmes
-- Cadastro de salas
-- Criação de sessões
-- Gerenciamento manual via banco de dados
+* Front-end atual disponível (Vercel)
+* Back-end e banco de dados temporariamente desativados para atualização
+* Nova versão sendo desenvolvida com Java + Spring Boot
 
 ---
 
-## 🧱 Arquitetura
+## ✨ Nova Proposta do Sistema
 
-O sistema segue uma arquitetura em camadas:
+O sistema passará a oferecer:
 
-- **Front-end:** Interface do usuário (HTML, CSS, JavaScript)
-- **Back-end:** API REST com Node.js + Express
-- **Banco de dados:** MySQL
-- **ORM:** Prisma
+### 👤 Gestão de Clientes
 
-Fluxo de dados: Frontend → API → Banco de Dados → API → Frontend
+* Cadastro, edição e consulta de clientes
+* Validação de CPF e email
+* Controle de clientes com histórico de compras
+
+### 🛒 Gestão de Produtos
+
+* Cadastro de produtos
+* Controle de estoque
+* Validação de disponibilidade para venda
+
+### 💰 Registro de Vendas
+
+* Venda associada aos dados do cliente
+* Lista de itens vendidos
+* Cálculo automático do valor total
+* Atualização automática de estoque
+
+### 🔐 Autenticação e Segurança
+
+* Login com autenticação via token (JWT)
+* Controle de acesso por perfil (ADMIN, FUNCIONARIO)
+* Proteção de rotas
+
+### 📊 Relatórios
+
+* Vendas por período
+* Vendas por cliente
+* Visualização de dados para análise
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## 🧱 Nova Arquitetura
 
-- HTML5
-- CSS3
-- JavaScript
-- Node.js
-- Express.js
-- MySQL
-- Prisma ORM
+O sistema está sendo reestruturado utilizando Arquitetura em Camadas:
 
----
-
-## ☁️ Deploy
-
-- Front-end: Vercel  
-- Back-end: Railway  
-- Banco de dados: MySQL (Railway)
+* Camada de Apresentação (Web)
+* Camada Controller
+* Camada de Aplicação/Serviço
+* Camada de Domínio (Entidades e regras de negócio)
+* Camada de Persistência (Repository/DAO)
+* Banco de Dados
 
 ---
 
-## 📁 Estrutura do projeto
+## 🛠️ Tecnologias (Nova Versão)
 
-/frontend   → Interface do usuário 
-/backend    → API e regras de negócio 
-/prisma     → Modelagem do banco de dados
+* HTML5
+* CSS3
+* Java 21+
+* Spring Boot 3+
+* Spring Data JPA
+* MySQL
+* Maven
+* JWT (JSON Web Token)
+* GitHub
+
+---
+
+## 📊 Modelagem do Sistema
+
+O sistema foi modelado utilizando:
+
+* Diagrama de Domínio
+* Diagrama de Classes
+* Diagrama Lógico do Banco de Dados
+
+A modelagem garante coerência entre regras de negócio, estrutura de dados e implementação.
 
 ---
 
 ## 🎯 Objetivo
 
-Este projeto tem como objetivo aplicar conhecimentos de:
+O objetivo do projeto é aplicar, na prática, conceitos de:
 
-- Engenharia de Software
-- Banco de Dados
-- Desenvolvimento Web
-- Integração de sistemas
+* Arquitetura em Camadas
+* Programação Orientada a Objetos
+* Desenvolvimento de APIs REST
+* Integração com Banco de Dados
+* Segurança com autenticação baseada em token
+* Modelagem de sistemas
 
-Além disso, simula um sistema real completo, conectando todas as camadas de uma aplicação full-stack.
+---
+
+## 📁 Estrutura do Projeto (Em atualização)
+
+/frontend → Interface do usuário
+/backend → API REST (em desenvolvimento com Spring Boot)
+/docs → Documentação técnica e diagramas
 
 ---
 
@@ -94,24 +117,29 @@ Além disso, simula um sistema real completo, conectando todas as camadas de uma
 
 👉 https://web-cinemonroll.vercel.app
 
+⚠️ Observação: Apenas o front-end da versão anterior está disponível no momento.
+
 ---
 
 ## 📚 Aprendizados
 
-Durante o desenvolvimento, foi possível praticar:
+Durante o desenvolvimento e evolução do projeto, estão sendo trabalhados:
 
-- Integração front-end e back-end
-- Modelagem de banco de dados relacional
-- Criação de API REST
-- Organização de projeto em camadas
-- Deploy de aplicações web
+* Migração de tecnologias (Node.js → Java)
+* Aplicação de arquitetura em camadas
+* Implementação de autenticação com JWT
+* Modelagem de sistemas com UML
+* Boas práticas de organização e versionamento
 
 ---
 
 ## 📌 Status
 
-✔ Projeto funcional  
-✔ Em fase de aprimoramento  
+🚧 Em desenvolvimento (nova versão em Java)
+
+✔ Modelagem concluída (domínio, classes e banco)
+
+🔄 Migração de arquitetura em andamento
 
 ---
 

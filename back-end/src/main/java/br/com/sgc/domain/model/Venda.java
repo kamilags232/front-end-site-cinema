@@ -1,12 +1,19 @@
 package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "tb_venda")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Venda {
 
     @Id
@@ -33,73 +40,4 @@ public class Venda {
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
     private List<ItemVenda> itens;
-
-    public Venda() {
-    }
-
-    public Venda(Long id, LocalDateTime dataHora, BigDecimal valorTotal, Cliente cliente, Usuario usuario, String tipoPagamento, List<ItemVenda> itens) {
-        this.id = id;
-        this.dataHora = dataHora;
-        this.valorTotal = valorTotal;
-        this.cliente = cliente;
-        this.usuario = usuario;
-        this.tipoPagamento = tipoPagamento;
-        this.itens = itens;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getTipoPagamento() {
-        return tipoPagamento;
-    }
-
-    public void setTipoPagamento(String tipoPagamento) {
-        this.tipoPagamento = tipoPagamento;
-    }
-
-    public List<ItemVenda> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<ItemVenda> itens) {
-        this.itens = itens;
-    }
 }

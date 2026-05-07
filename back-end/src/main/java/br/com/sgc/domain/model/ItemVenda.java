@@ -1,11 +1,17 @@
 package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rl_venda_produto")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemVenda {
 
     @EmbeddedId
@@ -25,58 +31,5 @@ public class ItemVenda {
 
     @Column(name = "valor_parcial")
     private BigDecimal valorParcial;
-
-    public ItemVenda() {
-    }
-
-    public ItemVenda(ItemVendaId id, Venda venda, Produto produto, Integer quantidade, BigDecimal valorParcial) {
-        this.id = id;
-        this.venda = venda;
-        this.produto = produto;
-        this.quantidade = quantidade;
-        this.valorParcial = valorParcial;
-    }
-
-    public ItemVendaId getId() {
-        return id;
-    }
-
-    public void setId(ItemVendaId id) {
-        this.id = id;
-    }
-
-    public Venda getVenda() {
-        return venda;
-    }
-
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public BigDecimal getValorParcial() {
-        return valorParcial;
-    }
-
-    public void setValorParcial(BigDecimal valorParcial) {
-        this.valorParcial = valorParcial;
-    }
-
-
 }
 

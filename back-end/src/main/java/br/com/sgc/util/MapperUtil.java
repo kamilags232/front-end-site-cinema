@@ -4,27 +4,40 @@ import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.model.Produto;
 import br.com.sgc.dto.ClienteDTO;
 import br.com.sgc.dto.ProdutoDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MapperUtil {
 
     public static Cliente toEntity(ClienteDTO dto) {
-        Cliente c = new Cliente();
-        c.setNome(dto.getNome());
-        c.setEmail(dto.getEmail());
-        c.setCpf(dto.getCpf());
-        c.setTelefone(dto.getTelefone());
-        c.setEndereco(dto.getEndereco());
-        return c;
+        if (dto == null) {
+            return null;
+        }
+        return new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpf(), 
+                          dto.getTelefone(), dto.getEndereco());
     }
 
     public static Produto toEntity(ProdutoDTO dto) {
-        Produto p = new Produto();
-        p.setNome(dto.getNome());
-        p.setDescricao(dto.getDescricao());
-        p.setPreco(dto.getPreco());
-        p.setEstoque(dto.getEstoque());
-        p.setEstoqueMinimo(dto.getEstoqueMinimo());
-        p.setTipoProduto(dto.getTipoProduto());
-        return p;
+        if (dto == null) {
+            return null;
+        }
+        return new Produto(null, dto.getNome(), dto.getDescricao(), dto.getPreco(),
+                          dto.getEstoque(), dto.getEstoqueMinimo(), dto.getTipoProduto());
+    }
+
+    public static ClienteDTO toDTO(Cliente cliente) {
+        if (cliente == null) {
+            return null;
+        }
+        return new ClienteDTO(cliente.getNome(), cliente.getEmail(), cliente.getCpf(),
+                             cliente.getTelefone(), cliente.getEndereco());
+    }
+
+    public static ProdutoDTO toDTO(Produto produto) {
+        if (produto == null) {
+            return null;
+        }
+        return new ProdutoDTO(produto.getNome(), produto.getDescricao(), produto.getPreco(),
+                             produto.getEstoque(), produto.getEstoqueMinimo(), produto.getTipoProduto());
     }
 }

@@ -6,10 +6,10 @@ import br.com.sgc.service.ProdutoService;
 import br.com.sgc.util.MapperUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
@@ -19,19 +19,24 @@ public class ProdutoController {
     private ProdutoService service;
 
     @PostMapping
-    public ResponseEntity<Produto> criar(@RequestBody @Valid ProdutoDTO dto) {
+    public ResponseEntity<Produto> criar(@Valid @RequestBody ProdutoDTO dto) {
         Produto produto = MapperUtil.toEntity(dto);
         return ResponseEntity.ok(service.criar(produto));
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listar() {
-        return ResponseEntity.ok(service.listar());
+    public ResponseEntity<Page<Produto>> listar(Pageable pageable) {
+        return ResponseEntity.ok(service.listar(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizar(@PathVariable Long id,
-                                             @RequestBody ProdutoDTO dto) {
+                                             @Valid @RequestBody ProdutoDTO dto) {
         Produto produto = MapperUtil.toEntity(dto);
         return ResponseEntity.ok(service.atualizar(id, produto));
     }

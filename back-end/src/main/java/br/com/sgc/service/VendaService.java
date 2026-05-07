@@ -7,9 +7,14 @@ import br.com.sgc.domain.repository.UsuarioRepository;
 import br.com.sgc.domain.repository.VendaRepository;
 import br.com.sgc.dto.ItemVendaDTO;
 import br.com.sgc.dto.VendaDTO;
+import br.com.sgc.exception.BusinessException;
 import br.com.sgc.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class VendaService {
 
     @Autowired
@@ -31,7 +37,9 @@ public class VendaService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Transactional
     public Venda criar(VendaDTO dto) {
+        log.info("Iniciando criação de venda para cliente ID: {}", dto.getClienteId());
 
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
@@ -54,7 +62,9 @@ public class VendaService {
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
             if (produto.getEstoque() < itemDTO.getQuantidade()) {
-                throw new RuntimeException("Estoque insuficiente");
+                log.warn("Estoque insuficiente para produto ID: {} - disponível: {}, solicitado: {}",
+                        produto.getId(), produto.getEstoque(), itemDTO.getQuantidade());
+                throw new BusinessException("Estoque insuficiente para o produto: " + produto.getNome());
             }
 
             BigDecimal valorParcial = produto.getPreco()
@@ -73,10 +83,21 @@ public class VendaService {
         venda.setItens(itens);
         venda.setValorTotal(total);
 
-        return vendaRepository.save(venda);
+        Venda vendaSalva = vendaRepository.save(venda);
+        log.info("Venda criada com sucesso - ID: {}, Total: {}", vendaSalva.getId(), total);
+        return vendaSalva;
     }
 
-    public List<Venda> listar() {
-        return vendaRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<Venda> listar(Pageable pageable) {
+        log.info("Listando vendas com paginação");
+        return vendaRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Venda buscarPorId(Long id) {
+        log.info("Buscando venda por ID: {}", id);
+        return vendaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada"));
     }
 }

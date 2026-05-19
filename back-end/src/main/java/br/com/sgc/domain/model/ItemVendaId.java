@@ -7,7 +7,9 @@ import java.util.Objects;
 @Embeddable
 public class ItemVendaId implements Serializable {
 
-    private Long nrRecibo;
+
+	private static final long serialVersionUID = 3936585940869309849L;
+	private Long nrRecibo;
     private Long cdProduto;
 
     public ItemVendaId() {
@@ -47,4 +49,6 @@ public class ItemVendaId implements Serializable {
     public int hashCode() {
         return Objects.hash(nrRecibo, cdProduto);
     }
+    
+    
 }

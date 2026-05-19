@@ -19,4 +19,10 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO dto) {
         return ResponseEntity.ok(service.login(dto));
     }
+    
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody br.com.sgc.dto.RegisterRequestDTO dto) {
+        service.registrar(dto);
+        return ResponseEntity.ok("Usuário registrado com sucesso!");
+    }
 }

@@ -1,20 +1,23 @@
 package br.com.sgc.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import br.com.sgc.config.JwtService;
 import br.com.sgc.domain.model.Usuario;
 import br.com.sgc.domain.repository.UsuarioRepository;
 import br.com.sgc.dto.AuthRequestDTO;
 import br.com.sgc.dto.AuthResponseDTO;
+import br.com.sgc.dto.RegisterRequestDTO;
 import br.com.sgc.exception.BusinessException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class AuthService {
-
+	private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+	
     @Autowired
     private UsuarioRepository repository;
 
@@ -42,5 +45,18 @@ public class AuthService {
         log.info("Login bem-sucedido para email: {}", dto.getEmail());
         
         return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNome());
+    }
+    
+    public void registrar(RegisterRequestDTO dto) {
+        if (repository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new BusinessException("E-mail já cadastrado");
+        }
+
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(dto.getNome());
+        novoUsuario.setEmail(dto.getEmail());
+        novoUsuario.setSenha(passwordEncoder.encode(dto.getSenha())); 
+
+        repository.save(novoUsuario);
     }
 }

@@ -4,16 +4,19 @@ import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.repository.ClienteRepository;
 import br.com.sgc.exception.BusinessException;
 import br.com.sgc.exception.ResourceNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
-@Slf4j
+
 public class ClienteService {
+	
+	private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
 
     @Autowired
     private ClienteRepository repository;

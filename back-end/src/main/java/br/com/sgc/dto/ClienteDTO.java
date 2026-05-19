@@ -1,13 +1,9 @@
 package br.com.sgc.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
+
 public class ClienteDTO {
 
     @NotBlank(message = "Nome é obrigatório")
@@ -27,4 +23,62 @@ public class ClienteDTO {
 
     @Size(max = 100, message = "Endereço deve ter no máximo 100 caracteres")
     private String endereco;
+    
+    
+
+	public ClienteDTO(
+			@NotBlank(message = "Nome é obrigatório") @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres") String nome,
+			@NotBlank(message = "Email é obrigatório") @Email(message = "Email deve ser válido") String email,
+			@NotBlank(message = "CPF é obrigatório") @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos") String cpf,
+			@Pattern(regexp = "^\\(?\\d{2}\\)?\\d{4,5}-?\\d{4}$|^$", message = "Telefone inválido") String telefone,
+			@Size(max = 100, message = "Endereço deve ter no máximo 100 caracteres") String endereco) {
+		super();
+		this.nome = nome;
+		this.email = email;
+		this.cpf = cpf;
+		this.telefone = telefone;
+		this.endereco = endereco;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+    
+    
 }

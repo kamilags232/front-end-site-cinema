@@ -3,15 +3,11 @@ package br.com.sgc.dto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class VendaDTO {
 
     @NotNull(message = "Cliente ID é obrigatório")
@@ -26,4 +22,38 @@ public class VendaDTO {
     @NotEmpty(message = "Venda deve conter pelo menos um item")
     @Valid
     private List<ItemVendaDTO> itens;
+
+	public Long getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	}
+
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public String getTipoPagamento() {
+		return tipoPagamento;
+	}
+
+	public void setTipoPagamento(String tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
+
+	public List<ItemVendaDTO> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<ItemVendaDTO> itens) {
+		this.itens = itens;
+	}
+    
+    
 }

@@ -1,44 +1,16 @@
-package br.com.sgc.controller;
+﻿package br.com.sgc.controller;
 
-<<<<<<< Updated upstream
-import br.com.sgc.domain.model.Venda;
-import br.com.sgc.dto.VendaDTO;
-import br.com.sgc.service.VendaService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
-@RequestMapping("/vendas")
-public class VendaController {
-
-    @Autowired
-    private VendaService service;
-
-    @PostMapping
-    public ResponseEntity<Venda> criar(@Valid @RequestBody VendaDTO dto) {
-        return ResponseEntity.ok(service.criar(dto));
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<Venda>> listar(Pageable pageable) {
-        return ResponseEntity.ok(service.listar(pageable));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Venda> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
-=======
 import br.com.sgc.dto.CriarVendaRequestDto;
 import br.com.sgc.dto.VendaResponseDto;
 import br.com.sgc.service.VendaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +36,15 @@ public class VendaController {
                         request.getTipoPagamento(),
                         request.getItens()
                 )));
->>>>>>> Stashed changes
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<VendaResponseDto>> listar(Pageable pageable) {
+        return ResponseEntity.ok(vendaService.listar(pageable).map(VendaResponseDto::new));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VendaResponseDto> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(new VendaResponseDto(vendaService.buscarPorId(id)));
     }
 }

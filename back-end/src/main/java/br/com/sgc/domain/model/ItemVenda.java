@@ -1,80 +1,7 @@
-package br.com.sgc.domain.model;
+﻿package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
 
-<<<<<<< Updated upstream
-
-import java.math.BigDecimal;
-
-@Entity
-@Table(name = "rl_venda_produto")
-
-public class ItemVenda {
-
-    @EmbeddedId
-    private ItemVendaId id;
-
-    @ManyToOne
-    @MapsId("nrRecibo")
-    @JoinColumn(name = "nr_recibo")
-    private Venda venda;
-
-    @ManyToOne
-    @MapsId("cdProduto")
-    @JoinColumn(name = "cd_produto")
-    private Produto produto;
-
-    private Integer quantidade;
-
-    @Column(name = "valor_parcial")
-    private BigDecimal valorParcial;
-
-	public ItemVendaId getId() {
-		return id;
-	}
-
-	public void setId(ItemVendaId id) {
-		this.id = id;
-	}
-
-	public Venda getVenda() {
-		return venda;
-	}
-
-	public void setVenda(Venda venda) {
-		this.venda = venda;
-	}
-
-	public Produto getProduto() {
-		return produto;
-	}
-
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public BigDecimal getValorParcial() {
-		return valorParcial;
-	}
-
-	public void setValorParcial(BigDecimal valorParcial) {
-		this.valorParcial = valorParcial;
-	}
-
-	public ItemVenda() {
-		super();
-	}
-    
-    
-=======
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -148,14 +75,12 @@ public class ItemVenda {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ItemVenda)) return false;
-        ItemVenda that = (ItemVenda) o;
-        return Objects.equals(id, that.id);
+        ItemVenda itemVenda = (ItemVenda) o;
+        return Objects.equals(id, itemVenda.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
->>>>>>> Stashed changes
 }
-

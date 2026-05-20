@@ -1,10 +1,8 @@
-spring:
+﻿spring:
   datasource:
-<<<<<<< Updated upstream
     url: ${DB_URL:jdbc:mysql://localhost:3306/bd_cinema}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,11 +10,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+  sql:
+    init:
+      mode: never
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
-
   web:
     resources:
       add-mappings: false
@@ -39,23 +38,3 @@ springdoc:
     enabled: true
   api-docs:
     path: /v3/api-docs
-=======
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  sql:
-    init:
-      mode: never
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
->>>>>>> Stashed changes

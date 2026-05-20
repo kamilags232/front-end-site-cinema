@@ -60,6 +60,7 @@ class VendaDomainIntegrationTest {
         String cpf = gerarCpfValido();
         long clienteId = criarCliente(token, "Cliente Venda " + sufixo, "cliente.venda." + sufixo + "@teste.com", cpf);
         long produtoId = criarProduto(token, "Combo Cinema " + sufixo, "Combo com pipoca e refrigerante", "25.50", 10);
+        garantirEstoqueDoProduto(produtoId, 10);
 
         String vendaJson = """
         {
@@ -209,6 +210,21 @@ class VendaDomainIntegrationTest {
 
         return lerCampoLong(resposta, "id");
     }
+
+  private void garantirEstoqueDoProduto(long produtoId, int estoqueEsperado) {
+    Integer estoqueAtual = jdbcTemplate.queryForObject(
+        "select estoque from tb_produto where cd_produto = ?",
+        Integer.class,
+        produtoId
+    );
+
+    if (estoqueAtual == null || estoqueAtual != estoqueEsperado) {
+      jdbcTemplate.update("update tb_produto set estoque = ? where cd_produto = ?", estoqueEsperado, produtoId);
+      estoqueAtual = estoqueEsperado;
+    }
+
+    assertEquals(estoqueEsperado, estoqueAtual);
+  }
 
     private String gerarSufixoNumerico() {
         long numeroBase = Math.abs(UUID.randomUUID().getMostSignificantBits()) % 100000000L;

@@ -39,7 +39,7 @@ class DatabaseIntegrationTest {
     @BeforeEach
     void limparBancoDeTeste() {
         jdbcTemplate.execute("set foreign_key_checks = 0");
-        jdbcTemplate.execute("truncate table rl_venda_produto");
+        jdbcTemplate.execute("truncate table tb_item_venda");
         jdbcTemplate.execute("truncate table tb_venda");
         jdbcTemplate.execute("truncate table tb_cliente");
         jdbcTemplate.execute("truncate table tb_produto");

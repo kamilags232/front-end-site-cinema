@@ -1,7 +1,7 @@
 package br.com.sgc.integration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.hamcrest.Matchers.containsString;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +11,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,6 +33,15 @@ class VendaDomainIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void limparBancoDeTeste() {
+      jdbcTemplate.execute("delete from rl_venda_produto");
+      jdbcTemplate.execute("delete from tb_venda");
+      jdbcTemplate.execute("delete from tb_cliente");
+      jdbcTemplate.execute("delete from tb_produto");
+      jdbcTemplate.execute("delete from tb_usuario");
+    }
 
     @Test
     void deveCriarVendaComTotalCalculadoEItensPersistidosNoMysql() throws Exception {

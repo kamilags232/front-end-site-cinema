@@ -45,6 +45,10 @@ class DatabaseIntegrationTest {
         jdbcTemplate.execute("truncate table tb_produto");
         jdbcTemplate.execute("truncate table tb_usuario");
         jdbcTemplate.execute("set foreign_key_checks = 1");
+      jdbcTemplate.execute("alter table tb_usuario auto_increment = 1");
+      jdbcTemplate.execute("alter table tb_cliente auto_increment = 1");
+      jdbcTemplate.execute("alter table tb_produto auto_increment = 1");
+      jdbcTemplate.execute("alter table tb_venda auto_increment = 1");
     }
 
     @Test

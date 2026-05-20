@@ -1,5 +1,7 @@
 package br.com.sgc.integration;
 
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.containsString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,27 +38,30 @@ class DatabaseIntegrationTest {
 
   @BeforeEach
   void limparBancoDeTeste() {
-    jdbcTemplate.execute("delete from rl_venda_produto");
-    jdbcTemplate.execute("delete from tb_venda");
-    jdbcTemplate.execute("delete from tb_cliente");
-    jdbcTemplate.execute("delete from tb_produto");
-    jdbcTemplate.execute("delete from tb_usuario");
+        jdbcTemplate.execute("set foreign_key_checks = 0");
+        jdbcTemplate.execute("truncate table rl_venda_produto");
+        jdbcTemplate.execute("truncate table tb_venda");
+        jdbcTemplate.execute("truncate table tb_cliente");
+        jdbcTemplate.execute("truncate table tb_produto");
+        jdbcTemplate.execute("truncate table tb_usuario");
+        jdbcTemplate.execute("set foreign_key_checks = 1");
   }
 
     @Test
     void devePersistirProdutoNoMysqlPorMeioDaApi() throws Exception {
-        String token = gerarToken("produto.mysql@teste.com");
+        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String token = gerarToken("produto.mysql." + sufixo + "@teste.com");
 
         String produtoJson = """
         {
-          "nome": "Pipoca Grande",
+          "nome": "Pipoca Grande %s",
           "descricao": "Pipoca salgada",
           "preco": 18.50,
           "estoque": 30,
           "estoqueMinimo": 5,
           "tipoProduto": "EXTRA"
         }
-        """;
+        """.formatted(sufixo);
 
         MvcResult criacao = mockMvc.perform(post("/produtos")
                         .header("Authorization", "Bearer " + token)
@@ -79,17 +84,18 @@ class DatabaseIntegrationTest {
 
     @Test
     void devePersistirClienteERejeitarCpfDuplicadoNoMysqlPorMeioDaApi() throws Exception {
-        String token = gerarToken("cliente.mysql@teste.com");
+        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String token = gerarToken("cliente.mysql." + sufixo + "@teste.com");
 
         String clienteJson = """
         {
-          "nome": "Cliente Teste",
-          "email": "cliente.mysql@teste.com",
-          "cpf": "12345678901",
+          "nome": "Cliente Teste %s",
+          "email": "cliente.mysql.%s@teste.com",
+          "cpf": "1234567%s",
           "telefone": "11999999999",
           "endereco": "Rua de Teste"
         }
-        """;
+        """.formatted(sufixo, sufixo, sufixo.substring(0, 4));
 
         mockMvc.perform(post("/clientes")
                         .header("Authorization", "Bearer " + token)

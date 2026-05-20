@@ -1,5 +1,7 @@
 package br.com.sgc.integration;
 
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.containsString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,20 +38,23 @@ class VendaDomainIntegrationTest {
 
     @BeforeEach
     void limparBancoDeTeste() {
-      jdbcTemplate.execute("delete from rl_venda_produto");
-      jdbcTemplate.execute("delete from tb_venda");
-      jdbcTemplate.execute("delete from tb_cliente");
-      jdbcTemplate.execute("delete from tb_produto");
-      jdbcTemplate.execute("delete from tb_usuario");
+        jdbcTemplate.execute("set foreign_key_checks = 0");
+        jdbcTemplate.execute("truncate table rl_venda_produto");
+        jdbcTemplate.execute("truncate table tb_venda");
+        jdbcTemplate.execute("truncate table tb_cliente");
+        jdbcTemplate.execute("truncate table tb_produto");
+        jdbcTemplate.execute("truncate table tb_usuario");
+        jdbcTemplate.execute("set foreign_key_checks = 1");
     }
 
     @Test
     void deveCriarVendaComTotalCalculadoEItensPersistidosNoMysql() throws Exception {
-        String email = "venda.mysql@teste.com";
+        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String email = "venda.mysql." + sufixo + "@teste.com";
         String token = gerarToken(email);
         long usuarioId = buscarUsuarioIdPorEmail(email);
-        long clienteId = criarCliente(token, "Cliente Venda", "cliente.venda@teste.com", "98765432100");
-        long produtoId = criarProduto(token, "Combo Cinema", "Combo com pipoca e refrigerante", "25.50", 10);
+        long clienteId = criarCliente(token, "Cliente Venda " + sufixo, "cliente.venda." + sufixo + "@teste.com", "9876543" + sufixo.substring(0, 4));
+        long produtoId = criarProduto(token, "Combo Cinema " + sufixo, "Combo com pipoca e refrigerante", "25.50", 10);
 
         String vendaJson = """
         {
@@ -89,11 +94,12 @@ class VendaDomainIntegrationTest {
 
     @Test
     void naoDeveCriarVendaQuandoEstoqueForInsuficienteNoMysql() throws Exception {
-        String email = "estoque.mysql@teste.com";
+      String sufixo = UUID.randomUUID().toString().substring(0, 8);
+      String email = "estoque.mysql." + sufixo + "@teste.com";
         String token = gerarToken(email);
         long usuarioId = buscarUsuarioIdPorEmail(email);
-        long clienteId = criarCliente(token, "Cliente Estoque", "cliente.estoque@teste.com", "98765432101");
-        long produtoId = criarProduto(token, "Chocolate", "Chocolate pequeno", "8.00", 1);
+      long clienteId = criarCliente(token, "Cliente Estoque " + sufixo, "cliente.estoque." + sufixo + "@teste.com", "9876543" + sufixo.substring(0, 4));
+      long produtoId = criarProduto(token, "Chocolate " + sufixo, "Chocolate pequeno", "8.00", 1);
 
         String vendaJson = """
         {

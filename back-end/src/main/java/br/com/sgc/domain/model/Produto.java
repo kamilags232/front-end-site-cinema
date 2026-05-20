@@ -1,6 +1,7 @@
 package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
+<<<<<<< Updated upstream
 import jakarta.validation.constraints.*;
 
 
@@ -9,6 +10,14 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "tb_produto")
 
+=======
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
+@Entity
+@Table(name = "tb_produto")
+>>>>>>> Stashed changes
 public class Produto {
 
     @Id
@@ -16,6 +25,7 @@ public class Produto {
     @Column(name = "cd_produto")
     private Long id;
 
+<<<<<<< Updated upstream
     @NotBlank(message = "Nome é obrigatório")
     @Column(nullable = false)
     private String nome;
@@ -118,3 +128,68 @@ public class Produto {
     
     
 }
+=======
+    @Column(name = "nome", nullable = false, length = 100)
+    private String nome;
+
+    @Column(name = "preco", nullable = false, precision = 19, scale = 2)
+    private BigDecimal preco;
+
+    @Column(name = "estoque", nullable = false)
+    private Integer estoque = 0;
+
+    public Produto() {
+    }
+
+    public Produto(Long id, String nome, BigDecimal preco) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public Integer getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Produto)) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+>>>>>>> Stashed changes

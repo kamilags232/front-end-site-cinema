@@ -1,6 +1,6 @@
 package br.com.sgc.domain.model;
 
-import br.com.sgc.domain.enums.PerfilUsuario;
+
 import jakarta.persistence.*;
 
 
@@ -22,10 +22,6 @@ public class Usuario {
 
     @Column(nullable = false)
     private String senha;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo")
-    private PerfilUsuario perfil;
 
 	public Long getId() {
 		return id;
@@ -57,14 +53,6 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public PerfilUsuario getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(PerfilUsuario perfil) {
-		this.perfil = perfil;
 	}
 
 	public Usuario() {

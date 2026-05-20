@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/bd_cinema_test?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC}
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:root}
 
@@ -10,6 +11,7 @@ spring:
     show-sql: false
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
 
   sql:

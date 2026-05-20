@@ -1,0 +1,43 @@
+name: Backend tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: bd_cinema_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Run backend tests
+        working-directory: back-end
+        env:
+          RUN_MYSQL_TESTS: "true"
+          DB_URL: jdbc:mysql://127.0.0.1:3306/bd_cinema_test?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: mvn test

@@ -49,11 +49,12 @@ class VendaDomainIntegrationTest {
 
     @Test
     void deveCriarVendaComTotalCalculadoEItensPersistidosNoMysql() throws Exception {
-        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String sufixo = gerarSufixoNumerico();
         String email = "venda.mysql." + sufixo + "@teste.com";
         String token = gerarToken(email);
         long usuarioId = buscarUsuarioIdPorEmail(email);
-        long clienteId = criarCliente(token, "Cliente Venda " + sufixo, "cliente.venda." + sufixo + "@teste.com", "9876543" + sufixo.substring(0, 4));
+        String cpf = gerarCpfValido();
+        long clienteId = criarCliente(token, "Cliente Venda " + sufixo, "cliente.venda." + sufixo + "@teste.com", cpf);
         long produtoId = criarProduto(token, "Combo Cinema " + sufixo, "Combo com pipoca e refrigerante", "25.50", 10);
 
         String vendaJson = """
@@ -94,12 +95,13 @@ class VendaDomainIntegrationTest {
 
     @Test
     void naoDeveCriarVendaQuandoEstoqueForInsuficienteNoMysql() throws Exception {
-      String sufixo = UUID.randomUUID().toString().substring(0, 8);
-      String email = "estoque.mysql." + sufixo + "@teste.com";
+        String sufixo = gerarSufixoNumerico();
+        String email = "estoque.mysql." + sufixo + "@teste.com";
         String token = gerarToken(email);
         long usuarioId = buscarUsuarioIdPorEmail(email);
-      long clienteId = criarCliente(token, "Cliente Estoque " + sufixo, "cliente.estoque." + sufixo + "@teste.com", "9876543" + sufixo.substring(0, 4));
-      long produtoId = criarProduto(token, "Chocolate " + sufixo, "Chocolate pequeno", "8.00", 1);
+        String cpf = gerarCpfValido();
+        long clienteId = criarCliente(token, "Cliente Estoque " + sufixo, "cliente.estoque." + sufixo + "@teste.com", cpf);
+        long produtoId = criarProduto(token, "Chocolate " + sufixo, "Chocolate pequeno", "8.00", 1);
 
         String vendaJson = """
         {
@@ -202,6 +204,16 @@ class VendaDomainIntegrationTest {
                 .andReturn();
 
         return lerCampoLong(resposta, "id");
+    }
+
+    private String gerarSufixoNumerico() {
+        long numeroBase = Math.abs(UUID.randomUUID().getMostSignificantBits()) % 100000000L;
+        return String.format("%08d", numeroBase);
+    }
+
+    private String gerarCpfValido() {
+        long numeroBase = Math.abs(UUID.randomUUID().getLeastSignificantBits()) % 100000000000L;
+        return String.format("%011d", numeroBase);
     }
 
     private String lerCampoTexto(MvcResult resposta, String campo) throws Exception {

@@ -31,13 +31,13 @@ class DatabaseIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-  @Autowired
-  private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-  @BeforeEach
-  void limparBancoDeTeste() {
+    @BeforeEach
+    void limparBancoDeTeste() {
         jdbcTemplate.execute("set foreign_key_checks = 0");
         jdbcTemplate.execute("truncate table rl_venda_produto");
         jdbcTemplate.execute("truncate table tb_venda");
@@ -45,11 +45,11 @@ class DatabaseIntegrationTest {
         jdbcTemplate.execute("truncate table tb_produto");
         jdbcTemplate.execute("truncate table tb_usuario");
         jdbcTemplate.execute("set foreign_key_checks = 1");
-  }
+    }
 
     @Test
     void devePersistirProdutoNoMysqlPorMeioDaApi() throws Exception {
-        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String sufixo = gerarSufixoNumerico();
         String token = gerarToken("produto.mysql." + sufixo + "@teste.com");
 
         String produtoJson = """
@@ -69,7 +69,7 @@ class DatabaseIntegrationTest {
                         .content(produtoJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("Pipoca Grande"))
+                .andExpect(jsonPath("$.nome").value("Pipoca Grande " + sufixo))
                 .andReturn();
 
         long produtoId = lerCampoLong(criacao, "id");
@@ -77,25 +77,26 @@ class DatabaseIntegrationTest {
         mockMvc.perform(get("/produtos/" + produtoId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Pipoca Grande"))
+                .andExpect(jsonPath("$.nome").value("Pipoca Grande " + sufixo))
                 .andExpect(jsonPath("$.preco").value(18.50))
                 .andExpect(jsonPath("$.estoque").value(30));
     }
 
     @Test
     void devePersistirClienteERejeitarCpfDuplicadoNoMysqlPorMeioDaApi() throws Exception {
-        String sufixo = UUID.randomUUID().toString().substring(0, 8);
+        String sufixo = gerarSufixoNumerico();
         String token = gerarToken("cliente.mysql." + sufixo + "@teste.com");
+        String cpf = gerarCpfValido();
 
         String clienteJson = """
         {
           "nome": "Cliente Teste %s",
           "email": "cliente.mysql.%s@teste.com",
-          "cpf": "1234567%s",
+          "cpf": "%s",
           "telefone": "11999999999",
           "endereco": "Rua de Teste"
         }
-        """.formatted(sufixo, sufixo, sufixo.substring(0, 4));
+        """.formatted(sufixo, sufixo, cpf);
 
         mockMvc.perform(post("/clientes")
                         .header("Authorization", "Bearer " + token)
@@ -103,7 +104,7 @@ class DatabaseIntegrationTest {
                         .content(clienteJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.cpf").value("12345678901"));
+                .andExpect(jsonPath("$.cpf").value(cpf));
 
         mockMvc.perform(post("/clientes")
                         .header("Authorization", "Bearer " + token)
@@ -141,6 +142,16 @@ class DatabaseIntegrationTest {
                 .andReturn();
 
         return lerCampoTexto(resposta, "token");
+    }
+
+    private String gerarSufixoNumerico() {
+        long numeroBase = Math.abs(UUID.randomUUID().getMostSignificantBits()) % 100000000L;
+        return String.format("%08d", numeroBase);
+    }
+
+    private String gerarCpfValido() {
+        long numeroBase = Math.abs(UUID.randomUUID().getLeastSignificantBits()) % 100000000000L;
+        return String.format("%011d", numeroBase);
     }
 
     private String lerCampoTexto(MvcResult resposta, String campo) throws Exception {

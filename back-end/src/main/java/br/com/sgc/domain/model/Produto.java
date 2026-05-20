@@ -1,4 +1,4 @@
-﻿package br.com.sgc.domain.model;
+package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

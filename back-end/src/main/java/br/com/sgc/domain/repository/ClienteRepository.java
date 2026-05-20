@@ -1,4 +1,4 @@
-﻿package br.com.sgc.domain.repository;
+package br.com.sgc.domain.repository;
 
 import br.com.sgc.domain.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;

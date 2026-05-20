@@ -1,4 +1,4 @@
-﻿package br.com.sgc.service;
+package br.com.sgc.service;
 
 import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.model.ItemVenda;

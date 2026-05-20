@@ -1,4 +1,4 @@
-﻿package br.com.sgc.controller;
+package br.com.sgc.controller;
 
 import br.com.sgc.dto.CriarVendaRequestDto;
 import br.com.sgc.dto.VendaResponseDto;

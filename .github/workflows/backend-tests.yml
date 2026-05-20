@@ -32,6 +32,18 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
+          
+      - name: Wait for MySQL
+        run: sleep 15
+
+      - name: Run backend tests
+        working-directory: back-end
+        env:
+          RUN_MYSQL_TESTS: "true"
+          DB_URL: jdbc:mysql://127.0.0.1:3306/bd_cinema_test?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: mvn test
 
       - name: Run backend tests
         working-directory: back-end

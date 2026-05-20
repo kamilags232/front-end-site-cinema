@@ -174,7 +174,7 @@ class VendaDomainIntegrationTest {
           "preco": %s,
           "estoque": %d,
           "estoqueMinimo": 1,
-          "tipoProduto": "LANCHE"
+          "tipoProduto": "EXTRA"
         }
         """.formatted(nome, descricao, preco, estoque);
 

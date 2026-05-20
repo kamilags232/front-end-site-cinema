@@ -40,7 +40,7 @@ class DatabaseIntegrationTest {
           "preco": 18.50,
           "estoque": 30,
           "estoqueMinimo": 5,
-          "tipoProduto": "LANCHE"
+          "tipoProduto": "EXTRA"
         }
         """;
 

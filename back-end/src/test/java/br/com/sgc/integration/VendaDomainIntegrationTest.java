@@ -83,7 +83,7 @@ class VendaDomainIntegrationTest {
                         .contentType("application/json")
                         .content(vendaJson))
           .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.valorTotal").value(51.00))
                 .andExpect(jsonPath("$.tipoPagamento").value("CARTAO"))

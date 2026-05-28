@@ -1,29 +1,26 @@
 package br.com.sgc.dto;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class VendaDTO {
+public class CinemaVendaDto {
 
-    @NotNull(message = "Cliente ID é obrigatório")
-    private Long clienteId;
+    @JsonProperty("nr_recibo")
+    private Long nrRecibo;
 
-    @NotNull(message = "Usuário ID é obrigatório")
-    private Long usuarioId;
+    @JsonProperty("dt_hr_venda")
+    private LocalDateTime dtHrVenda;
 
-    @NotNull(message = "Tipo de pagamento é obrigatório")
-    private String tipoPagamento;
+    @JsonProperty("valor_total")
+    private BigDecimal valorTotal;
 
-    @NotEmpty(message = "Venda deve conter pelo menos um item")
-    @Valid
-    private List<ItemVendaDTO> itens;
+    @JsonProperty("cd_cliente")
+    private Long cdCliente;
+
+    @JsonProperty("tp_pagamento")
+    private String tpPagamento;
 }

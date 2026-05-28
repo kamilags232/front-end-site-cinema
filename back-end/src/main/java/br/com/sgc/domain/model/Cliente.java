@@ -17,18 +17,18 @@ public class Cliente {
     @Column(name = "cd_cliente")
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 100)
+    @Column(name = "cliente", nullable = false, length = 50)
     private String nome;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "cpf", nullable = false, unique = true, length = 11)
+    @Column(name = "cpf", nullable = false, unique = true, length = 14)
     private String cpf;
 
-    @Column(name = "telefone", length = 20)
+    @Transient
     private String telefone;
 
-    @Column(name = "endereco", length = 100)
+    @Transient
     private String endereco;
 }

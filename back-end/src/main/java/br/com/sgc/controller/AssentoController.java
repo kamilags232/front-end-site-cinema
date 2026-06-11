@@ -1,6 +1,6 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CinemaAssentoDto;
+import br.com.sgc.dto.AssentoDTO;
 import br.com.sgc.service.CinemaJdbcService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +19,17 @@ public class AssentoController {
     }
 
     @GetMapping("/sessao/{sessaoId}")
-    public List<CinemaAssentoDto> listarPorSessao(@PathVariable Long sessaoId) {
+    public List<AssentoDTO> listarPorSessao(@PathVariable Long sessaoId) {
         return cinemaJdbcService.listarAssentosPorSessao(sessaoId);
     }
 
     @PostMapping
-    public ResponseEntity<CinemaAssentoDto> criar(@RequestBody CinemaAssentoDto dto) {
+    public ResponseEntity<AssentoDTO> criar(@RequestBody AssentoDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cinemaJdbcService.criarAssento(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CinemaAssentoDto> atualizar(@PathVariable Long id, @RequestBody CinemaAssentoDto dto) {
+    public ResponseEntity<AssentoDTO> atualizar(@PathVariable Long id, @RequestBody AssentoDTO dto) {
         return ResponseEntity.ok(cinemaJdbcService.atualizarAssento(id, dto));
     }
 }

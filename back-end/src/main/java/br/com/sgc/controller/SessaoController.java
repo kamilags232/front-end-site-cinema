@@ -1,6 +1,6 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CinemaSessaoDto;
+import br.com.sgc.dto.SessaoDTO;
 import br.com.sgc.service.CinemaJdbcService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class SessaoController {
     }
 
     @GetMapping
-    public List<CinemaSessaoDto> listar() {
+    public List<SessaoDTO> listar() {
         return cinemaJdbcService.listarSessoes();
     }
 }

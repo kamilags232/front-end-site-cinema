@@ -1,12 +1,13 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CinemaFilmeDto;
-import br.com.sgc.service.CinemaJdbcService;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import br.com.sgc.dto.FilmeDTO;
+import br.com.sgc.service.CinemaJdbcService;
 
 @RestController
 @RequestMapping("/filme")
@@ -19,7 +20,7 @@ public class FilmeController {
     }
 
     @GetMapping
-    public List<CinemaFilmeDto> listar() {
+    public List<FilmeDTO> listar() {
         return cinemaJdbcService.listarFilmes();
     }
 }

@@ -1,10 +1,10 @@
 package br.com.sgc.service;
 
-import br.com.sgc.dto.CinemaAssentoDto;
-import br.com.sgc.dto.CinemaIngressoDto;
-import br.com.sgc.dto.CinemaSessaoDto;
-import br.com.sgc.dto.CinemaVendaDto;
-import br.com.sgc.dto.CinemaVendaLancheDto;
+import br.com.sgc.dto.AssentoDTO;
+import br.com.sgc.dto.IngressoDTO;
+import br.com.sgc.dto.SessaoDTO;
+import br.com.sgc.dto.VendaDTO;
+import br.com.sgc.dto.VendaLancheDTO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -29,17 +29,17 @@ public class CinemaJdbcService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<CinemaSessaoDto> listarSessoes() {
+    public List<SessaoDTO> listarSessoes() {
         String sql = "SELECT cd_sessao, sessao, data_hora, cd_filme, cd_sala FROM tb_sessao";
         return jdbcTemplate.query(sql, this::mapSessao);
     }
 
-    public List<CinemaAssentoDto> listarAssentosPorSessao(Long sessaoId) {
+    public List<AssentoDTO> listarAssentosPorSessao(Long sessaoId) {
         String sql = "SELECT cd_assento, numero_assento, ocupado, cd_sessao FROM tb_assento WHERE cd_sessao = ?";
         return jdbcTemplate.query(sql, this::mapAssento, sessaoId);
     }
 
-    public CinemaAssentoDto criarAssento(CinemaAssentoDto dto) {
+    public AssentoDTO criarAssento(AssentoDTO dto) {
         String sql = "INSERT INTO tb_assento (numero_assento, ocupado, cd_sessao) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -53,14 +53,14 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    public CinemaAssentoDto atualizarAssento(Long id, CinemaAssentoDto dto) {
+    public AssentoDTO atualizarAssento(Long id, AssentoDTO dto) {
         String sql = "UPDATE tb_assento SET numero_assento = ?, ocupado = ?, cd_sessao = ? WHERE cd_assento = ?";
         jdbcTemplate.update(sql, dto.getNumeroAssento(), Boolean.TRUE.equals(dto.getOcupado()), dto.getCdSessao(), id);
         dto.setCdAssento(id);
         return dto;
     }
 
-    public CinemaVendaDto criarVenda(CinemaVendaDto dto) {
+    public VendaDTO criarVenda(VendaDTO dto) {
         String sql = "INSERT INTO tb_venda (dt_hr_venda, valor_total, cd_cliente, tp_pagamento) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         LocalDateTime vendaHora = dto.getDtHrVenda() != null ? dto.getDtHrVenda() : LocalDateTime.now();
@@ -77,7 +77,7 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    public CinemaVendaDto recalcularVenda(Long nrRecibo) {
+    public VendaDTO recalcularVenda(Long nrRecibo) {
         String sql = "SELECT COALESCE(SUM(valor_ingresso), 0) + COALESCE((SELECT SUM(valor_parcial) FROM rl_venda_lanche WHERE nr_recibo = ?), 0) AS total " +
                 "FROM tb_ingresso WHERE nr_recibo = ?";
         BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, nrRecibo, nrRecibo);
@@ -86,12 +86,12 @@ public class CinemaJdbcService {
         return buscarVenda(nrRecibo);
     }
 
-    public CinemaVendaDto buscarVenda(Long nrRecibo) {
+    public VendaDTO buscarVenda(Long nrRecibo) {
         String sql = "SELECT nr_recibo, dt_hr_venda, valor_total, cd_cliente, tp_pagamento FROM tb_venda WHERE nr_recibo = ?";
         return jdbcTemplate.queryForObject(sql, this::mapVenda, nrRecibo);
     }
 
-    public CinemaIngressoDto criarIngresso(CinemaIngressoDto dto) {
+    public IngressoDTO criarIngresso(IngressoDTO dto) {
         String sql = "INSERT INTO tb_ingresso (valor_ingresso, tp_ingresso, cd_sessao, cd_assento, nr_recibo) VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -107,24 +107,24 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    public CinemaVendaLancheDto criarVendaLanche(CinemaVendaLancheDto dto) {
+    public VendaLancheDTO criarVendaLanche(VendaLancheDTO dto) {
         String sql = "INSERT INTO rl_venda_lanche (nr_recibo, cd_lanche, quantidade, valor_parcial) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, dto.getNrRecibo(), dto.getCdLanche(), dto.getQuantidade(), dto.getValorParcial());
         return dto;
     }
 
-    public List<CinemaFilmeDto> listarFilmes() {
+    public List<FilmeDTO> listarFilmes() {
         String sql = "SELECT cd_filme, filme, duracao, classe_etaria, tp_filme FROM tb_filme";
         return jdbcTemplate.query(sql, this::mapFilme);
     }
 
-    public List<CinemaSalaDto> listarSalas() {
+    public List<SalaDTO> listarSalas() {
         String sql = "SELECT cd_sala, sala, capacidade, tp_sala, dublagem FROM tb_sala";
         return jdbcTemplate.query(sql, this::mapSala);
     }
 
-    private CinemaFilmeDto mapFilme(ResultSet rs, int rowNum) throws SQLException {
-        CinemaFilmeDto dto = new CinemaFilmeDto();
+    private FilmeDTO mapFilme(ResultSet rs, int rowNum) throws SQLException {
+        FilmeDTO dto = new FilmeDTO();
         dto.setCdFilme(rs.getLong("cd_filme"));
         dto.setFilme(rs.getString("filme"));
         dto.setDuracao(rs.getTime("duracao").toLocalTime());
@@ -133,8 +133,8 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    private CinemaSalaDto mapSala(ResultSet rs, int rowNum) throws SQLException {
-        CinemaSalaDto dto = new CinemaSalaDto();
+    private SalaDTO mapSala(ResultSet rs, int rowNum) throws SQLException {
+        SalaDTO dto = new SalaDTO();
         dto.setCdSala(rs.getLong("cd_sala"));
         dto.setSala(rs.getInt("sala"));
         dto.setCapacidade(rs.getInt("capacidade"));
@@ -143,8 +143,8 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    private CinemaAssentoDto mapAssento(ResultSet rs, int rowNum) throws SQLException {
-        CinemaAssentoDto dto = new CinemaAssentoDto();
+    private AssentoDTO mapAssento(ResultSet rs, int rowNum) throws SQLException {
+        AssentoDTO dto = new AssentoDTO();
         dto.setCdAssento(rs.getLong("cd_assento"));
         dto.setNumeroAssento(rs.getString("numero_assento"));
         dto.setOcupado(rs.getBoolean("ocupado"));
@@ -152,8 +152,8 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    private CinemaSessaoDto mapSessao(ResultSet rs, int rowNum) throws SQLException {
-        CinemaSessaoDto dto = new CinemaSessaoDto();
+    private SessaoDTO mapSessao(ResultSet rs, int rowNum) throws SQLException {
+        SessaoDTO dto = new SessaoDTO();
         dto.setCdSessao(rs.getLong("cd_sessao"));
         dto.setSessao(rs.getString("sessao"));
         Timestamp ts = rs.getTimestamp("data_hora");
@@ -163,8 +163,8 @@ public class CinemaJdbcService {
         return dto;
     }
 
-    private CinemaVendaDto mapVenda(ResultSet rs, int rowNum) throws SQLException {
-        CinemaVendaDto dto = new CinemaVendaDto();
+    private VendaDTO mapVenda(ResultSet rs, int rowNum) throws SQLException {
+        VendaDTO dto = new VendaDTO();
         dto.setNrRecibo(rs.getLong("nr_recibo"));
         Timestamp ts = rs.getTimestamp("dt_hr_venda");
         dto.setDtHrVenda(ts != null ? ts.toLocalDateTime() : null);

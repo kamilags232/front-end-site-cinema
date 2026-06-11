@@ -1,6 +1,6 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CinemaVendaDto;
+import br.com.sgc.dto.VendaDTO;
 import br.com.sgc.service.CinemaJdbcService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +17,12 @@ public class VendaCinemaController {
     }
 
     @PostMapping
-    public ResponseEntity<CinemaVendaDto> criar(@RequestBody CinemaVendaDto dto) {
+    public ResponseEntity<VendaDTO> criar(@RequestBody VendaDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cinemaJdbcService.criarVenda(dto));
     }
 
     @PutMapping("/recalcular/{nrRecibo}")
-    public ResponseEntity<CinemaVendaDto> recalcular(@PathVariable Long nrRecibo) {
+    public ResponseEntity<VendaDTO> recalcular(@PathVariable Long nrRecibo) {
         return ResponseEntity.ok(cinemaJdbcService.recalcularVenda(nrRecibo));
     }
 }

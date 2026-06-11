@@ -1,6 +1,6 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CinemaIngressoDto;
+import br.com.sgc.dto.IngressoDTO;
 import br.com.sgc.service.CinemaJdbcService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class IngressoController {
     }
 
     @PostMapping
-    public ResponseEntity<CinemaIngressoDto> criar(@RequestBody CinemaIngressoDto dto) {
+    public ResponseEntity<IngressoDTO> criar(@RequestBody IngressoDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cinemaJdbcService.criarIngresso(dto));
     }
 }

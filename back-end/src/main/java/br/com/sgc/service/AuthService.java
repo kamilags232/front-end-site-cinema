@@ -1,5 +1,9 @@
 package br.com.sgc.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import br.com.sgc.config.JwtService;
 import br.com.sgc.domain.model.Usuario;
 import br.com.sgc.domain.repository.UsuarioRepository;
@@ -7,9 +11,6 @@ import br.com.sgc.dto.AuthRequestDTO;
 import br.com.sgc.dto.AuthResponseDTO;
 import br.com.sgc.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j

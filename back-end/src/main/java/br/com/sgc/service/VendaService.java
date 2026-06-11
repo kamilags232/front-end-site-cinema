@@ -39,18 +39,18 @@ public class VendaService {
 
     @Transactional
     public Venda criar(VendaDTO dto) {
-        log.info("Iniciando criação de venda para cliente ID: {}", dto.getClienteId());
+        log.info("Iniciando criação de venda para cliente ID: {}", dto.getCdCliente());
 
-        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+        Cliente cliente = clienteRepository.findById(dto.getCdCliente())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+        Usuario usuario = usuarioRepository.findById(dto.getCdCliente())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         Venda venda = new Venda();
         venda.setCliente(cliente);
         venda.setUsuario(usuario);
-        venda.setTipoPagamento(dto.getTipoPagamento());
+        venda.setTipoPagamento(dto.getTpPagamento());
         venda.setDataHora(LocalDateTime.now());
 
         List<ItemVenda> itens = new ArrayList<>();

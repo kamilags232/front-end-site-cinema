@@ -74,6 +74,23 @@ public class ProdutoDTO {
 	public void setTipoProduto(String tipoProduto) {
 		this.tipoProduto = tipoProduto;
 	}
+
+	public ProdutoDTO(
+			@NotBlank(message = "Nome é obrigatório") @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres") String nome,
+			@Size(max = 255, message = "Descrição deve ter no máximo 255 caracteres") String descricao,
+			@NotNull(message = "Preço é obrigatório") @DecimalMin(value = "0.01", message = "Preço deve ser maior que zero") BigDecimal preco,
+			@NotNull(message = "Estoque é obrigatório") @Min(value = 0, message = "Estoque não pode ser negativo") Integer estoque,
+			@Min(value = 0, message = "Estoque mínimo não pode ser negativo") Integer estoqueMinimo,
+			@NotBlank(message = "Tipo de produto é obrigatório") String tipoProduto) {
+		super();
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.estoque = estoque;
+		this.estoqueMinimo = estoqueMinimo;
+		this.tipoProduto = tipoProduto;
+	}
     
     
+	
 }

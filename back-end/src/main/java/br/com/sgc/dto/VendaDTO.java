@@ -1,9 +1,10 @@
 package br.com.sgc.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VendaDTO {
 
@@ -21,7 +22,18 @@ public class VendaDTO {
 
     @JsonProperty("tp_pagamento")
     private String tpPagamento;
+    
+    @JsonProperty("itens") 
+    private List<ItemVendaDTO> itens;
 
+    public List<ItemVendaDTO> getItens() {
+        return itens;
+    }
+    
+    public void setItens(List<ItemVendaDTO> itens) {
+        this.itens = itens;
+    }
+    
 	public Long getNrRecibo() {
 		return nrRecibo;
 	}
@@ -61,6 +73,5 @@ public class VendaDTO {
 	public void setTpPagamento(String tpPagamento) {
 		this.tpPagamento = tpPagamento;
 	}
-    
     
 }

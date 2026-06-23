@@ -1,10 +1,11 @@
 package br.com.sgc.util;
 
+import org.springframework.stereotype.Component;
+
 import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.model.Produto;
 import br.com.sgc.dto.ClienteDTO;
 import br.com.sgc.dto.ProdutoDTO;
-import org.springframework.stereotype.Component;
 
 @Component
 public class MapperUtil {

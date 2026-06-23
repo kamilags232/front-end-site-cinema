@@ -36,6 +36,11 @@ public class Produto {
     @NotBlank
     @Column(name = "tipo_produto")
     private String tipoProduto;
+    
+    
+
+	public Produto() {
+	}
 
 	public Long getId() {
 		return id;
@@ -92,6 +97,21 @@ public class Produto {
 	public void setTipoProduto(String tipoProduto) {
 		this.tipoProduto = tipoProduto;
 	}
+
+	public Produto(Long id, @NotBlank(message = "Nome é obrigatório") String nome, String descricao,
+			@NotNull(message = "Preço é obrigatório") @DecimalMin(value = "0.0", inclusive = true, message = "Preço não pode ser negativo") BigDecimal preco,
+			@NotNull @Min(value = 0, message = "Estoque não pode ser negativo") Integer estoque, Integer estoqueMinimo,
+			@NotBlank String tipoProduto) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.estoque = estoque;
+		this.estoqueMinimo = estoqueMinimo;
+		this.tipoProduto = tipoProduto;
+	}
     
+	
     
 }

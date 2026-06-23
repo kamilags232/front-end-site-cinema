@@ -26,6 +26,11 @@ public class Cliente {
 
     @Transient
     private String endereco;
+    
+    
+
+	public Cliente() {
+	}
 
 	public Long getId() {
 		return id;
@@ -74,6 +79,17 @@ public class Cliente {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
+
+	public Cliente(Long id, String nome, String email, String cpf, String telefone, String endereco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpf = cpf;
+		this.telefone = telefone;
+		this.endereco = endereco;
+	}
     
+	
     
 }

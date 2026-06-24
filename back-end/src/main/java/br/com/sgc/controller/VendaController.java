@@ -31,8 +31,8 @@ public class VendaController {
 
     @PostMapping
     public ResponseEntity<VendaResponseDto> criarVenda(@Valid @RequestBody VendaDTO request) {
-        		Venda vendaSalva = vendaService.criar(request);;
-        		return ResponseEntity.status(HttpStatus.CREATED).body(new VendaResponseDto(vendaSalva));
+    	Venda vendaSalva = vendaService.criar(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body(new VendaResponseDto(vendaSalva));
     }
 
     @GetMapping

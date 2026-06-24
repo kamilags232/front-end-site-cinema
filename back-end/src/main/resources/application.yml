@@ -5,7 +5,7 @@
     password: ${DB_PASSWORD:}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:

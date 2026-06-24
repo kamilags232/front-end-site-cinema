@@ -7,11 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.repository.ClienteRepository;
 import br.com.sgc.exception.BusinessException;
 import br.com.sgc.exception.ResourceNotFoundException;
+
 
 @Service
 public class ClienteService {

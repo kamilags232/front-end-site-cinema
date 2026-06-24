@@ -17,10 +17,10 @@ public class VendaDTO {
     @JsonProperty("valor_total")
     private BigDecimal valorTotal;
 
-    @JsonProperty("cd_cliente")
+    @JsonProperty("clienteId")
     private Long cdCliente;
 
-    @JsonProperty("tp_pagamento")
+    @JsonProperty("tipoPagamento")
     private String tpPagamento;
     
     @JsonProperty("itens") 

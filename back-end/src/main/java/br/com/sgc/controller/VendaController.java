@@ -1,9 +1,5 @@
 package br.com.sgc.controller;
 
-import br.com.sgc.dto.CriarVendaRequestDto;
-import br.com.sgc.dto.VendaResponseDto;
-import br.com.sgc.service.VendaService;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,6 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.sgc.domain.model.Venda;
+import br.com.sgc.dto.VendaDTO;
+import br.com.sgc.dto.VendaResponseDto;
+import br.com.sgc.service.VendaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/vendas")
@@ -28,14 +30,9 @@ public class VendaController {
     }
 
     @PostMapping
-    public ResponseEntity<VendaResponseDto> criarVenda(@Valid @RequestBody CriarVendaRequestDto request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new VendaResponseDto(vendaService.criarVenda(
-                        request.getClienteId(),
-                        request.getUsuarioId(),
-                        request.getTipoPagamento(),
-                        request.getItens()
-                )));
+    public ResponseEntity<VendaResponseDto> criarVenda(@Valid @RequestBody VendaDTO request) {
+    	Venda vendaSalva = vendaService.criar(request);
+    	return ResponseEntity.status(HttpStatus.CREATED).body(new VendaResponseDto(vendaSalva));
     }
 
     @GetMapping

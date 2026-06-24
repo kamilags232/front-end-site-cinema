@@ -1,12 +1,9 @@
 package br.com.sgc.domain.model;
 
-
 import jakarta.persistence.*;
-
 
 @Entity
 @Table(name = "tb_usuario")
-
 public class Usuario {
 
     @Id
@@ -53,12 +50,5 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public Usuario() {
-		super();
-	}
-    
-	
-    
+	}  
 }

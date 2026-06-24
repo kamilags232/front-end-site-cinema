@@ -12,6 +12,9 @@ import br.com.sgc.domain.repository.VendaRepository;
 import br.com.sgc.dto.ItemVendaRequestDto;
 import br.com.sgc.exception.BusinessException;
 import br.com.sgc.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ import java.util.List;
 
 @Service
 public class VendaService {
+	
+	private static final Logger log = LoggerFactory.getLogger(VendaService.class);
 
     private final VendaRepository vendaRepository;
     private final ClienteRepository clienteRepository;
@@ -41,20 +46,19 @@ public class VendaService {
     }
 
     @Transactional
-    public Venda criarVenda(Long clienteId,
-                            Long usuarioId,
-                            String tipoPagamento,
-                            List<ItemVendaRequestDto> itens) {
+    public Venda criar(VendaDTO dto) {
+        log.info("Iniciando criação de venda para cliente ID: {}", dto.getCdCliente());
 
-        Cliente cliente = clienteRepository.findById(clienteId)
+        Cliente cliente = clienteRepository.findById(dto.getCdCliente())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+
+        Usuario usuario = usuarioRepository.findById(dto.getCdCliente())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         Venda venda = new Venda();
         venda.setCliente(cliente);
         venda.setUsuario(usuario);
-        venda.setTipoPagamento(tipoPagamento);
+        venda.setTipoPagamento(dto.getTpPagamento());
         venda.setDataHora(LocalDateTime.now());
         venda.setItens(new ArrayList<>());
 

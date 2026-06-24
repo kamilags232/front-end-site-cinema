@@ -16,8 +16,9 @@ import br.com.sgc.exception.BusinessException;
 
 @Service
 public class AuthService {
-	private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 	
+	private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+
     @Autowired
     private UsuarioRepository repository;
 
@@ -47,16 +48,22 @@ public class AuthService {
         return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNome());
     }
     
-    public void registrar(RegisterRequestDTO dto) {
+    public void register(RegisterRequestDTO dto) {
+        log.info("Tentando registrar novo usuário com email: {}", dto.getEmail());
+
         if (repository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new BusinessException("E-mail já cadastrado");
+            log.warn("Tentativa de registro com email já existente: {}", dto.getEmail());
+            throw new BusinessException("Este email já está cadastrado.");
         }
 
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(dto.getNome());
         novoUsuario.setEmail(dto.getEmail());
-        novoUsuario.setSenha(passwordEncoder.encode(dto.getSenha())); 
+        
+        String senhaCriptografada = passwordEncoder.encode(dto.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
 
         repository.save(novoUsuario);
+        log.info("Usuário registrado com sucesso! Email: {}", dto.getEmail());
     }
 }

@@ -7,13 +7,6 @@ public class AuthResponseDTO {
     private String email;
     private String nome;
     
-    
-	public AuthResponseDTO(String token, String email, String nome) {
-		super();
-		this.token = token;
-		this.email = email;
-		this.nome = nome;
-	}
 	public String getToken() {
 		return token;
 	}
@@ -32,6 +25,11 @@ public class AuthResponseDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-    
+	public AuthResponseDTO(String token, String email, String nome) {
+		super();
+		this.token = token;
+		this.email = email;
+		this.nome = nome;
+	}
     
 }

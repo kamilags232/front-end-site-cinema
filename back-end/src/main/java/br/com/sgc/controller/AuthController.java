@@ -1,12 +1,18 @@
 package br.com.sgc.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.sgc.dto.AuthRequestDTO;
 import br.com.sgc.dto.AuthResponseDTO;
+import br.com.sgc.dto.RegisterRequestDTO;
 import br.com.sgc.service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,7 +27,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody br.com.sgc.dto.RegisterRequestDTO dto) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO dto) {
         service.registrar(dto);
         return ResponseEntity.ok("Usuário registrado com sucesso!");
     }

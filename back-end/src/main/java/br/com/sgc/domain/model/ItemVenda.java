@@ -6,7 +6,8 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_item_venda")
+@Table(name = "rl_venda_produto")
+
 public class ItemVenda {
 
     @Id
@@ -28,16 +29,51 @@ public class ItemVenda {
     @JoinColumn(name = "cd_venda", nullable = false)
     private Venda venda;
 
-    public ItemVenda() {
-    }
+    @Column(name = "valor_parcial")
+    private BigDecimal valorParcial;
 
-    public Long getId() {
-        return id;
-    }
+	public ItemVendaId getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(ItemVendaId id) {
+		this.id = id;
+	}
+
+	public Venda getVenda() {
+		return venda;
+	}
+
+	public void setVenda(Venda venda) {
+		this.venda = venda;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public BigDecimal getValorParcial() {
+		return valorParcial;
+	}
+
+	public void setValorParcial(BigDecimal valorParcial) {
+		this.valorParcial = valorParcial;
+	}
+    
+    
+}
 
     public Integer getQuantidade() {
         return quantidade;

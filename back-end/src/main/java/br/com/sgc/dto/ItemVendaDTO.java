@@ -3,8 +3,6 @@ package br.com.sgc.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-
-
 public class ItemVendaDTO {
 
     @NotNull(message = "Produto ID é obrigatório")

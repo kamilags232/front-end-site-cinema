@@ -1,59 +1,77 @@
 package br.com.sgc.dto;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-
-
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VendaDTO {
 
-    @NotNull(message = "Cliente ID é obrigatório")
-    private Long clienteId;
+    @JsonProperty("nr_recibo")
+    private Long nrRecibo;
 
-    @NotNull(message = "Usuário ID é obrigatório")
-    private Long usuarioId;
+    @JsonProperty("dt_hr_venda")
+    private LocalDateTime dtHrVenda;
 
-    @NotNull(message = "Tipo de pagamento é obrigatório")
-    private String tipoPagamento;
+    @JsonProperty("valor_total")
+    private BigDecimal valorTotal;
 
-    @NotEmpty(message = "Venda deve conter pelo menos um item")
-    @Valid
+    @JsonProperty("cd_cliente")
+    private Long cdCliente;
+
+    @JsonProperty("tp_pagamento")
+    private String tpPagamento;
+    
+    @JsonProperty("itens") 
     private List<ItemVendaDTO> itens;
 
-	public Long getClienteId() {
-		return clienteId;
-	}
-
-	public void setClienteId(Long clienteId) {
-		this.clienteId = clienteId;
-	}
-
-	public Long getUsuarioId() {
-		return usuarioId;
-	}
-
-	public void setUsuarioId(Long usuarioId) {
-		this.usuarioId = usuarioId;
-	}
-
-	public String getTipoPagamento() {
-		return tipoPagamento;
-	}
-
-	public void setTipoPagamento(String tipoPagamento) {
-		this.tipoPagamento = tipoPagamento;
-	}
-
-	public List<ItemVendaDTO> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<ItemVendaDTO> itens) {
-		this.itens = itens;
-	}
+    public List<ItemVendaDTO> getItens() {
+        return itens;
+    }
     
+    public void setItens(List<ItemVendaDTO> itens) {
+        this.itens = itens;
+    }
+    
+	public Long getNrRecibo() {
+		return nrRecibo;
+	}
+
+	public void setNrRecibo(Long nrRecibo) {
+		this.nrRecibo = nrRecibo;
+	}
+
+	public LocalDateTime getDtHrVenda() {
+		return dtHrVenda;
+	}
+
+	public void setDtHrVenda(LocalDateTime dtHrVenda) {
+		this.dtHrVenda = dtHrVenda;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public Long getCdCliente() {
+		return cdCliente;
+	}
+
+	public void setCdCliente(Long cdCliente) {
+		this.cdCliente = cdCliente;
+	}
+
+	public String getTpPagamento() {
+		return tpPagamento;
+	}
+
+	public void setTpPagamento(String tpPagamento) {
+		this.tpPagamento = tpPagamento;
+	}
     
 }

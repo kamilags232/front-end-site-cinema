@@ -3,6 +3,8 @@ package br.com.sgc.service;
 import br.com.sgc.domain.model.Produto;
 import br.com.sgc.domain.repository.ProdutoRepository;
 import br.com.sgc.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-
 public class ProdutoService {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProdutoService.class);

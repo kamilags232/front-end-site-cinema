@@ -12,13 +12,18 @@ public class Cliente {
     @Column(name = "cd_cliente")
     private Long id;
 
-    @Column(name = "cliente", nullable = false, length = 50)
+    @NotBlank(message = "Nome é obrigatório")
+    @Size(max = 100)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "cpf", nullable = false, unique = true, length = 14)
+    @NotBlank(message = "CPF é obrigatório")
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Transient

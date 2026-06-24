@@ -51,4 +51,6 @@ public class ItemVendaId implements Serializable {
     public int hashCode() {
         return Objects.hash(nrRecibo, cdProduto);
     }
+    
+    
 }

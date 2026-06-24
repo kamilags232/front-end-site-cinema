@@ -3,6 +3,7 @@ package br.com.sgc.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_produto")
@@ -14,26 +15,26 @@ public class Produto {
     private Long id;
 
     @NotBlank(message = "Nome é obrigatório")
-    @Column(nullable = false)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(length = 255)
+    @Column(name = "descricao", length = 255)
     private String descricao;
 
     @NotNull(message = "Preço é obrigatório")
     @DecimalMin(value = "0.0", inclusive = true, message = "Preço não pode ser negativo")
-    @Column(nullable = false)
+    @Column(name = "preco", nullable = false, precision = 19, scale = 2)
     private BigDecimal preco;
 
-    @NotNull
+    @NotNull(message = "Estoque é obrigatório")
     @Min(value = 0, message = "Estoque não pode ser negativo")
-    @Column(nullable = false)
-    private Integer estoque;
+    @Column(name = "estoque", nullable = false)
+    private Integer estoque = 0;
 
     @Column(name = "estoque_minimo")
     private Integer estoqueMinimo = 5;
 
-    @NotBlank
+    @NotBlank(message = "Tipo de produto é obrigatório")
     @Column(name = "tipo_produto")
     private String tipoProduto;
     

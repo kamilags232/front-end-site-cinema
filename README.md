@@ -8,11 +8,13 @@ A nova versão do sistema tem como objetivo simular um ambiente real de comérci
 
 ### 🚧 Status do Projeto
 
-⚠️ O sistema está em processo de migração tecnológica e reestruturação arquitetural.
+⚠️ O sistema está em evolução arquitetural.
 
-* Front-end atual disponível (Vercel)
-* Back-end e banco de dados temporariamente desativados para atualização
-* Nova versão sendo desenvolvida com Java + Spring Boot
+* Front-end disponível na Vercel
+* Back-end REST desenvolvido com Java + Spring Boot
+* Integração com banco MySQL via Spring Data JPA
+* Autenticação JWT implementada
+* Testes automatizados de API, banco e domínio em desenvolvimento
 
 ---
 
@@ -37,7 +39,7 @@ O sistema passará a oferecer:
 * Venda associada aos dados do cliente
 * Lista de itens vendidos
 * Cálculo automático do valor total
-* Atualização automática de estoque
+* Validação de disponibilidade em estoque para venda
 
 ### 🔐 Autenticação e Segurança
 
@@ -53,30 +55,79 @@ O sistema passará a oferecer:
 
 ---
 
-## 🧱 Nova Arquitetura
+## 🧱 Arquitetura
 
-O sistema está sendo reestruturado utilizando Arquitetura em Camadas:
+O back-end segue uma arquitetura em camadas, promovendo separação de responsabilidades e organização da aplicação.
 
-* Camada de Apresentação (Web)
-* Camada Controller
-* Camada de Aplicação/Serviço
-* Camada de Domínio (Entidades e regras de negócio)
-* Camada de Persistência (Repository/DAO)
-* Banco de Dados
+Estrutura principal:
+
+- Presentation Layer (Controllers)
+- DTO Layer
+- Service Layer
+- Domain Layer
+- Persistence Layer (Repositories/JPA)
+- Security Layer (JWT + Spring Security)
+- Global Exception Handler
+- Banco de Dados MySQL
 
 ---
 
-## 🛠️ Tecnologias (Nova Versão)
+## 🔌 Integração Back-end + Banco de Dados
 
-* HTML5
-* CSS3
-* Java 21+
-* Spring Boot 3+
-* Spring Data JPA
-* MySQL
-* Maven
-* JWT (JSON Web Token)
-* GitHub
+O back-end do sistema foi desenvolvido em Java com Spring Boot e integrado ao MySQL utilizando Spring Data JPA.
+
+A API REST realiza operações de:
+
+* autenticação de usuários;
+* gerenciamento de clientes;
+* gerenciamento de produtos;
+* registro de vendas;
+* validação de regras de negócio.
+
+A autenticação é feita via JWT, protegendo os endpoints da aplicação.
+
+---
+## 🛠️ Tecnologias
+
+### Back-end
+- Java 21+
+- Spring Boot 3+
+- Spring Security
+- Spring Data JPA
+- JWT (JSON Web Token)
+
+### Banco de Dados
+- MySQL
+- H2 Database (testes automatizados)
+
+### Front-end
+- HTML5
+- CSS3
+
+### DevOps e Ferramentas
+- Maven
+- GitHub
+- GitHub Actions (CI/CD)
+
+---
+
+## 🧪 Testes Automatizados
+
+O projeto possui testes automatizados para:
+
+- autenticação da API;
+- rotas protegidas com JWT;
+- integração entre back-end e banco MySQL;
+- validação de regras de negócio;
+- fluxo de vendas e controle de estoque.
+
+Tecnologias utilizadas nos testes:
+
+- JUnit 5
+- Spring Boot Test
+- MockMvc
+- H2 Database
+- GitHub Actions
 
 ---
 
@@ -84,11 +135,17 @@ O sistema está sendo reestruturado utilizando Arquitetura em Camadas:
 
 O sistema foi modelado utilizando:
 
-* Diagrama de Domínio
-* Diagrama de Classes
-* Diagrama Lógico do Banco de Dados
+- Diagrama de Domínio
+- Diagrama de Classes
+- Diagrama Lógico do Banco de Dados
 
 A modelagem garante coerência entre regras de negócio, estrutura de dados e implementação.
+
+### 🎟️ Modelagem de Ingressos e Produtos
+
+No sistema, o ingresso é tratado como uma entidade própria devido à sua associação obrigatória com sessão e assento. Já a entidade produto representa itens genéricos comercializados, como produtos da bomboniere.
+
+Essa abordagem permite atender aos requisitos de um sistema de gestão comercial sem perder a coerência do domínio de cinema.
 
 ---
 
@@ -105,12 +162,13 @@ O objetivo do projeto é aplicar, na prática, conceitos de:
 
 ---
 
-## 📁 Estrutura do Projeto (Em atualização)
+## 📁 Estrutura do Projeto
 
-/frontend → Interface do usuário
-/backend → API REST (em desenvolvimento com Spring Boot)
-/docs → Documentação técnica e diagramas
-
+```text
+/frontend   → Interface do usuário
+/backend    → API REST em Spring Boot
+/database   → Scripts e modelagem do banco de dados
+```
 ---
 
 ## 🌐 Acesso ao sistema

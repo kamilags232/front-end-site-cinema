@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel Administrativo</title>
+
+<link rel="stylesheet" href="gerencia.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-film"></i>
+
+        <h2>Cinemonroll</h2>
+
+    </div>
+
+    <ul>
+
+        <li class="active">
+            <i class="fa-solid fa-chart-pie"></i>
+            Dashboard
+        </li>
+
+        <li>
+            <i class="fa-solid fa-users"></i>
+            Usuários
+        </li>
+
+        <li>
+            <i class="fa-solid fa-popcorn"></i>
+            Produtos
+        </li>
+
+        <li>
+            <i class="fa-solid fa-box"></i>
+            Estoque
+        </li>
+
+        <li>
+            <i class="fa-solid fa-ticket"></i>
+            Vendas
+        </li>
+
+        <li>
+            <i class="fa-solid fa-chart-line"></i>
+            Relatórios
+        </li>
+
+        <li>
+            <i class="fa-solid fa-building"></i>
+            Cinema
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+<header>
+
+<div>
+
+<h1>Painel Administrativo</h1>
+
+<p>Gerencie todo o sistema do cinema.</p>
+
+</div>
+
+<div class="perfil">
+
+<i class="fa-solid fa-user"></i>
+
+<span id="nomeUsuario"></span>
+
+</div>
+
+</header>
+
+<section class="cards">
+
+<div class="card">
+
+<i class="fa-solid fa-users"></i>
+
+<div>
+
+<h3>Funcionários</h3>
+
+<h2 id="funcionarios">0</h2>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-film"></i>
+
+<div>
+
+<h3>Produtos</h3>
+
+<h2 id="produtos">0</h2>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-money-bill"></i>
+
+<div>
+
+<h3>Vendas Hoje</h3>
+
+<h2 id="vendas">R$ 0</h2>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-box-open"></i>
+
+<div>
+
+<h3>Estoque Baixo</h3>
+
+<h2 id="estoque">0</h2>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="acoes">
+
+<button id="novoUsuario">
+
+<i class="fa-solid fa-user-plus"></i>
+
+Novo Funcionário
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-film"></i>
+
+Produtos
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-box"></i>
+
+Estoque
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+Consultar Vendas
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-chart-line"></i>
+
+Relatórios
+
+</button>
+
+<button>
+
+<i class="fa-solid fa-building"></i>
+
+Dados do Cinema
+
+</button>
+
+</section>
+
+<section class="usuarios">
+
+<h2>Funcionários cadastrados</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+
+<th>Email</th>
+
+<th>Cargo</th>
+
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="listaUsuarios">
+
+</tbody>
+
+</table>
+
+</section>
+
+</div>
+
+<script src="gerencia.js"></script>
+
+</body>
+
+</html>

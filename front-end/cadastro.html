@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Cinemonroll</title>
+
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+
+<body>
+
+<a href="login.html" class="btn-voltar">
+    ← Voltar ao Login
+</a>
+
+<div class="cadastro-container">
+
+    <img src="images/cinamonroll.png" class="logo">
+
+    <h2>Criar Conta</h2>
+
+    <form onsubmit="cadastrar(event)">
+
+        <input
+            type="text"
+            id="nome"
+            placeholder="Nome completo"
+            required>
+
+        <input
+            type="text"
+            id="usuario"
+            placeholder="Nome de usuário"
+            required>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            required>
+
+        <input
+            type="password"
+            id="senha"
+            placeholder="Senha"
+            required>
+
+        <input
+            type="password"
+            id="confirmarSenha"
+            placeholder="Confirmar senha"
+            required>
+
+        <button type="submit">
+            Cadastrar
+        </button>
+
+    </form>
+
+</div>
+
+<script src="cadastro.js"></script>
+
+</body>
+</html>

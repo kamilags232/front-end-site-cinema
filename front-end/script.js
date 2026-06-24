@@ -836,9 +836,10 @@ function mapTipoSessao(tipoSessao) {
       ticketList.appendChild(seatDiv);
     });
 
-    // Adicionar event listeners aos selects para que qualquer alteração recalcule o resumo
     document.querySelectorAll(".ticket-type-select").forEach(select => {
       select.addEventListener("change", updateSummary);
     });
   }
 }
+
+

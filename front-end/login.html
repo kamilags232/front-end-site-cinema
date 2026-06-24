@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <a href="index.html" class="btn-voltar">
+    ← Voltar à Página
+</a>
+
+<div class="login-container">
+
+    <h2>Login</h2>
+
+    <form onsubmit="login(event)">
+
+        <input
+            type="text"
+            id="usuario"
+            placeholder="Usuário"
+            required>
+
+        <input
+            type="password"
+            id="senha"
+            placeholder="Senha"
+            required>
+
+        <button type="submit">
+            Entrar
+        </button>
+
+        <a href="cadastro.html" class="btn-cadastro" onclick="window.location.href='cadastro.html'">
+         Criar conta
+        </a>
+
+    </form>
+
+</div>
+
+<script src="login.js"></script>
+
+</body>
+</html>

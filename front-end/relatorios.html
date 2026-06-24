@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Relatórios</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="relatorios.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a class="active" href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Aba gerencial</p>
+        <h1>Relatório de Vendas</h1>
+        <p class="subtitle">Visão estratégica para análise, comparação e tomada de decisão.</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="filters panel">
+      <div>
+        <label for="filtroPeriodo">Período</label>
+        <select id="filtroPeriodo">
+          <option value="hoje">Hoje</option>
+          <option value="semana">Semana</option>
+          <option value="mes">Mês</option>
+          <option value="intervalo">Intervalo</option>
+        </select>
+      </div>
+      <div>
+        <label for="dataInicio">Data inicial</label>
+        <input id="dataInicio" type="date" />
+      </div>
+      <div>
+        <label for="dataFim">Data final</label>
+        <input id="dataFim" type="date" />
+      </div>
+      <button class="action-btn" id="aplicarFiltro" type="button"><i class="fa-solid fa-filter"></i>Aplicar</button>
+    </section>
+
+    <section class="cards">
+      <article class="card">
+        <span>Faturamento total</span>
+        <strong id="cardFaturamento">R$ 0,00</strong>
+      </article>
+      <article class="card">
+        <span>Ingressos vendidos</span>
+        <strong id="cardIngressos">0</strong>
+      </article>
+      <article class="card">
+        <span>Bomboniere</span>
+        <strong id="cardBomboniere">R$ 0,00</strong>
+      </article>
+      <article class="card">
+        <span>Ticket médio</span>
+        <strong id="cardTicketMedio">R$ 0,00</strong>
+      </article>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Análises</p>
+            <h3>Vendas por filme</h3>
+          </div>
+        </div>
+        <div id="vendasPorFilme" class="list-box"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Análises</p>
+            <h3>Vendas por sessão/horário</h3>
+          </div>
+        </div>
+        <div id="vendasPorSessao" class="list-box"></div>
+      </section>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Produtos</p>
+            <h3>Produtos mais vendidos</h3>
+          </div>
+        </div>
+        <div id="produtosMaisVendidos" class="list-box"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Comparativo</p>
+            <h3>Ingresso vs bomboniere</h3>
+          </div>
+        </div>
+        <div class="bar-chart" id="comparativoBarra"></div>
+      </section>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Tempo</p>
+          <h3>Vendas por dia/período</h3>
+        </div>
+      </div>
+      <div class="timeline" id="vendasPorDia"></div>
+    </section>
+  </main>
+
+  <script src="relatorios.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Usuários</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="usuarios.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a class="active" href="usuarios.html"><i class="fa-solid fa-users"></i>Usuários</a>
+      <a href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Controle de acesso</p>
+        <h1>Usuários</h1>
+        <p class="subtitle">Gerencie administradores, funcionários, papéis e permissões internas do sistema.</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="cards">
+      <article class="card">
+        <span>Total</span>
+        <strong id="cardTotal">0</strong>
+      </article>
+      <article class="card">
+        <span>Ativos</span>
+        <strong id="cardAtivos">0</strong>
+      </article>
+      <article class="card">
+        <span>Inativos</span>
+        <strong id="cardInativos">0</strong>
+      </article>
+      <article class="card">
+        <span>Administradores</span>
+        <strong id="cardAdmins">0</strong>
+      </article>
+    </section>
+
+    <section class="panel form-panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Cadastro</p>
+          <h3 id="tituloForm">Criar conta interna</h3>
+        </div>
+        <button class="ghost-btn" id="novoUsuarioBtn" type="button"><i class="fa-solid fa-plus"></i>Novo</button>
+      </div>
+
+      <form id="formUsuario" class="user-form">
+        <input type="hidden" id="usuarioId" />
+        <div>
+          <label for="nome">Nome do usuário</label>
+          <input id="nome" type="text" placeholder="Nome completo" required />
+        </div>
+        <div>
+          <label for="usuario">Usuário de acesso</label>
+          <input id="usuario" type="text" placeholder="ex.: ana.gestora" required />
+        </div>
+        <div>
+          <label for="email">E-mail / login</label>
+          <input id="email" type="email" placeholder="usuario@cinemonroll.com" required />
+        </div>
+        <div>
+          <label for="papel">Cargo</label>
+          <select id="papel" required>
+            <option value="gestor">Gestor</option>
+            <option value="admin">Administrador</option>
+            <option value="funcionario">Funcionário</option>
+          </select>
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <select id="status" required>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </div>
+        <div>
+          <label for="senha">Senha inicial</label>
+          <input id="senha" type="password" placeholder="Mínimo de 6 caracteres" minlength="6" />
+        </div>
+        <div>
+          <label for="confirmarSenha">Confirmar senha</label>
+          <input id="confirmarSenha" type="password" placeholder="Repita a senha" minlength="6" />
+        </div>
+        <div class="full">
+          <label for="permissoes">Permissões (opcional)</label>
+          <textarea id="permissoes" rows="3" placeholder="Ex.: vender ingressos, cancelar venda, editar estoque"></textarea>
+        </div>
+        <div class="form-actions full">
+          <button class="action-btn" type="submit" id="salvarUsuario"><i class="fa-solid fa-floppy-disk"></i>Salvar usuário</button>
+          <button class="ghost-btn" type="button" id="cancelarEdicao"><i class="fa-solid fa-xmark"></i>Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Lista</p>
+          <h3>Usuários cadastrados</h3>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Usuário</th>
+              <th>E-mail / login</th>
+              <th>Cargo</th>
+              <th>Status</th>
+              <th>Permissões</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaUsuarios"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="usuarios.js"></script>
+</body>
+
+</html>

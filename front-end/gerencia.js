@@ -10,13 +10,105 @@ if (!usuario) {
 
 document.getElementById("nomeUsuario").textContent = usuario.nome;
 
+const abrirProdutos = document.getElementById("abrirProdutos");
+const menuProdutos = document.getElementById("menuProdutos");
+
+function irParaProdutos() {
+    window.location.href = "produtos.html";
+}
+
+if (abrirProdutos) {
+    abrirProdutos.addEventListener("click", irParaProdutos);
+}
+
+if (menuProdutos) {
+    menuProdutos.addEventListener("click", irParaProdutos);
+}
+
+const abrirUsuarios = document.getElementById("abrirUsuarios");
+const menuUsuarios = document.getElementById("menuUsuarios");
+
+function irParaUsuarios() {
+    window.location.href = "usuarios.html";
+}
+
+if (abrirUsuarios) {
+    abrirUsuarios.addEventListener("click", irParaUsuarios);
+}
+
+if (menuUsuarios) {
+    menuUsuarios.addEventListener("click", irParaUsuarios);
+}
+
+const abrirEstoque = document.getElementById("abrirEstoque");
+const menuEstoque = document.getElementById("menuEstoque");
+
+function irParaEstoque() {
+    window.location.href = "estoque.html";
+}
+
+if (abrirEstoque) {
+    abrirEstoque.addEventListener("click", irParaEstoque);
+}
+
+if (menuEstoque) {
+    menuEstoque.addEventListener("click", irParaEstoque);
+}
+
+const abrirVendas = document.getElementById("abrirVendas");
+const menuVendas = document.getElementById("menuVendas");
+
+function irParaVendas() {
+    window.location.href = "vendas.html";
+}
+
+if (abrirVendas) {
+    abrirVendas.addEventListener("click", irParaVendas);
+}
+
+if (menuVendas) {
+    menuVendas.addEventListener("click", irParaVendas);
+}
+
+const abrirRelatorios = document.getElementById("abrirRelatorios");
+const menuRelatorios = document.getElementById("menuRelatorios");
+
+function irParaRelatorios() {
+    window.location.href = "relatorios.html";
+}
+
+if (abrirRelatorios) {
+    abrirRelatorios.addEventListener("click", irParaRelatorios);
+}
+
+if (menuRelatorios) {
+    menuRelatorios.addEventListener("click", irParaRelatorios);
+}
+
+const abrirCinema = document.getElementById("abrirCinema");
+const menuCinema = document.getElementById("menuCinema");
+
+function irParaCinema() {
+    window.location.href = "cinema.html";
+}
+
+if (abrirCinema) {
+    abrirCinema.addEventListener("click", irParaCinema);
+}
+
+if (menuCinema) {
+    menuCinema.addEventListener("click", irParaCinema);
+}
+
 
 // =============================
 // DADOS TEMPORÁRIOS
 // (Depois virão do banco)
 // =============================
 
-const funcionarios = [
+const funcionariosSalvos = JSON.parse(localStorage.getItem("adminUsuariosSistema"));
+
+const funcionarios = Array.isArray(funcionariosSalvos) && funcionariosSalvos.length > 0 ? funcionariosSalvos : [
 
     {
         id:1,
@@ -75,7 +167,7 @@ function carregarTabela(){
 
             <td>${funcionario.email}</td>
 
-            <td>${funcionario.cargo}</td>
+            <td>${funcionario.cargo || funcionario.papel || "Funcionário"}</td>
 
             <td>
 
@@ -153,7 +245,7 @@ document
 .getElementById("novoUsuario")
 .addEventListener("click",()=>{
 
-    alert("Aqui abrirá o cadastro de funcionários.");
+    window.location.href = "usuarios.html";
 
 });
 

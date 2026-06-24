@@ -8,6 +8,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -116,17 +117,17 @@
     if (usuario) {
 
         area.innerHTML = `
-            <span id="nomeUsuario" style="
-                background:white;
-                padding:10px 15px;
-                border-radius:20px;
-                cursor:pointer;
-                font-weight:bold;
-            ">
-                 ${usuario.nome}
-            </span>
+            <div class="user-menu">
+                <span id="nomeUsuario" title="Abrir painel administrativo">
+                    <i class="fa-solid fa-user"></i>
+                    ${usuario.nome}
+                </span>
 
-            <button onclick="logout()">Sair</button>
+                <button class="btn-sair" onclick="logout()" title="Sair da conta">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sair
+                </button>
+            </div>
         `;
 
         document.getElementById("nomeUsuario")

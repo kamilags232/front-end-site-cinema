@@ -199,3 +199,10 @@ body::after{
     flex-direction: column;
     gap: 12px;
 }
+
+.acesso-interno{
+    margin:4px 0 0;
+    font-size:14px;
+    line-height:1.4;
+    color:rgba(255,255,255,0.9);
+}

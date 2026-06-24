@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Cinema</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="cinema.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuários</a>
+      <a href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a class="active" href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Dados institucionais</p>
+        <h1>Cinema</h1>
+        <p class="subtitle">Informações gerais do cinema e parâmetros operacionais do sistema.</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Institucional</span>
+        <h2>Nome do cinema</h2>
+        <p id="nomeCinema">Cinemonroll</p>
+      </div>
+      <div>
+        <span class="badge secondary">Endereço</span>
+        <h2>Localização</h2>
+        <p>Rua Xxxxxxx Xxxxxxxx, nº xxx – Xxxxx Xxxxx Xxxxx Xxxx/XX — CEP: xxxxx-xxx</p>
+      </div>
+    </section>
+
+    <section class="cards">
+      <article class="card">
+        <span>Número de salas</span>
+        <strong id="cardSalas">0</strong>
+      </article>
+      <article class="card">
+        <span>Taxa padrão</span>
+        <strong id="cardTaxa">0%</strong>
+      </article>
+      <article class="card">
+        <span>Preço base ingresso</span>
+        <strong id="cardBaseIngresso">R$ 0,00</strong>
+      </article>
+      <article class="card">
+        <span>Preço base bomboniere</span>
+        <strong id="cardBaseBomboniere">R$ 0,00</strong>
+      </article>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Operação</p>
+            <h3>Horários de funcionamento</h3>
+          </div>
+        </div>
+
+        <div class="info-block" id="horariosFuncionamento">
+          <div class="info-item"><strong>Segunda a quinta</strong><span>14:00 às 22:00</span></div>
+          <div class="info-item"><strong>Sexta</strong><span>14:00 às 23:30</span></div>
+          <div class="info-item"><strong>Sábado</strong><span>12:00 às 23:30</span></div>
+          <div class="info-item"><strong>Domingo</strong><span>12:00 às 22:00</span></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Controle</p>
+            <h3>Campos vindos do banco</h3>
+          </div>
+        </div>
+
+        <form class="cinema-form" id="formCinema">
+          <div>
+            <label for="salas">Número de salas</label>
+            <input id="salas" type="number" min="1" step="1" />
+          </div>
+          <div>
+            <label for="taxa">Taxa padrão (%)</label>
+            <input id="taxa" type="number" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="baseIngresso">Preço base ingresso</label>
+            <input id="baseIngresso" type="number" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="baseBomboniere">Preço base bomboniere</label>
+            <input id="baseBomboniere" type="number" min="0" step="0.01" />
+          </div>
+          <div class="full actions">
+            <button class="action-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar base</button>
+            <button class="ghost-btn" type="button" id="restaurarCinema"><i class="fa-solid fa-rotate-left"></i>Restaurar</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <script src="cinema.js"></script>
+</body>
+
+</html>

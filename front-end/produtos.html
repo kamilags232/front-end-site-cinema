@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Produtos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="produtos.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuários</a>
+      <a class="active" href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Painel Administrativo</p>
+        <h1>Produtos</h1>
+        <p class="subtitle">Mostra os produtos e preços disponíveis</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Bomboniere</h2>
+        <p>Produtos exibidos para venda com preço editável por item.</p>
+      </div>
+      <div>
+        <h2>Tipos de ingresso</h2>
+        <p>Valores por tipo de ingresso com preço editável.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Bomboniere</p>
+          <h3>Produtos e preços</h3>
+        </div>
+        <button class="action-btn" id="salvarBomboniere" type="button">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Salvar bomboniere
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Preço</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody id="listaBomboniere"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Ingressos</p>
+          <h3>Tipos e preços</h3>
+        </div>
+        <button class="action-btn secondary" id="salvarIngressos" type="button">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Salvar ingressos
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Preço</th>
+              <th>Observação</th>
+            </tr>
+          </thead>
+          <tbody id="listaIngressos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="footer-actions">
+      <button class="ghost-btn" id="restaurarPadrao" type="button">
+        <i class="fa-solid fa-rotate-left"></i>
+        Restaurar padrões
+      </button>
+      <a class="ghost-link" href="gerencia.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao dashboard
+      </a>
+      <p id="statusSalvamento" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="produtos.js"></script>
+</body>
+
+</html>

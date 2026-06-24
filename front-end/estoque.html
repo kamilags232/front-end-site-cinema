@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Estoque</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="estoque.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuários</a>
+      <a href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a class="active" href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Painel Administrativo</p>
+        <h1>Estoque</h1>
+        <p class="subtitle">Visualize e edite quantidades disponíveis antes da integração com o banco.</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Bomboniere</span>
+        <h2>Estoque de produtos</h2>
+        <p>Quantidade disponível dos itens da bomboniere para venda.</p>
+      </div>
+      <div>
+        <span class="badge secondary">Ingressos</span>
+        <h2>Estoque por sessão</h2>
+        <p>Quantidade de ingressos disponíveis por sessão e por tipo.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Bomboniere</p>
+          <h3>Produtos e quantidade disponível</h3>
+        </div>
+        <button class="action-btn" id="salvarEstoqueBomboniere" type="button">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Salvar estoque
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Estoque</th>
+              <th>Preço</th>
+            </tr>
+          </thead>
+          <tbody id="listaEstoqueBomboniere"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Ingressos</p>
+          <h3>Ingressos disponíveis por sessão</h3>
+        </div>
+        <button class="action-btn secondary" id="salvarEstoqueIngressos" type="button">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Salvar sessões
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sessão</th>
+              <th>Tipo</th>
+              <th>Disponível</th>
+              <th>Preço</th>
+            </tr>
+          </thead>
+          <tbody id="listaEstoqueIngressos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="footer-actions">
+      <button class="ghost-btn" id="restaurarPadrao" type="button">
+        <i class="fa-solid fa-rotate-left"></i>
+        Restaurar padrões
+      </button>
+      <a class="ghost-link" href="gerencia.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao dashboard
+      </a>
+      <p id="statusSalvamento" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="estoque.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Vendas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="vendas.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a class="logo" href="index.html" title="Voltar para a tela inicial do cinema">
+      <i class="fa-solid fa-film"></i>
+      <div>
+        <h2>Cinemonroll</h2>
+        <p>Painel administrativo</p>
+      </div>
+    </a>
+
+    <nav>
+      <a href="gerencia.html"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
+      <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="produtos.html"><i class="fa-solid fa-box-open"></i>Produtos</a>
+      <a href="estoque.html"><i class="fa-solid fa-box"></i>Estoque</a>
+      <a class="active" href="vendas.html"><i class="fa-solid fa-ticket"></i>Vendas</a>
+      <a href="relatorios.html"><i class="fa-solid fa-chart-line"></i>Relatórios</a>
+      <a href="cinema.html"><i class="fa-solid fa-building"></i>Cinema</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Aba operacional</p>
+        <h1>Vendas</h1>
+        <p class="subtitle">Acompanhe vendas individuais, itens comprados e ações do caixa.</p>
+      </div>
+
+      <div class="perfil">
+        <i class="fa-solid fa-user"></i>
+        <span id="nomeUsuario"></span>
+      </div>
+    </header>
+
+    <section class="cards">
+      <article class="card">
+        <span>Vendas hoje</span>
+        <strong id="cardVendasHoje">0</strong>
+      </article>
+      <article class="card">
+        <span>Ticket médio</span>
+        <strong id="cardTicketMedio">R$ 0,00</strong>
+      </article>
+      <article class="card">
+        <span>Finalizadas</span>
+        <strong id="cardFinalizadas">0</strong>
+      </article>
+      <article class="card">
+        <span>Em andamento</span>
+        <strong id="cardEmAndamento">0</strong>
+      </article>
+    </section>
+
+    <section class="layout">
+      <section class="panel panel-list">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Histórico</p>
+            <h3>Vendas recentes</h3>
+          </div>
+          <div class="panel-actions">
+            <button class="action-btn" id="finalizarVenda" type="button"><i class="fa-solid fa-check"></i>Finalizar venda</button>
+            <button class="action-btn danger" id="cancelarVenda" type="button"><i class="fa-solid fa-rotate-left"></i>Cancelar/estornar</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Cliente</th>
+                <th>Data e hora</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="listaVendas"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="panel panel-detail">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Detalhe</p>
+            <h3 id="tituloDetalhe">Selecione uma venda</h3>
+          </div>
+        </div>
+
+        <div id="detalheVenda" class="detail-empty">
+          Clique em uma venda para ver itens, forma de pagamento e ações.
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="vendas.js"></script>
+</body>
+
+</html>

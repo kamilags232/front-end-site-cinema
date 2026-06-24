@@ -1,11 +1,10 @@
 package br.com.sgc.dto;
 
-import br.com.sgc.domain.model.ItemVenda;
-import br.com.sgc.domain.model.Venda;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import br.com.sgc.domain.model.Venda;
 
 public class VendaResponseDto {
 

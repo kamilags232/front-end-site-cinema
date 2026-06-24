@@ -1,5 +1,16 @@
 package br.com.sgc.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.model.ItemVenda;
 import br.com.sgc.domain.model.Produto;
@@ -9,21 +20,10 @@ import br.com.sgc.domain.repository.ClienteRepository;
 import br.com.sgc.domain.repository.ProdutoRepository;
 import br.com.sgc.domain.repository.UsuarioRepository;
 import br.com.sgc.domain.repository.VendaRepository;
-import br.com.sgc.dto.ItemVendaRequestDto;
+import br.com.sgc.dto.ItemVendaDTO;
+import br.com.sgc.dto.VendaDTO;
 import br.com.sgc.exception.BusinessException;
 import br.com.sgc.exception.ResourceNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class VendaService {
@@ -63,8 +63,8 @@ public class VendaService {
         venda.setItens(new ArrayList<>());
 
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (itens != null) {
-            for (ItemVendaRequestDto itemRequest : itens) {
+        if (dto.getItens() != null) {
+            for (ItemVendaDTO itemRequest : dto.getItens()) {
                 Produto produto = produtoRepository.findById(itemRequest.getProdutoId())
                         .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 

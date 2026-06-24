@@ -1,7 +1,6 @@
 package br.com.sgc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class AuthController {
     
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO dto) {
-        service.registrar(dto);
+        service.register(dto);
         return ResponseEntity.ok("Usuário registrado com sucesso!");
     }
 }

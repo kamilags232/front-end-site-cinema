@@ -1,9 +1,17 @@
 package br.com.sgc.domain.model;
 
-import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rl_venda_produto")
@@ -29,14 +37,11 @@ public class ItemVenda {
     @JoinColumn(name = "cd_venda", nullable = false)
     private Venda venda;
 
-    @Column(name = "valor_parcial")
-    private BigDecimal valorParcial;
-
-	public ItemVendaId getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(ItemVendaId id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -71,41 +76,6 @@ public class ItemVenda {
 	public void setValorParcial(BigDecimal valorParcial) {
 		this.valorParcial = valorParcial;
 	}
-    
-    
-}
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public BigDecimal getValorParcial() {
-        return valorParcial;
-    }
-
-    public void setValorParcial(BigDecimal valorParcial) {
-        this.valorParcial = valorParcial;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public Venda getVenda() {
-        return venda;
-    }
-
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cinemonroll — Escolha seu Filme</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+
+  <div id="userArea"></div>
+
   <header>
     <img src="images/cinamonroll.png" alt="Cinemonroll Logo" class="logo">
     <p>Bem-vindo ao melhor cinema da cidade!</p>
   </header>
 
   <main>
+
     <section class="movie-selection">
+
       <h2>Escolha seu filme</h2>
 
       <div class="movie-list">
+
         <div class="movie-card">
           <img src="images/vingadores.jpg" alt="Vingadores">
           <h3>Vingadores: Ultimato</h3>
-          <button class="buy-btn" data-movie="Vingadores: Ultimato">Selecionar</button>
+          <button class="buy-btn" data-movie="Vingadores: Ultimato">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/coringa.jpg" alt="Coringa">
           <h3>Coringa</h3>
-          <button class="buy-btn" data-movie="Coringa">Selecionar</button>
+          <button class="buy-btn" data-movie="Coringa">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/homemaranha.jpg" alt="Homem-Aranha">
           <h3>Homem-Aranha: Sem Volta Para Casa</h3>
-          <button class="buy-btn" data-movie="Homem-Aranha no Aranhaverso">Selecionar</button>
+          <button class="buy-btn" data-movie="Homem-Aranha no Aranhaverso">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/frozen.jpg" alt="Frozen II">
           <h3>Frozen II</h3>
-          <button class="buy-btn" data-movie="Frozen II">Selecionar</button>
+          <button class="buy-btn" data-movie="Frozen II">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/avatar.jpeg" alt="Avatar">
           <h3>Avatar: O Caminho da Água</h3>
-          <button class="buy-btn" data-movie="Avatar: O Caminho da Água">Selecionar</button>
+          <button class="buy-btn" data-movie="Avatar: O Caminho da Água">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/batman.jpg" alt="Batman">
           <h3>The Batman</h3>
-          <button class="buy-btn" data-movie="The Batman">Selecionar</button>
+          <button class="buy-btn" data-movie="The Batman">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/barbie.jpg" alt="Barbie">
           <h3>Barbie</h3>
-          <button class="buy-btn" data-movie="Barbie">Selecionar</button>
+          <button class="buy-btn" data-movie="Barbie">
+            Selecionar
+          </button>
         </div>
 
         <div class="movie-card">
           <img src="images/oppenheimer.jpg" alt="Oppenheimer">
           <h3>Oppenheimer</h3>
-          <button class="buy-btn" data-movie="Oppenheimer">Selecionar</button>
+          <button class="buy-btn" data-movie="Oppenheimer">
+            Selecionar
+          </button>
         </div>
+
       </div>
+
     </section>
+
   </main>
 
   <footer>
@@ -76,6 +105,53 @@
 
   <script src="api.js"></script>
   <script src="script.js"></script>
-</body>
-</html>
 
+  <script>
+
+    function mostrarUsuario() {
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+    const area = document.getElementById("userArea");
+
+    if (usuario) {
+
+        area.innerHTML = `
+            <span id="nomeUsuario" style="
+                background:white;
+                padding:10px 15px;
+                border-radius:20px;
+                cursor:pointer;
+                font-weight:bold;
+            ">
+                 ${usuario.nome}
+            </span>
+
+            <button onclick="logout()">Sair</button>
+        `;
+
+        document.getElementById("nomeUsuario")
+            .addEventListener("click", () => {
+                window.location.href = "gerencia.html";
+            });
+
+    } else {
+
+        area.innerHTML = `
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="cadastro.html" class="btn-login">Cadastro</a>
+        `;
+    }
+}
+
+function logout(){
+    localStorage.removeItem("usuarioLogado");
+    location.reload();
+}
+
+mostrarUsuario();
+
+  </script>
+
+</body>
+
+</html>

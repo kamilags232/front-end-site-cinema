@@ -1,0 +1,109 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #ff4d6d,
+        #ff7a59
+    );
+}
+
+.cadastro-container{
+    width:450px;
+
+    padding:40px;
+
+    background:rgba(255,255,255,0.15);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    box-shadow:0 8px 30px rgba(0,0,0,0.2);
+
+    text-align:center;
+}
+
+.logo{
+    width:140px;
+    margin-bottom:20px;
+}
+
+h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+
+    padding:14px;
+
+    margin:8px 0;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.2);
+
+    color:white;
+}
+
+input::placeholder{
+    color:rgba(255,255,255,0.8);
+}
+
+button{
+    width:100%;
+
+    padding:14px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:white;
+
+    color:#ff4d6d;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.btn-voltar{
+    position:absolute;
+
+    top:20px;
+    left:20px;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,0.15);
+}

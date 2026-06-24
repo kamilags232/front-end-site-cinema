@@ -2,101 +2,110 @@ package br.com.sgc.domain.model;
 
 import jakarta.persistence.*;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_venda")
-
 public class Venda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "nr_recibo")
+    @Column(name = "cd_venda")
     private Long id;
 
-    @Column(name = "dt_hr_venda")
-    private LocalDateTime dataHora;
-
-    @Column(name = "valor_total")
-    private BigDecimal valorTotal;
-
-    @ManyToOne
-    @JoinColumn(name = "cd_cliente")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cd_cliente", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_usuario")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cd_usuario", nullable = false)
     private Usuario usuario;
 
-    @Column(name = "tp_pagamento")
+    @Column(name = "dt_hr_venda", nullable = false)
+    private LocalDateTime dataHora;
+
+    @Column(name = "tipo_pagamento", nullable = false)
     private String tipoPagamento;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
-    private List<ItemVenda> itens;
+    @Column(name = "valor_total", nullable = false, precision = 19, scale = 2)
+    private BigDecimal valorTotal;
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemVenda> itens = new ArrayList<>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Venda() {
+    }
 
-	public LocalDateTime getDataHora() {
-		return dataHora;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setDataHora(LocalDateTime dataHora) {
-		this.dataHora = dataHora;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public BigDecimal getValorTotal() {
-		return valorTotal;
-	}
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
 
-	public String getTipoPagamento() {
-		return tipoPagamento;
-	}
+    public String getTipoPagamento() {
+        return tipoPagamento;
+    }
 
-	public void setTipoPagamento(String tipoPagamento) {
-		this.tipoPagamento = tipoPagamento;
-	}
+    public void setTipoPagamento(String tipoPagamento) {
+        this.tipoPagamento = tipoPagamento;
+    }
 
-	public List<ItemVenda> getItens() {
-		return itens;
-	}
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
 
-	public void setItens(List<ItemVenda> itens) {
-		this.itens = itens;
-	}
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 
-	public Venda() {
-		super();
-	}
-    
-	
-    
+    public List<ItemVenda> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemVenda> itens) {
+        this.itens = itens;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Venda)) return false;
+        Venda venda = (Venda) o;
+        return Objects.equals(id, venda.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

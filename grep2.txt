@@ -1,0 +1,128 @@
+﻿
+2026-05-20T19:53:57.619-03:00  WARN 26660 --- [           main] 
+o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during 
+context initialization - cancelling refresh attempt: 
+org.springframework.beans.factory.BeanCreationException: Error creating bean 
+with name 'entityManagerFactory' defined in class path resource [org/springfram
+ework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Failed to 
+initialize dependency 'dataSourceScriptDatabaseInitializer' of 
+LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 
+'dataSourceScriptDatabaseInitializer' defined in class path resource [org/sprin
+gframework/boot/jdbc/autoconfigure/DataSourceInitializationAutoConfiguration.cl
+ass]: Failed to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+   PersistenceExceptionTranslationAutoConfiguration matched:
+ation.PersistenceExceptionTranslationPostProcessor' (OnClassCondition)
+   PersistenceExceptionTranslationAutoConfiguration#persistenceExceptionTransla
+(spring.persistence.exceptiontranslation.enabled=true) matched 
+rsistenceExceptionTranslationPostProcessor; SearchStrategy: all) did not find 
+org.springframework.beans.factory.BeanCreationException: Error creating bean 
+with name 'entityManagerFactory' defined in class path resource [org/springfram
+ework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Failed to 
+initialize dependency 'dataSourceScriptDatabaseInitializer' of 
+LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 
+'dataSourceScriptDatabaseInitializer' defined in class path resource [org/sprin
+gframework/boot/jdbc/autoconfigure/DataSourceInitializationAutoConfiguration.cl
+ass]: Failed to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error 
+creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class 
+path resource [org/springframework/boot/jdbc/autoconfigure/DataSourceInitializa
+tionAutoConfiguration.class]: Failed to execute database script from resource 
+[file [C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: 
+org.springframework.jdbc.datasource.init.UncategorizedScriptException: Failed 
+to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: java.lang.IllegalArgumentException: 'script' must not be null or 
+empty
+2026-05-20T19:53:57.674-03:00  WARN 26660 --- [           main] 
+o.s.test.context.TestContextManager      : Caught exception while allowing 
+TestExecutionListener 
+[org.springframework.test.context.web.ServletTestExecutionListener] to prepare 
+test instance [br.com.sgc.BackendApplicationTests@7e848aea]
+java.lang.IllegalStateException: Failed to load ApplicationContext for 
+[WebMergedContextConfiguration@1b4a3a1 testClass = 
+br.com.sgc.BackendApplicationTests, locations = [], classes = 
+[br.com.sgc.SgcApplication], contextInitializerClasses = [], activeProfiles = 
+[], propertySourceDescriptors = [], propertySourceProperties = ["org.springfram
+ework.boot.test.context.SpringBootTestContextBootstrapper=true"], 
+contextCustomizers = 
+[org.springframework.boot.test.context.PropertyMappingContextCustomizer@0, org.
+springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@31e3250
+d, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFacto
+ry$DuplicateJsonObjectContextCustomizer@346a361, org.springframework.boot.test.
+autoconfigure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditi
+onReportContextCustomizer@186978a6, 
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0, 
+org.springframework.boot.webmvc.test.autoconfigure.WebDriverContextCustomizer@3
+05f031, org.springframework.boot.web.server.context.SpringBootTestRandomPortCon
+textCustomizer@423e4cbb, 
+org.springframework.boot.test.context.SpringBootTestAnnotation@d58276ab], 
+resourceBasePath = "src/main/webapp", contextLoader = 
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error 
+creating bean with name 'entityManagerFactory' defined in class path resource [
+org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.clas
+s]: Failed to initialize dependency 'dataSourceScriptDatabaseInitializer' of 
+LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 
+'dataSourceScriptDatabaseInitializer' defined in class path resource [org/sprin
+gframework/boot/jdbc/autoconfigure/DataSourceInitializationAutoConfiguration.cl
+ass]: Failed to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error 
+creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class 
+path resource [org/springframework/boot/jdbc/autoconfigure/DataSourceInitializa
+tionAutoConfiguration.class]: Failed to execute database script from resource 
+[file [C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: 
+org.springframework.jdbc.datasource.init.UncategorizedScriptException: Failed 
+to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: java.lang.IllegalArgumentException: 'script' must not be null or 
+empty
+java.lang.IllegalStateException: Failed to load ApplicationContext for 
+[WebMergedContextConfiguration@1b4a3a1 testClass = 
+br.com.sgc.BackendApplicationTests, locations = [], classes = 
+[br.com.sgc.SgcApplication], contextInitializerClasses = [], activeProfiles = 
+[], propertySourceDescriptors = [], propertySourceProperties = ["org.springfram
+ework.boot.test.context.SpringBootTestContextBootstrapper=true"], 
+contextCustomizers = 
+[org.springframework.boot.test.context.PropertyMappingContextCustomizer@0, org.
+springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@31e3250
+d, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFacto
+ry$DuplicateJsonObjectContextCustomizer@346a361, org.springframework.boot.test.
+autoconfigure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditi
+onReportContextCustomizer@186978a6, 
+org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0, 
+org.springframework.boot.webmvc.test.autoconfigure.WebDriverContextCustomizer@3
+05f031, org.springframework.boot.web.server.context.SpringBootTestRandomPortCon
+textCustomizer@423e4cbb, 
+org.springframework.boot.test.context.SpringBootTestAnnotation@d58276ab], 
+resourceBasePath = "src/main/webapp", contextLoader = 
+org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error 
+creating bean with name 'entityManagerFactory' defined in class path resource [
+org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.clas
+s]: Failed to initialize dependency 'dataSourceScriptDatabaseInitializer' of 
+LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 
+'dataSourceScriptDatabaseInitializer' defined in class path resource [org/sprin
+gframework/boot/jdbc/autoconfigure/DataSourceInitializationAutoConfiguration.cl
+ass]: Failed to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error 
+creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class 
+path resource [org/springframework/boot/jdbc/autoconfigure/DataSourceInitializa
+tionAutoConfiguration.class]: Failed to execute database script from resource 
+[file [C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: 
+org.springframework.jdbc.datasource.init.UncategorizedScriptException: Failed 
+to execute database script from resource [file 
+[C:\Users\Anne\GitHub\web-cinemonroll\back-end\target\classes\data.sql]]
+Caused by: java.lang.IllegalArgumentException: 'script' must not be null or 
+empty
+[ERROR] [Help 1] 
+http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+

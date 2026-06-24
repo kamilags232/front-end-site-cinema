@@ -41,7 +41,7 @@ class VendaDomainIntegrationTest {
     @BeforeEach
     void limparBancoDeTeste() {
         jdbcTemplate.execute("set foreign_key_checks = 0");
-        jdbcTemplate.execute("truncate table rl_venda_produto");
+        jdbcTemplate.execute("truncate table tb_item_venda");
         jdbcTemplate.execute("truncate table tb_venda");
         jdbcTemplate.execute("truncate table tb_cliente");
         jdbcTemplate.execute("truncate table tb_produto");
@@ -83,7 +83,7 @@ class VendaDomainIntegrationTest {
                         .contentType("application/json")
                         .content(vendaJson))
           .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.valorTotal").value(51.00))
                 .andExpect(jsonPath("$.tipoPagamento").value("CARTAO"))

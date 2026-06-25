@@ -1,206 +1,400 @@
-# **🎬 Cinemonroll — Sistema de Gestão Comercial de Cinema (Em Evolução)**
+# Cinemonroll
 
-## 📌 Sobre o projeto
+Aplicação web desenvolvida para simular um sistema de cinema e evoluída para um Sistema de Gestão Comercial, com foco no controle de clientes, produtos, vendas, autenticação de usuários e integração com banco de dados.
 
-O Cinemonroll iniciou como um sistema de venda de ingressos de cinema, desenvolvido em arquitetura web com Node.js. Atualmente, o projeto está em processo de evolução para um Sistema de Gestão Comercial (SGC), atendendo aos requisitos da disciplina de Desenvolvimento de Sistemas.
+Aplicação Publicada: https://web-cinemonroll.vercel.app
 
-A nova versão do sistema tem como objetivo simular um ambiente real de comércio, com foco em controle de clientes, produtos, vendas e autenticação de usuários, utilizando uma arquitetura robusta baseada em Java e boas práticas de Engenharia de Software.
+Observação: no momento, a aplicação publicada corresponde ao front-end da versão anterior do projeto.
 
-### 🚧 Status do Projeto
+## Descrição do Problema Real
 
-⚠️ O sistema está em evolução arquitetural.
+A gestão de vendas, clientes e produtos é uma necessidade recorrente em estabelecimentos comerciais. Em ambientes como cinemas, além da venda de ingressos, também existe a necessidade de controlar produtos, estoque, clientes, formas de pagamento e registros de vendas.
 
-* Front-end disponível na Vercel
-* Back-end REST desenvolvido com Java + Spring Boot
-* Integração com banco MySQL via Spring Data JPA
-* Autenticação JWT implementada
-* Testes automatizados de API, banco e domínio em desenvolvimento
+Quando essas informações não são organizadas em um sistema centralizado, podem ocorrer problemas como perda de dados, dificuldade no acompanhamento das vendas, falhas no controle de estoque e pouca clareza sobre o histórico de atendimento ao cliente.
 
----
+O projeto Cinemonroll parte desse contexto para representar, de forma acadêmica e prática, uma solução de gestão comercial aplicada ao domínio de cinema.
 
-## ✨ Nova Proposta do Sistema
+## Proposta da Solução
 
-O sistema passará a oferecer:
+O Cinemonroll foi desenvolvido como uma aplicação web voltada inicialmente para a experiência de escolha de filmes e compra de ingressos. Com a evolução do projeto, a proposta passou a incluir uma estrutura mais completa de Sistema de Gestão Comercial.
 
-### 👤 Gestão de Clientes
+A nova versão do sistema utiliza um back-end em Java com Spring Boot para disponibilizar uma API REST responsável por autenticação, cadastro de clientes, cadastro de produtos e registro de vendas.
 
-* Cadastro, edição e consulta de clientes
-* Validação de CPF e email
-* Controle de clientes com histórico de compras
+Com isso, o projeto busca simular um ambiente real de gestão, permitindo organizar dados comerciais, validar regras de negócio e aplicar conceitos de arquitetura em camadas, segurança, persistência de dados e testes automatizados.
 
-### 🛒 Gestão de Produtos
+## Público-Alvo
 
-* Cadastro de produtos
-* Controle de estoque
-* Validação de disponibilidade para venda
+- Estudantes de desenvolvimento de sistemas
+- Pessoas interessadas em projetos acadêmicos com Java e Spring Boot
+- Pequenos negócios que desejam compreender a estrutura básica de um sistema comercial
+- Usuários que desejam simular um fluxo de cinema com escolha de filmes e compra de ingressos
 
-### 💰 Registro de Vendas
+## Funcionalidades Principais
 
-* Venda associada aos dados do cliente
-* Lista de itens vendidos
-* Cálculo automático do valor total
-* Validação de disponibilidade em estoque para venda
+- Seleção de filmes no front-end
+- Fluxo visual de compra de ingressos
+- Cadastro de usuários
+- Login com autenticação JWT
+- Controle de acesso com Spring Security
+- Cadastro de clientes
+- Listagem de clientes com paginação
+- Edição e remoção de clientes
+- Cadastro de produtos
+- Listagem de produtos com paginação
+- Edição e remoção de produtos
+- Controle de estoque
+- Registro de vendas
+- Associação de vendas a clientes e usuários
+- Cálculo de itens vendidos
+- Validação de regras de negócio
+- Tratamento global de exceções
+- Documentação da API com Swagger/OpenAPI
+- Testes automatizados de API, banco e domínio
+- Integração com MySQL
+- Integração contínua com GitHub Actions
 
-### 🔐 Autenticação e Segurança
+[COMPLETAR: captura de tela da aplicação]
 
-* Login com autenticação via token (JWT)
-* Controle de acesso por perfil (ADMIN, FUNCIONARIO)
-* Proteção de rotas
+## Tecnologias Utilizadas
 
-### 📊 Relatórios
+- Java 21 - linguagem principal do back-end
+- Spring Boot - criação da API REST
+- Spring Security - autenticação e proteção de rotas
+- JWT - autenticação baseada em token
+- Spring Data JPA - persistência de dados
+- MySQL - banco de dados principal
+- H2 Database - banco utilizado em testes automatizados
+- Maven - gerenciamento de dependências e build
+- JUnit 5 - testes automatizados
+- MockMvc - testes de endpoints da API
+- Swagger/OpenAPI - documentação da API
+- HTML5 - estrutura do front-end
+- CSS3 - estilização da interface
+- JavaScript - interatividade do front-end
+- GitHub Actions - integração contínua
+- Vercel - publicação do front-end
 
-* Vendas por período
-* Vendas por cliente
-* Visualização de dados para análise
+## Arquitetura do Projeto
 
----
-
-## 🧱 Arquitetura
-
-O back-end segue uma arquitetura em camadas, promovendo separação de responsabilidades e organização da aplicação.
+O back-end segue uma organização em camadas, separando responsabilidades e facilitando manutenção, testes e evolução do sistema.
 
 Estrutura principal:
 
-- Presentation Layer (Controllers)
-- DTO Layer
-- Service Layer
-- Domain Layer
-- Persistence Layer (Repositories/JPA)
-- Security Layer (JWT + Spring Security)
-- Global Exception Handler
-- Banco de Dados MySQL
+- Controller - recebe as requisições HTTP e expõe os endpoints da API
+- DTO - transporta dados entre a API e as camadas internas
+- Service - concentra regras de negócio
+- Domain Model - representa as entidades principais do sistema
+- Repository - realiza a comunicação com o banco de dados
+- Security - configura autenticação JWT e proteção de rotas
+- Exception Handler - centraliza o tratamento de erros
 
----
-
-## 🔌 Integração Back-end + Banco de Dados
-
-O back-end do sistema foi desenvolvido em Java com Spring Boot e integrado ao MySQL utilizando Spring Data JPA.
-
-A API REST realiza operações de:
-
-* autenticação de usuários;
-* gerenciamento de clientes;
-* gerenciamento de produtos;
-* registro de vendas;
-* validação de regras de negócio.
-
-A autenticação é feita via JWT, protegendo os endpoints da aplicação.
-
----
-## 🛠️ Tecnologias
-
-### Back-end
-- Java 21+
-- Spring Boot 3+
-- Spring Security
-- Spring Data JPA
-- JWT (JSON Web Token)
-
-### Banco de Dados
-- MySQL
-- H2 Database (testes automatizados)
-
-### Front-end
-- HTML5
-- CSS3
-
-### DevOps e Ferramentas
-- Maven
-- GitHub
-- GitHub Actions (CI/CD)
-
----
-
-## 🧪 Testes Automatizados
-
-O projeto possui testes automatizados para:
-
-- autenticação da API;
-- rotas protegidas com JWT;
-- integração entre back-end e banco MySQL;
-- validação de regras de negócio;
-- fluxo de vendas e controle de estoque.
-
-Tecnologias utilizadas nos testes:
-
-- JUnit 5
-- Spring Boot Test
-- MockMvc
-- H2 Database
-- GitHub Actions
-
----
-
-## 📊 Modelagem do Sistema
-
-O sistema foi modelado utilizando:
-
-- Diagrama de Domínio
-- Diagrama de Classes
-- Diagrama Lógico do Banco de Dados
-
-A modelagem garante coerência entre regras de negócio, estrutura de dados e implementação.
-
-### 🎟️ Modelagem de Ingressos e Produtos
-
-No sistema, o ingresso é tratado como uma entidade própria devido à sua associação obrigatória com sessão e assento. Já a entidade produto representa itens genéricos comercializados, como produtos da bomboniere.
-
-Essa abordagem permite atender aos requisitos de um sistema de gestão comercial sem perder a coerência do domínio de cinema.
-
----
-
-## 🎯 Objetivo
-
-O objetivo do projeto é aplicar, na prática, conceitos de:
-
-* Arquitetura em Camadas
-* Programação Orientada a Objetos
-* Desenvolvimento de APIs REST
-* Integração com Banco de Dados
-* Segurança com autenticação baseada em token
-* Modelagem de sistemas
-
----
-
-## 📁 Estrutura do Projeto
+Estrutura de pastas:
 
 ```text
-/frontend   → Interface do usuário
-/backend    → API REST em Spring Boot
-/database   → Scripts e modelagem do banco de dados
+front-end   -> interface web da aplicação
+back-end    -> API REST em Java com Spring Boot
+database    -> scripts e arquivos relacionados ao banco de dados
 ```
----
 
-## 🌐 Acesso ao sistema
+## Endpoints Principais
 
-👉 https://web-cinemonroll.vercel.app
+Autenticação:
 
-⚠️ Observação: Apenas o front-end da versão anterior está disponível no momento.
+```text
+POST /auth/login
+POST /auth/register
+```
 
----
+Clientes:
 
-## 📚 Aprendizados
+```text
+POST /clientes
+GET /clientes
+GET /clientes/{id}
+PUT /clientes/{id}
+DELETE /clientes/{id}
+```
 
-Durante o desenvolvimento e evolução do projeto, estão sendo trabalhados:
+Produtos:
 
-* Migração de tecnologias (Node.js → Java)
-* Aplicação de arquitetura em camadas
-* Implementação de autenticação com JWT
-* Modelagem de sistemas com UML
-* Boas práticas de organização e versionamento
+```text
+POST /produtos
+GET /produtos
+GET /produtos/{id}
+PUT /produtos/{id}
+DELETE /produtos/{id}
+```
 
----
+Vendas:
 
-## 📌 Status
+```text
+POST /vendas
+GET /vendas
+GET /vendas/{id}
+```
 
-🚧 Em desenvolvimento (nova versão em Java)
+Documentação da API:
 
-✔ Modelagem concluída (domínio, classes e banco)
+```text
+http://localhost:8080/swagger-ui.html
+```
 
-🔄 Migração de arquitetura em andamento
+## Instruções de Instalação
 
----
+### 1 - Instalar o Java 21
 
-## 📄 Licença
+O back-end do projeto foi desenvolvido com Java 21, então essa versão é necessária.
 
-Projeto acadêmico — sem fins comerciais.
+Para verificar se você já tem Java instalado, abra o terminal e digite:
+
+```bash
+java -version
+```
+
+O resultado esperado deve mostrar a versão 21.
+
+Caso não apareça, instale o Java 21 no seu sistema e abra o terminal novamente.
+
+### 2 - Instalar o Git
+
+O Git é necessário para baixar o projeto.
+
+Para verificar se já tem Git instalado, digite:
+
+```bash
+git --version
+```
+
+Caso não tenha, instale o Git e mantenha as opções padrão do instalador.
+
+### 3 - Instalar o MySQL
+
+O projeto utiliza MySQL como banco de dados principal.
+
+Crie um banco com o nome:
+
+```sql
+bd_cinema
+```
+
+Também é possível utilizar o script disponível na pasta:
+
+```text
+database/bd_cinema.sql
+```
+
+[COMPLETAR: usuário e senha padrão do banco, caso exista]
+
+### 4 - Clonar o projeto
+
+No terminal, entre na pasta onde deseja salvar o projeto e execute:
+
+```bash
+git clone https://github.com/kamilags232/web-cinemonroll.git
+```
+
+Depois, entre na pasta criada:
+
+```bash
+cd web-cinemonroll
+```
+
+### 5 - Configurar variáveis do back-end
+
+O arquivo de configuração do projeto aceita variáveis de ambiente para conexão com o banco e autenticação JWT.
+
+Valores utilizados pela aplicação:
+
+```text
+DB_URL=jdbc:mysql://localhost:3306/bd_cinema
+DB_USERNAME=root
+DB_PASSWORD=
+JWT_SECRET=sua_secret_key_muito_segura_com_mais_de_32_caracteres_aqui
+JWT_EXPIRATION=3600000
+```
+
+Caso você utilize outro usuário, senha ou porta do MySQL, ajuste esses valores antes de executar o sistema.
+
+### 6 - Baixar dependências e compilar o back-end
+
+Entre na pasta do back-end:
+
+```bash
+cd back-end
+```
+
+No Windows, execute:
+
+```bash
+mvnw.cmd clean install
+```
+
+No macOS/Linux, execute:
+
+```bash
+./mvnw clean install
+```
+
+Resultado esperado:
+
+```text
+BUILD SUCCESS
+```
+
+Possíveis problemas:
+
+```text
+"java não reconhecido" -> Java não instalado corretamente
+"Access denied" ou erro de permissão no Linux/macOS -> execute chmod +x mvnw
+erro de conexão com banco -> verifique se o MySQL está aberto e se o banco bd_cinema existe
+```
+
+## Instruções de Execução
+
+### Executar o back-end
+
+Dentro da pasta `back-end`, execute:
+
+Windows:
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+macOS/Linux:
+
+```bash
+./mvnw spring-boot:run
+```
+
+O que vai acontecer?
+
+- O Spring Boot será iniciado
+- A API ficará disponível localmente
+- O sistema tentará se conectar ao banco MySQL configurado
+- A documentação Swagger poderá ser acessada no navegador
+
+Endereço padrão:
+
+```text
+http://localhost:8080
+```
+
+Swagger:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+### Executar o front-end
+
+O front-end está na pasta:
+
+```text
+front-end
+```
+
+Para abrir a versão estática, abra o arquivo `index.html` no navegador.
+
+Também é possível utilizar a versão publicada:
+
+```text
+https://web-cinemonroll.vercel.app
+```
+
+[COMPLETAR: instruções específicas caso o front-end seja integrado ao back-end local]
+
+## Instruções para Rodar os Testes
+
+Execute no terminal, dentro da pasta `back-end`:
+
+Windows:
+
+```bash
+mvnw.cmd test
+```
+
+macOS/Linux:
+
+```bash
+./mvnw test
+```
+
+O que vai acontecer?
+
+- O Maven vai compilar o projeto
+- Os testes automatizados serão executados
+- Serão verificados fluxos de autenticação, integração com banco e regras de vendas
+
+Resultado esperado:
+
+```text
+BUILD SUCCESS
+```
+
+O que está sendo testado?
+
+- Carregamento do contexto da aplicação
+- Autenticação da API
+- Rotas protegidas com JWT
+- Integração com banco de dados
+- Fluxo de vendas
+- Regras de negócio do domínio
+- Controle de estoque
+
+[COMPLETAR: quantidade atual de testes]
+
+## Integração Contínua
+
+O projeto possui workflow no GitHub Actions para executar os testes do back-end automaticamente.
+
+O workflow configura:
+
+- Java 21
+- MySQL 8.0
+- Banco de teste
+- Variáveis de ambiente para o back-end
+- Execução dos testes Maven
+
+Arquivo do workflow:
+
+```text
+.github/workflows/backend-tests.yml
+```
+
+## Modelagem do Sistema
+
+O projeto possui arquivos relacionados à modelagem e ao banco de dados na pasta `database`.
+
+A modelagem contempla entidades importantes para o funcionamento do sistema, como usuários, clientes, produtos, vendas e itens de venda.
+
+[COMPLETAR: inserir diagramas de domínio, classes ou banco, se desejar]
+
+## Versão Atual
+
+0.0.1-SNAPSHOT - versão em evolução com back-end em Spring Boot, autenticação JWT, integração com MySQL, testes automatizados e front-end publicado.
+
+[COMPLETAR: versão final do projeto, se houver]
+
+## Status do Projeto
+
+Em desenvolvimento.
+
+- Modelagem concluída ou em evolução conforme requisitos acadêmicos
+- Back-end REST implementado com Java e Spring Boot
+- Autenticação JWT implementada
+- Integração com MySQL configurada
+- Testes automatizados em desenvolvimento
+- Front-end publicado na Vercel
+
+## Autor
+
+[COMPLETAR: nome do autor ou integrantes do grupo]
+
+## Link do Repositório Público
+
+https://github.com/kamilags232/web-cinemonroll
+
+## Licença
+
+Projeto acadêmico sem fins comerciais.

@@ -293,6 +293,16 @@ tbody td {
   background: rgba(215, 38, 56, 0.18);
 }
 
+.unsupported-action,
+.unsupported-action i,
+.unsupported-action:disabled {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #7f8794 !important;
+  cursor: not-allowed !important;
+  opacity: 0.72;
+  box-shadow: none;
+}
+
 @media (max-width: 1080px) {
   body {
     flex-direction: column;

@@ -1,63 +1,69 @@
-const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+const usuarioLogado = exigirLoginAdmin();
 
-if (!usuarioLogado) {
-  window.location.href = "login.html";
+if (usuarioLogado) {
+  document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 }
 
-document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
-
-const chaveVendas = "adminVendasOperacionais";
-
-const vendasPadrao = [
-  {
-    id: "V-0001",
-    cliente: "Mariana Costa",
-    filme: "Vingadores: Ultimato",
-    sessao: "Sala 1 - 14:00",
-    data: "2026-06-24",
-    itens: [
-      { categoria: "Ingresso", nome: "Inteira", quantidade: 2, valor: 60 },
-      { categoria: "Bomboniere", nome: "Pipoca Média + Refrigerante 500ml", quantidade: 1, valor: 30 }
-    ]
-  },
-  {
-    id: "V-0002",
-    cliente: "Carlos Lima",
-    filme: "The Batman",
-    sessao: "Sala 2 - 16:30",
-    data: "2026-06-24",
-    itens: [
-      { categoria: "Ingresso", nome: "Meia", quantidade: 3, valor: 45 },
-      { categoria: "Bomboniere", nome: "Pipoca Pequena", quantidade: 2, valor: 30 }
-    ]
-  },
-  {
-    id: "V-0003",
-    cliente: "Aline Souza",
-    filme: "Barbie",
-    sessao: "Sala 3 - 20:00",
-    data: "2026-06-23",
-    itens: [
-      { categoria: "Ingresso", nome: "VIP", quantidade: 2, valor: 80 },
-      { categoria: "Bomboniere", nome: "Barra de Chocolate 90g", quantidade: 2, valor: 14 }
-    ]
-  }
-];
-
-function carregarVendas() {
-  const dadosSalvos = JSON.parse(localStorage.getItem(chaveVendas));
-  if (Array.isArray(dadosSalvos) && dadosSalvos.length > 0) {
-    return dadosSalvos;
-  }
-  return vendasPadrao;
-}
+let vendas = [];
+let produtosPorId = {};
 
 function formatarMoeda(valor) {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor);
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(valor || 0));
+}
+
+function produtoNome(id) {
+  return produtosPorId[id]?.nome || `Produto #${id}`;
+}
+
+function produtoCategoria(id) {
+  const produto = produtosPorId[id];
+  const tipo = (produto?.tipoProduto || "").toLowerCase();
+  const nome = (produto?.nome || "").toLowerCase();
+
+  if (tipo.includes("ingresso") || ["inteira", "meia", "promocional", "vip"].includes(nome)) {
+    return "Ingresso";
+  }
+
+  return "Bomboniere";
+}
+
+function normalizarVenda(venda) {
+  const itens = Array.isArray(venda.itens) ? venda.itens.map(item => {
+    const produtoId = item.produto?.id;
+    return {
+      categoria: produtoCategoria(produtoId),
+      nome: produtoNome(produtoId),
+      quantidade: Number(item.quantidade || 0),
+      valor: Number(item.valorParcial || 0)
+    };
+  }) : [];
+
+  return {
+    id: venda.id,
+    cliente: venda.cliente?.nome || venda.clienteNome || "Cliente nao informado",
+    filme: venda.filme || "Filme nao informado",
+    sessao: venda.sessao || "Sessao nao informada",
+    data: (venda.dataHora || venda.dt_hr_venda || new Date().toISOString()).slice(0, 10),
+    valorTotal: Number(venda.valorTotal || 0),
+    itens
+  };
+}
+
+async function carregarVendas() {
+  try {
+    const produtos = await listarPagina("/produtos");
+    produtosPorId = Object.fromEntries(produtos.map(produto => [produto.id, produto]));
+
+    const vendasApi = await listarPagina("/vendas");
+    vendas = vendasApi.map(normalizarVenda);
+  } catch (erro) {
+    console.error("Erro ao carregar relatorios:", erro);
+    vendas = [];
+  }
 }
 
 function totalVenda(venda) {
-  return venda.itens.reduce((total, item) => total + Number(item.valor || 0), 0);
+  return venda.valorTotal || venda.itens.reduce((total, item) => total + Number(item.valor || 0), 0);
 }
 
 function totalIngressos(venda) {
@@ -67,14 +73,6 @@ function totalIngressos(venda) {
 function totalBomboniere(venda) {
   return venda.itens.filter(item => item.categoria === "Bomboniere").reduce((total, item) => total + Number(item.valor || 0), 0);
 }
-
-function periodoAtual() {
-  const hoje = new Date();
-  const iso = hoje.toISOString().slice(0, 10);
-  return { hoje: iso, semana: iso, mes: iso };
-}
-
-let vendas = carregarVendas();
 
 function vendasFiltradas() {
   const filtro = document.getElementById("filtroPeriodo").value;
@@ -112,7 +110,7 @@ function renderizarListaAgrupada(containerId, dados, formatador) {
     return acc;
   }, {});
 
-  const linhas = Object.entries(agrupado)
+  container.innerHTML = Object.entries(agrupado)
     .sort((a, b) => b[1] - a[1])
     .map(([label, valor]) => `
       <div class="list-item">
@@ -120,9 +118,7 @@ function renderizarListaAgrupada(containerId, dados, formatador) {
         <span>${formatarMoeda(valor)}</span>
       </div>
     `)
-    .join("");
-
-  container.innerHTML = linhas || `<div class="list-item"><span>Sem dados para o período selecionado.</span></div>`;
+    .join("") || `<div class="list-item"><span>Sem dados para o periodo selecionado.</span></div>`;
 }
 
 function renderizarProdutosMaisVendidos(lista) {
@@ -177,7 +173,7 @@ function renderizarTimeline(lista) {
         <span>${formatarMoeda(valor)}</span>
       </div>
     `)
-    .join("") || `<div class="timeline-item"><span>Sem dados no período.</span></div>`;
+    .join("") || `<div class="timeline-item"><span>Sem dados no periodo.</span></div>`;
 }
 
 function aplicarRelatorio() {
@@ -191,12 +187,12 @@ function aplicarRelatorio() {
   renderizarTimeline(lista);
 }
 
+async function inicializar() {
+  await carregarVendas();
+  aplicarRelatorio();
+}
+
 document.getElementById("aplicarFiltro").addEventListener("click", aplicarRelatorio);
 document.getElementById("filtroPeriodo").addEventListener("change", aplicarRelatorio);
 
-renderizarCards(vendas);
-renderizarListaAgrupada("vendasPorFilme", vendas, venda => venda.filme);
-renderizarListaAgrupada("vendasPorSessao", vendas, venda => venda.sessao);
-renderizarProdutosMaisVendidos(vendas);
-renderizarComparativo(vendas);
-renderizarTimeline(vendas);
+inicializar();

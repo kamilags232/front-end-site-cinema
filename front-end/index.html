@@ -146,6 +146,7 @@
 
 function logout(){
     localStorage.removeItem("usuarioLogado");
+    localStorage.removeItem("token");
     location.reload();
 }
 

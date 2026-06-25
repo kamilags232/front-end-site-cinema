@@ -6,6 +6,7 @@ public class AuthResponseDTO {
     private String token;
     private String email;
     private String nome;
+    private String tipo;
     
 	public String getToken() {
 		return token;
@@ -25,11 +26,18 @@ public class AuthResponseDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public AuthResponseDTO(String token, String email, String nome) {
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public AuthResponseDTO(String token, String email, String nome, String tipo) {
 		super();
 		this.token = token;
 		this.email = email;
 		this.nome = nome;
+		this.tipo = tipo;
 	}
     
 }

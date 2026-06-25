@@ -1,21 +1,19 @@
-const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+const usuarioLogado = exigirLoginAdmin();
 
-if (!usuarioLogado) {
-  window.location.href = "login.html";
+if (usuarioLogado) {
+  document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 }
-
-document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 
 const chaveCinema = "adminCinemaConfiguracao";
 
 const cinemaPadrao = {
-  salas: 6,
+  salas: 0,
   taxaPadrao: 50,
   baseIngresso: 30,
   baseBomboniere: 10
 };
 
-function carregarCinema() {
+function carregarCinemaLocal() {
   const dadosSalvos = JSON.parse(localStorage.getItem(chaveCinema));
   if (dadosSalvos && typeof dadosSalvos === "object") {
     return { ...cinemaPadrao, ...dadosSalvos };
@@ -28,10 +26,27 @@ function salvarCinema(configuracao) {
 }
 
 function formatarMoeda(valor) {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor);
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(valor || 0));
 }
 
-let cinema = carregarCinema();
+let cinema = carregarCinemaLocal();
+
+async function carregarResumoCinema() {
+  try {
+    const [salas, sessoes] = await Promise.all([
+      adminRequest("/sala"),
+      adminRequest("/sessao")
+    ]);
+
+    cinema = {
+      ...cinema,
+      salas: Array.isArray(salas) ? salas.length : cinema.salas,
+      sessoes: Array.isArray(sessoes) ? sessoes.length : 0
+    };
+  } catch (erro) {
+    console.error("Erro ao carregar dados de cinema:", erro);
+  }
+}
 
 function preencherTela() {
   document.getElementById("cardSalas").textContent = cinema.salas;
@@ -47,22 +62,19 @@ function preencherTela() {
 
 document.getElementById("formCinema").addEventListener("submit", event => {
   event.preventDefault();
-
-  cinema = {
-    salas: Number(document.getElementById("salas").value || 0),
-    taxaPadrao: Number(document.getElementById("taxa").value || 0),
-    baseIngresso: Number(document.getElementById("baseIngresso").value || 0),
-    baseBomboniere: Number(document.getElementById("baseBomboniere").value || 0)
-  };
-
-  salvarCinema(cinema);
-  preencherTela();
+  alert("A API de cinema ainda nao tem rota para salvar configuracoes.");
 });
 
-document.getElementById("restaurarCinema").addEventListener("click", () => {
+document.getElementById("restaurarCinema").addEventListener("click", async () => {
   localStorage.removeItem(chaveCinema);
-  cinema = carregarCinema();
+  cinema = carregarCinemaLocal();
+  await carregarResumoCinema();
   preencherTela();
 });
 
-preencherTela();
+async function inicializar() {
+  await carregarResumoCinema();
+  preencherTela();
+}
+
+inicializar();

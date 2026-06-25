@@ -241,6 +241,12 @@ body {
   padding: 12px 14px;
 }
 
+.cinema-form input[readonly] {
+  color: #7f8794;
+  background: rgba(255, 255, 255, 0.035);
+  cursor: not-allowed;
+}
+
 .full {
   grid-column: 1 / -1;
 }
@@ -266,9 +272,23 @@ body {
   border: 1px solid var(--line);
 }
 
+.unsupported-action,
+.unsupported-action i,
+.unsupported-action:disabled {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #7f8794 !important;
+  cursor: not-allowed !important;
+  opacity: 0.72;
+  box-shadow: none;
+}
+
 .action-btn:hover,
 .ghost-btn:hover {
   transform: translateY(-2px);
+}
+
+.unsupported-action:hover {
+  transform: none;
 }
 
 @media (max-width: 1080px) {

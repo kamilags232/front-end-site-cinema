@@ -96,7 +96,10 @@ function mapTipoSessao(tipoSessao) {
           return;
         }
 
-        const resposta = await fetch(API_Sessao, { method: "GET" });
+        const resposta = await fetch(API_Sessao, {
+          method: "GET",
+          headers: getHeaders()
+        });
         if (!resposta.ok) {
           alert("❌ Erro ao buscar sessões. Verifique se o back-end está rodando.");
           return;
@@ -158,7 +161,9 @@ function mapTipoSessao(tipoSessao) {
         const url = `${API_Assento}/sessao/${sessaoIdGlobal}`;
         console.log("🔍 Buscando assentos ocupados:", url);
         
-        const resposta = await fetch(url);
+        const resposta = await fetch(url, {
+          headers: getHeaders()
+        });
         if (resposta.ok) {
           const data = await resposta.json();
           let assentosOcupados = [];
@@ -669,7 +674,7 @@ function mapTipoSessao(tipoSessao) {
         document.body.appendChild(successModal);
 
         const finish = () => {
-          localStorage.clear();
+          localStorage.removeItem("selectedMovie");
           window.location.href = "index.html";
         };
 

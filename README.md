@@ -72,6 +72,85 @@ Com isso, o projeto busca simular um ambiente real de gestão, permitindo organi
 - GitHub Actions - integração contínua
 - Vercel - publicação do front-end
 
+## Documentação do Tratamento de Exceções
+
+O sistema possui validações para garantir a integridade das informações.
+
+As principais exceções tratadas são:
+
+- 400 — Bad Request
+
+Quando os dados enviados são inválidos.
+
+Exemplos:
+
+- email inválido;
+- campos obrigatórios vazios;
+- CPF duplicado.
+- 401 — Unauthorized
+
+Quando o usuário não está autenticado ou o token JWT é inválido.
+
+- 403 — Forbidden
+
+Quando o usuário tenta acessar uma rota protegida sem autorização.
+
+- 404 — Not Found
+
+Quando o recurso solicitado não existe.
+
+Exemplo:
+
+- cliente inexistente;
+- produto inexistente.
+- 409 — Conflict
+
+Quando ocorre conflito de regras de negócio.
+
+Exemplo:
+
+estoque insuficiente.
+- 500 — Internal Server Error
+
+Erro inesperado no servidor.
+
+As exceções são tratadas pela camada de serviços e retornadas em formato JSON para facilitar o consumo pela interface.
+
+## Documentação das Regras de Negócio
+- Clientes
+  
+CPF não pode ser duplicado.
+
+Email deve possuir formato válido.
+
+Campos obrigatórios devem ser preenchidos.
+
+- Produtos
+  
+Quantidade em estoque não pode ser negativa.
+
+Preço deve ser maior que zero.
+
+Nome do produto é obrigatório.
+
+- Vendas
+  
+Toda venda deve possuir cliente.
+
+Toda venda deve possuir pelo menos um produto.
+
+Não é permitido vender quantidade superior ao estoque.
+
+O valor total é calculado automaticamente.
+
+Após confirmação da venda, o estoque é atualizado automaticamente.
+
+- Usuários
+  
+Apenas usuários autenticados podem acessar a API.
+
+Todas as rotas protegidas exigem JWT válido.
+
 ## Arquitetura do Projeto
 
 O back-end segue uma organização em camadas, separando responsabilidades e facilitando manutenção, testes e evolução do sistema.

@@ -1,4 +1,4 @@
-# Cinemonroll
+# Cinemonroll — Sistema de Gestão Comercial de Cinema (Em Evolução)
 
 Aplicação web desenvolvida para simular um sistema de cinema e evoluída para um Sistema de Gestão Comercial, com foco no controle de clientes, produtos, vendas, autenticação de usuários e integração com banco de dados.
 
@@ -53,8 +53,6 @@ Com isso, o projeto busca simular um ambiente real de gestão, permitindo organi
 - Integração com MySQL
 - Integração contínua com GitHub Actions
 
-[COMPLETAR: captura de tela da aplicação]
-
 ## Tecnologias Utilizadas
 
 - Java 21 - linguagem principal do back-end
@@ -85,16 +83,14 @@ Estrutura principal:
 - Service - concentra regras de negócio
 - Domain Model - representa as entidades principais do sistema
 - Repository - realiza a comunicação com o banco de dados
-- Security - configura autenticação JWT e proteção de rotas
-- Exception Handler - centraliza o tratamento de erros
+- Config - configura autenticação JWT e proteção de rotas
+- Exception - centraliza o tratamento de erros
 
 Estrutura de pastas:
 
-```text
-front-end   -> interface web da aplicação
-back-end    -> API REST em Java com Spring Boot
-database    -> scripts e arquivos relacionados ao banco de dados
-```
+- front-end - interface web da aplicação <br>
+- back-end - API REST em Java com Spring Boot <br>
+- database - scripts e arquivos relacionados ao banco de dados
 
 ## Endpoints Principais
 
@@ -182,8 +178,6 @@ Também é possível utilizar o script disponível na pasta:
 ```text
 database/bd_cinema.sql
 ```
-
-[COMPLETAR: usuário e senha padrão do banco, caso exista]
 
 ### 4 - Clonar o projeto
 
@@ -302,8 +296,6 @@ Também é possível utilizar a versão publicada:
 https://web-cinemonroll.vercel.app
 ```
 
-[COMPLETAR: instruções específicas caso o front-end seja integrado ao back-end local]
-
 ## Instruções para Rodar os Testes
 
 Execute no terminal, dentro da pasta `back-end`:
@@ -342,8 +334,6 @@ O que está sendo testado?
 - Regras de negócio do domínio
 - Controle de estoque
 
-[COMPLETAR: quantidade atual de testes]
-
 ## Integração Contínua
 
 O projeto possui workflow no GitHub Actions para executar os testes do back-end automaticamente.
@@ -368,13 +358,9 @@ O projeto possui arquivos relacionados à modelagem e ao banco de dados na pasta
 
 A modelagem contempla entidades importantes para o funcionamento do sistema, como usuários, clientes, produtos, vendas e itens de venda.
 
-[COMPLETAR: inserir diagramas de domínio, classes ou banco, se desejar]
-
 ## Versão Atual
 
 0.0.1-SNAPSHOT - versão em evolução com back-end em Spring Boot, autenticação JWT, integração com MySQL, testes automatizados e front-end publicado.
-
-[COMPLETAR: versão final do projeto, se houver]
 
 ## Status do Projeto
 
@@ -387,9 +373,15 @@ Em desenvolvimento.
 - Testes automatizados em desenvolvimento
 - Front-end publicado na Vercel
 
-## Autor
+## Autores
 
-[COMPLETAR: nome do autor ou integrantes do grupo]
+Anne Caroline Gonçalves de Mesquita
+
+Anna Nicolly da Silva
+
+Kamila Gomes 
+
+Sciel Buitrago
 
 ## Link do Repositório Público
 

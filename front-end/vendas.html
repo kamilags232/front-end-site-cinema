@@ -75,8 +75,8 @@
             <h3>Vendas recentes</h3>
           </div>
           <div class="panel-actions">
-            <button class="action-btn" id="finalizarVenda" type="button"><i class="fa-solid fa-check"></i>Finalizar venda</button>
-            <button class="action-btn danger" id="cancelarVenda" type="button"><i class="fa-solid fa-rotate-left"></i>Cancelar/estornar</button>
+            <button class="action-btn unsupported-action" id="finalizarVenda" type="button" disabled title="A API ainda nao tem rota para alterar status da venda"><i class="fa-solid fa-check"></i>Finalizar venda</button>
+            <button class="action-btn danger unsupported-action" id="cancelarVenda" type="button" disabled title="A API ainda nao tem rota para cancelar ou estornar venda"><i class="fa-solid fa-rotate-left"></i>Cancelar/estornar</button>
           </div>
         </div>
 
@@ -111,6 +111,7 @@
     </section>
   </main>
 
+  <script src="admin-api.js"></script>
   <script src="vendas.js"></script>
 </body>
 

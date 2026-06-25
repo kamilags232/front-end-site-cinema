@@ -27,6 +27,9 @@ public class ProdutoDTO {
     @NotBlank(message = "Tipo de produto é obrigatório")
     private String tipoProduto;
 
+    public ProdutoDTO() {
+    }
+
 	public String getNome() {
 		return nome;
 	}

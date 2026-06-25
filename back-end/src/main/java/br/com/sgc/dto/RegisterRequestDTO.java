@@ -10,6 +10,7 @@ public class RegisterRequestDTO {
 	private String email;
 	@NotBlank 
 	private String senha;
+	private String tipo;
 	public String getNome() {
 		return nome;
 	}
@@ -27,6 +28,12 @@ public class RegisterRequestDTO {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	

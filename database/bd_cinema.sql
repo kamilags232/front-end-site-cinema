@@ -89,6 +89,33 @@ cd_sessao int not null,
 cd_assento int not null,
 nr_recibo int not null);
 
+create table tb_lanche
+(cd_lanche INT AUTO_INCREMENT PRIMARY KEY,
+lanche varchar(100) not null,
+valor_lanche decimal(10,2) not null);
+
+create table rl_venda_lanche
+(nr_recibo INT not null,
+cd_lanche INT not null,
+quantidade INT not null,
+valor_parcial decimal(10,2) not null,
+
+PRIMARY KEY (nr_recibo, cd_lanche),
+FOREIGN KEY (nr_recibo) REFERENCES tb_venda(nr_recibo),
+FOREIGN KEY (cd_lanche) REFERENCES tb_lanche(cd_lanche));
+
+insert into tb_lanche (cd_lanche, lanche, valor_lanche) values
+(1, 'Combo Pipoca Media + Refri 500ml', 25.00),
+(2, 'Pipoca Pequena', 15.00),
+(3, 'Pipoca Media', 20.00),
+(4, 'Pipoca Grande', 25.00),
+(5, 'Refrigerante 300ml', 5.00),
+(6, 'Refrigerante 500ml', 10.00),
+(7, 'Refrigerante 700ml', 15.00),
+(8, 'Barra de Chocolate 90g', 7.00),
+(9, 'M&M 80g', 4.50),
+(10, 'Fini 80g', 7.50);
+
 alter table tb_sessao
 add constraint fk_filme foreign key (cd_filme)
 references tb_filme (cd_filme);
@@ -138,6 +165,22 @@ MODIFY cd_sessao INT NOT NULL;
 
 ALTER TABLE tb_produto
 ADD COLUMN tipo_produto VARCHAR(20) NOT NULL DEFAULT 'EXTRA';
+
+insert into tb_produto (nome, descricao, preco, estoque, estoque_minimo, tipo_produto) values
+('Combo Pipoca Media + Refri 500ml', 'Combo da bomboniere', 25.00, 20, 5, 'BOMBONIERE'),
+('Pipoca Pequena', 'Porcao individual', 15.00, 24, 5, 'BOMBONIERE'),
+('Pipoca Media', 'Classica para compartilhar', 20.00, 18, 5, 'BOMBONIERE'),
+('Pipoca Grande', 'Ideal para grupos', 25.00, 12, 5, 'BOMBONIERE'),
+('Refrigerante 300ml', 'Lata gelada', 5.00, 48, 10, 'BOMBONIERE'),
+('Refrigerante 500ml', 'Padrao medio', 10.00, 36, 10, 'BOMBONIERE'),
+('Refrigerante 700ml', 'Copo grande', 15.00, 20, 10, 'BOMBONIERE'),
+('Barra de Chocolate 90g', 'Opcao doce', 7.00, 30, 10, 'BOMBONIERE'),
+('M&M 80g', 'Snack rapido', 4.50, 28, 10, 'BOMBONIERE'),
+('Fini 80g', 'Guloseima colorida', 7.50, 22, 10, 'BOMBONIERE'),
+('Inteira', 'Valor cheio', 30.00, 200, 20, 'INGRESSO'),
+('Meia', 'Estudante / elegiveis', 15.00, 200, 20, 'INGRESSO'),
+('Promocional', 'Campanhas', 20.00, 100, 20, 'INGRESSO'),
+('VIP', 'Salas especiais', 40.00, 80, 10, 'INGRESSO');
 
 ALTER TABLE tb_ingresso
 ADD CONSTRAINT unique_assento_sessao

@@ -108,29 +108,30 @@
         <form class="cinema-form" id="formCinema">
           <div>
             <label for="salas">Número de salas</label>
-            <input id="salas" type="number" min="1" step="1" />
+            <input id="salas" type="number" min="1" step="1" readonly title="A API de cinema ainda nao tem rota para editar salas" />
           </div>
           <div>
             <label for="taxa">Taxa padrão (%)</label>
-            <input id="taxa" type="number" min="0" step="0.01" />
+            <input id="taxa" type="number" min="0" step="0.01" readonly title="A API de cinema ainda nao tem rota para salvar taxas" />
           </div>
           <div>
             <label for="baseIngresso">Preço base ingresso</label>
-            <input id="baseIngresso" type="number" min="0" step="0.01" />
+            <input id="baseIngresso" type="number" min="0" step="0.01" readonly title="A API de cinema ainda nao tem rota para salvar preco base" />
           </div>
           <div>
             <label for="baseBomboniere">Preço base bomboniere</label>
-            <input id="baseBomboniere" type="number" min="0" step="0.01" />
+            <input id="baseBomboniere" type="number" min="0" step="0.01" readonly title="A API de cinema ainda nao tem rota para salvar preco base" />
           </div>
           <div class="full actions">
-            <button class="action-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar base</button>
-            <button class="ghost-btn" type="button" id="restaurarCinema"><i class="fa-solid fa-rotate-left"></i>Restaurar</button>
+            <button class="action-btn unsupported-action" type="submit" disabled title="A API de cinema ainda nao tem rota para salvar configuracoes"><i class="fa-solid fa-floppy-disk"></i>Salvar base</button>
+            <button class="ghost-btn" type="button" id="restaurarCinema"><i class="fa-solid fa-rotate-left"></i>Recarregar do banco</button>
           </div>
         </form>
       </section>
     </section>
   </main>
 
+  <script src="admin-api.js"></script>
   <script src="cinema.js"></script>
 </body>
 

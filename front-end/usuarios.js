@@ -1,10 +1,8 @@
-const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+const usuarioLogado = exigirLoginAdmin();
 
-if (!usuarioLogado) {
-  window.location.href = "login.html";
+if (usuarioLogado) {
+  document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 }
-
-document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 
 const chaveUsuariosSistema = "adminUsuariosSistema";
 const chaveUsuariosLogin = "usuarios";
@@ -88,14 +86,26 @@ function normalizarUsuario(usuario) {
 
 function salvarUsuarios(usuariosAtualizados) {
   localStorage.setItem(chaveUsuariosSistema, JSON.stringify(usuariosAtualizados));
-  localStorage.setItem(chaveUsuariosLogin, JSON.stringify(usuariosAtualizados.map(usuario => ({
-    nome: usuario.nome,
-    usuario: usuario.usuario,
-    email: usuario.email,
-    senha: usuario.senha,
-    papel: usuario.papel,
-    status: usuario.status
-  }))));
+}
+
+async function carregarUsuariosDoBackend() {
+  try {
+    const usuariosBackend = await adminRequest("/usuarios");
+    usuarios = usuariosBackend.map(usuario => normalizarUsuario({
+      id: usuario.id,
+      nome: usuario.nome,
+      usuario: usuario.email,
+      email: usuario.email,
+      papel: usuario.tipo || "funcionario",
+      status: "ativo",
+      permissoes: permissoesPadrao[usuario.tipo] || permissoesPadrao.funcionario
+    }));
+    salvarUsuarios(usuarios);
+    atualizarCards();
+    renderizarTabela();
+  } catch (erro) {
+    console.error("Erro ao carregar usuarios do backend:", erro);
+  }
 }
 
 function proximoId(usuariosAtualizados) {
@@ -167,36 +177,16 @@ function renderizarTabela() {
       <td class="perm-text">${usuario.permissoes || "Sem permissões extras"}</td>
       <td>
         <div class="table-actions">
-          <button class="table-btn edit" type="button" title="Editar" data-edit="${usuario.id}"><i class="fa-solid fa-pen"></i></button>
-          <button class="table-btn remove" type="button" title="Remover" data-remove="${usuario.id}"><i class="fa-solid fa-trash"></i></button>
+          <button class="table-btn edit unsupported-action" type="button" title="A API ainda nao tem rota para editar usuarios" disabled><i class="fa-solid fa-pen"></i></button>
+          <button class="table-btn remove unsupported-action" type="button" title="A API ainda nao tem rota para remover usuarios" disabled><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
     </tr>
   `).join("");
 
-  tbody.querySelectorAll("[data-edit]").forEach(button => {
-    button.addEventListener("click", () => {
-      const usuarioSelecionado = usuarios.find(item => Number(item.id) === Number(button.dataset.edit));
-      if (usuarioSelecionado) {
-        preencherFormulario(usuarioSelecionado);
-      }
-    });
-  });
-
-  tbody.querySelectorAll("[data-remove]").forEach(button => {
-    button.addEventListener("click", () => {
-      const id = Number(button.dataset.remove);
-      if (!confirm("Deseja remover esta conta interna?")) return;
-      usuarios = usuarios.filter(usuario => Number(usuario.id) !== id);
-      salvarUsuarios(usuarios);
-      renderizarTabela();
-      atualizarCards();
-      limparFormulario();
-    });
-  });
 }
 
-document.getElementById("formUsuario").addEventListener("submit", event => {
+document.getElementById("formUsuario").addEventListener("submit", async event => {
   event.preventDefault();
 
   const id = document.getElementById("usuarioId").value;
@@ -244,6 +234,24 @@ document.getElementById("formUsuario").addEventListener("submit", event => {
     permissoes: document.getElementById("permissoes").value.trim() || permissoesPadrao[papel] || ""
   };
 
+  if (!id) {
+    try {
+      await adminRequest("/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          nome: dados.nome,
+          email: dados.email,
+          senha: dados.senha,
+          tipo: dados.papel
+        })
+      });
+    } catch (erro) {
+      console.error("Erro ao criar usuario no backend:", erro);
+      alert("Nao foi possivel criar o usuario no backend. Verifique se o e-mail ja existe.");
+      return;
+    }
+  }
+
   if (id) {
     usuarios = usuarios.map(usuario => Number(usuario.id) === Number(id) ? { ...usuario, ...dados } : usuario);
   } else {
@@ -253,6 +261,7 @@ document.getElementById("formUsuario").addEventListener("submit", event => {
   salvarUsuarios(usuarios);
   renderizarTabela();
   atualizarCards();
+  carregarUsuariosDoBackend();
   limparFormulario();
 });
 
@@ -263,3 +272,4 @@ document.getElementById("papel").addEventListener("change", aplicarPermissaoPadr
 limparFormulario();
 atualizarCards();
 renderizarTabela();
+carregarUsuariosDoBackend();

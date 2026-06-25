@@ -20,6 +20,9 @@ public class VendaDTO {
     @JsonProperty("clienteId")
     private Long cdCliente;
 
+    @JsonProperty("usuarioId")
+    private Long usuarioId;
+
     @JsonProperty("tipoPagamento")
     private String tpPagamento;
     
@@ -64,6 +67,14 @@ public class VendaDTO {
 
 	public void setCdCliente(Long cdCliente) {
 		this.cdCliente = cdCliente;
+	}
+
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 	public String getTpPagamento() {

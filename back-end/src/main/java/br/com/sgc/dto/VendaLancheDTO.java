@@ -12,6 +12,9 @@ public class VendaLancheDTO {
     @JsonProperty("cd_lanche")
     private Long cdLanche;
 
+    @JsonProperty("nome_lanche")
+    private String nomeLanche;
+
     @JsonProperty("quantidade")
     private Integer quantidade;
 
@@ -32,6 +35,14 @@ public class VendaLancheDTO {
 
 	public void setCdLanche(Long cdLanche) {
 		this.cdLanche = cdLanche;
+	}
+
+	public String getNomeLanche() {
+		return nomeLanche;
+	}
+
+	public void setNomeLanche(String nomeLanche) {
+		this.nomeLanche = nomeLanche;
 	}
 
 	public Integer getQuantidade() {

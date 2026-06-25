@@ -32,13 +32,19 @@ public class ItemVendaResponseDto {
     public static class ProdutoInfoDto {
 
         private Long id;
+        private String nome;
 
         public ProdutoInfoDto(Produto produto) {
             this.id = produto.getId();
+            this.nome = produto.getNome();
         }
 
         public Long getId() {
             return id;
+        }
+
+        public String getNome() {
+            return nome;
         }
     }
 }

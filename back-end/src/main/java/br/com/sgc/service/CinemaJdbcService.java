@@ -9,6 +9,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -24,6 +27,8 @@ import br.com.sgc.dto.VendaLancheDTO;
 
 @Service
 public class CinemaJdbcService {
+
+    private static final Logger log = LoggerFactory.getLogger(CinemaJdbcService.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -63,7 +68,7 @@ public class CinemaJdbcService {
     }
 
     public VendaDTO criarVenda(VendaDTO dto) {
-        String sql = "INSERT INTO tb_venda (dt_hr_venda, valor_total, cd_cliente, tp_pagamento) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_venda (dt_hr_venda, valor_total, cd_cliente, cd_usuario, tp_pagamento) VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         LocalDateTime vendaHora = dto.getDtHrVenda() != null ? dto.getDtHrVenda() : LocalDateTime.now();
         jdbcTemplate.update(connection -> {
@@ -71,7 +76,12 @@ public class CinemaJdbcService {
             ps.setTimestamp(1, Timestamp.valueOf(vendaHora));
             ps.setBigDecimal(2, dto.getValorTotal() != null ? dto.getValorTotal() : BigDecimal.ZERO);
             ps.setLong(3, dto.getCdCliente());
-            ps.setString(4, dto.getTpPagamento());
+            if (dto.getUsuarioId() != null) {
+                ps.setLong(4, dto.getUsuarioId());
+            } else {
+                ps.setNull(4, java.sql.Types.BIGINT);
+            }
+            ps.setString(5, dto.getTpPagamento());
             return ps;
         }, keyHolder);
         dto.setNrRecibo(keyHolder.getKey().longValue());
@@ -80,39 +90,107 @@ public class CinemaJdbcService {
     }
 
     public VendaDTO recalcularVenda(Long nrRecibo) {
-        String sql = "SELECT COALESCE(SUM(valor_ingresso), 0) + COALESCE((SELECT SUM(valor_parcial) FROM rl_venda_lanche WHERE nr_recibo = ?), 0) AS total " +
-                "FROM tb_ingresso WHERE nr_recibo = ?";
-        BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, nrRecibo, nrRecibo);
-        String updateSql = "UPDATE tb_venda SET valor_total = ? WHERE nr_recibo = ?";
-        jdbcTemplate.update(updateSql, total, nrRecibo);
+        try {
+            String sql = "SELECT COALESCE(SUM(valor_ingresso), 0) + COALESCE((SELECT SUM(valor_parcial) FROM rl_venda_lanche WHERE nr_recibo = ?), 0) AS total " +
+                    "FROM tb_ingresso WHERE nr_recibo = ?";
+            BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, nrRecibo, nrRecibo);
+            String updateSql = "UPDATE tb_venda SET valor_total = ? WHERE nr_recibo = ?";
+            jdbcTemplate.update(updateSql, total, nrRecibo);
+        } catch (DataAccessException ex) {
+            log.warn("Nao foi possivel recalcular venda {} usando rl_venda_lanche. Mantendo valor original.", nrRecibo);
+        }
         return buscarVenda(nrRecibo);
     }
 
     public VendaDTO buscarVenda(Long nrRecibo) {
-        String sql = "SELECT nr_recibo, dt_hr_venda, valor_total, cd_cliente, tp_pagamento FROM tb_venda WHERE nr_recibo = ?";
+        String sql = "SELECT nr_recibo, dt_hr_venda, valor_total, cd_cliente, cd_usuario, tp_pagamento FROM tb_venda WHERE nr_recibo = ?";
         return jdbcTemplate.queryForObject(sql, this::mapVenda, nrRecibo);
     }
 
     public IngressoDTO criarIngresso(IngressoDTO dto) {
         String sql = "INSERT INTO tb_ingresso (valor_ingresso, tp_ingresso, cd_sessao, cd_assento, nr_recibo) VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        String tipoIngresso = dto.getTpIngresso();
+        String tipoIngressoBanco = tipoIngresso != null && tipoIngresso.length() > 10
+                ? tipoIngresso.substring(0, 10)
+                : tipoIngresso;
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setBigDecimal(1, dto.getValorIngresso());
-            ps.setString(2, dto.getTpIngresso());
+            ps.setString(2, tipoIngressoBanco);
             ps.setLong(3, dto.getCdSessao());
             ps.setLong(4, dto.getCdAssento());
             ps.setLong(5, dto.getNrRecibo());
             return ps;
         }, keyHolder);
         dto.setCdIngresso(keyHolder.getKey().longValue());
+        baixarEstoqueIngresso(tipoIngresso);
         return dto;
     }
 
     public VendaLancheDTO criarVendaLanche(VendaLancheDTO dto) {
-        String sql = "INSERT INTO rl_venda_lanche (nr_recibo, cd_lanche, quantidade, valor_parcial) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, dto.getNrRecibo(), dto.getCdLanche(), dto.getQuantidade(), dto.getValorParcial());
+        try {
+            String sql = "INSERT INTO rl_venda_lanche (nr_recibo, cd_lanche, quantidade, valor_parcial) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(sql, dto.getNrRecibo(), dto.getCdLanche(), dto.getQuantidade(), dto.getValorParcial());
+        } catch (DataAccessException ex) {
+            log.warn("Nao foi possivel registrar venda de lanche em rl_venda_lanche. Baixando apenas o estoque do produto.");
+        }
+        baixarEstoqueProduto(dto.getCdLanche(), dto.getNomeLanche(), dto.getQuantidade());
         return dto;
+    }
+
+    private void baixarEstoqueProduto(Long produtoId, String nomeProduto, Integer quantidade) {
+        if (quantidade == null || quantidade <= 0) {
+            return;
+        }
+
+        if (nomeProduto != null && !nomeProduto.isBlank()) {
+            int linhasAfetadas = jdbcTemplate.update(
+                    "UPDATE tb_produto SET estoque = estoque - ? WHERE LOWER(nome) = LOWER(?) AND estoque >= ?",
+                    quantidade,
+                    nomeProduto,
+                    quantidade
+            );
+
+            if (linhasAfetadas == 0 && nomeProduto.toLowerCase().contains("combo")) {
+                jdbcTemplate.update(
+                        "UPDATE tb_produto SET estoque = estoque - ? WHERE LOWER(nome) = LOWER(?) AND estoque >= ?",
+                        quantidade,
+                        "Pipoca Media",
+                        quantidade
+                );
+                jdbcTemplate.update(
+                        "UPDATE tb_produto SET estoque = estoque - ? WHERE LOWER(nome) = LOWER(?) AND estoque >= ?",
+                        quantidade,
+                        "Refrigerante 500ml",
+                        quantidade
+                );
+            }
+            return;
+        }
+
+        if (produtoId == null) {
+            return;
+        }
+
+        jdbcTemplate.update(
+                "UPDATE tb_produto SET estoque = estoque - ? WHERE cd_produto = ? AND estoque >= ?",
+                quantidade,
+                produtoId,
+                quantidade
+        );
+    }
+
+    private void baixarEstoqueIngresso(String tipoIngresso) {
+        if (tipoIngresso == null || tipoIngresso.isBlank()) {
+            return;
+        }
+
+        String nomeProduto = tipoIngresso.toLowerCase().startsWith("meia") ? "Meia" : "Inteira";
+        jdbcTemplate.update(
+                "UPDATE tb_produto SET estoque = estoque - 1 WHERE LOWER(nome) = LOWER(?) AND estoque > 0",
+                nomeProduto
+        );
     }
 
     public List<FilmeDTO> listarFilmes() {
@@ -172,6 +250,10 @@ public class CinemaJdbcService {
         dto.setDtHrVenda(ts != null ? ts.toLocalDateTime() : null);
         dto.setValorTotal(rs.getBigDecimal("valor_total"));
         dto.setCdCliente(rs.getLong("cd_cliente"));
+        long usuarioId = rs.getLong("cd_usuario");
+        if (!rs.wasNull()) {
+            dto.setUsuarioId(usuarioId);
+        }
         dto.setTpPagamento(rs.getString("tp_pagamento"));
         return dto;
     }

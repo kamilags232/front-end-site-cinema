@@ -14,7 +14,7 @@ public class Venda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_venda")
+    @Column(name = "nr_recibo")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,13 +22,13 @@ public class Venda {
     private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cd_usuario", nullable = false)
+    @JoinColumn(name = "cd_usuario")
     private Usuario usuario;
 
     @Column(name = "dt_hr_venda", nullable = false)
     private LocalDateTime dataHora;
 
-    @Column(name = "tipo_pagamento", nullable = false)
+    @Column(name = "tp_pagamento", nullable = false)
     private String tipoPagamento;
 
     @Column(name = "valor_total", nullable = false, precision = 19, scale = 2)

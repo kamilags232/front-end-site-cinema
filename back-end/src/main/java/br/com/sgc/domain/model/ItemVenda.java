@@ -4,13 +4,12 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,10 +17,8 @@ import jakarta.persistence.Table;
 
 public class ItemVenda {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_item_venda")
-    private Long id;
+    @EmbeddedId
+    private ItemVendaId id = new ItemVendaId();
 
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
@@ -30,18 +27,20 @@ public class ItemVenda {
     private BigDecimal valorParcial;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("cdProduto")
     @JoinColumn(name = "cd_produto", nullable = false)
     private Produto produto;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cd_venda", nullable = false)
+    @MapsId("nrRecibo")
+    @JoinColumn(name = "nr_recibo", nullable = false)
     private Venda venda;
 
-	public Long getId() {
+	public ItemVendaId getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(ItemVendaId id) {
 		this.id = id;
 	}
 

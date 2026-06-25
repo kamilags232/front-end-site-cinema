@@ -189,9 +189,23 @@ body {
   background: linear-gradient(135deg, #7b1f2a, #b82c3c);
 }
 
+.unsupported-action,
+.unsupported-action i,
+.unsupported-action:disabled {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #7f8794 !important;
+  cursor: not-allowed !important;
+  opacity: 0.72;
+  box-shadow: none;
+}
+
 .action-btn:hover,
 .ghost-btn:hover {
   transform: translateY(-2px);
+}
+
+.unsupported-action:hover {
+  transform: none;
 }
 
 table {

@@ -1,70 +1,61 @@
-const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+const usuarioLogado = exigirLoginAdmin();
 
-if (!usuarioLogado) {
-  window.location.href = "login.html";
+if (usuarioLogado) {
+  document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
 }
 
-document.getElementById("nomeUsuario").textContent = usuarioLogado.nome;
-
-const chaveVendas = "adminVendasOperacionais";
-
-const vendasPadrao = [
-  {
-    id: "V-0001",
-    cliente: "Mariana Costa",
-    dataHora: "2026-06-24 14:10",
-    formaPagamento: "Cartão",
-    status: "Finalizada",
-    itens: [
-      { tipo: "Ingresso Inteira", descricao: "Sala 1 - 14:00", quantidade: 2, valor: 60 },
-      { tipo: "Bomboniere", descricao: "Pipoca Média + Refrigerante 500ml", quantidade: 1, valor: 30 }
-    ]
-  },
-  {
-    id: "V-0002",
-    cliente: "Carlos Lima",
-    dataHora: "2026-06-24 15:05",
-    formaPagamento: "Pix",
-    status: "Em andamento",
-    itens: [
-      { tipo: "Ingresso Meia", descricao: "Sala 2 - 16:30", quantidade: 3, valor: 45 },
-      { tipo: "Bomboniere", descricao: "Pipoca Pequena", quantidade: 2, valor: 30 }
-    ]
-  },
-  {
-    id: "V-0003",
-    cliente: "Aline Souza",
-    dataHora: "2026-06-24 16:40",
-    formaPagamento: "Dinheiro",
-    status: "Finalizada",
-    itens: [
-      { tipo: "Ingresso VIP", descricao: "Sala 3 - 20:00", quantidade: 2, valor: 80 },
-      { tipo: "Bomboniere", descricao: "Barra de Chocolate 90g", quantidade: 2, valor: 14 }
-    ]
-  }
-];
-
-function carregarVendas() {
-  const dadosSalvos = JSON.parse(localStorage.getItem(chaveVendas));
-  if (Array.isArray(dadosSalvos) && dadosSalvos.length > 0) {
-    return dadosSalvos;
-  }
-  return vendasPadrao;
-}
-
-function salvarVendas(vendas) {
-  localStorage.setItem(chaveVendas, JSON.stringify(vendas));
-}
+let vendas = [];
+let vendaSelecionadaId = null;
+let produtosPorId = {};
 
 function formatarMoeda(valor) {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor);
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(valor || 0));
+}
+
+function produtoNome(id) {
+  return produtosPorId[id]?.nome || `Produto #${id}`;
+}
+
+function normalizarVenda(venda) {
+  const itens = Array.isArray(venda.itens) ? venda.itens.map(item => ({
+    tipo: item.produto?.nome || produtoNome(item.produto?.id),
+    descricao: item.produto?.nome || produtoNome(item.produto?.id),
+    quantidade: Number(item.quantidade || 0),
+    valor: Number(item.valorParcial || 0)
+  })) : [];
+
+  return {
+    id: venda.id || venda.nrRecibo,
+    cliente: venda.cliente?.nome || venda.clienteNome || "Cliente nao informado",
+    funcionario: venda.usuario?.nome || venda.funcionarioNome || "Funcionario nao informado",
+    dataHora: venda.dataHora || venda.dt_hr_venda || "-",
+    formaPagamento: venda.tipoPagamento || "-",
+    status: "Finalizada",
+    valorTotal: Number(venda.valorTotal || 0),
+    itens
+  };
+}
+
+async function carregarVendas() {
+  try {
+    const produtos = await listarPagina("/produtos");
+    produtosPorId = Object.fromEntries(produtos.map(produto => [produto.id, produto]));
+
+    const vendasApi = await listarPagina("/vendas");
+    vendas = vendasApi.map(normalizarVenda);
+    vendaSelecionadaId = vendas[0]?.id || null;
+  } catch (erro) {
+    console.error("Erro ao carregar vendas:", erro);
+    vendas = [];
+    vendaSelecionadaId = null;
+  }
 }
 
 function calcularTotal(venda) {
-  return venda.itens.reduce((total, item) => total + Number(item.valor || 0), 0);
+  return venda.valorTotal || venda.itens.reduce((total, item) => total + Number(item.valor || 0), 0);
 }
 
-function atualizarCards(vendas) {
+function atualizarCards() {
   const vendasHoje = vendas.length;
   const finalizadas = vendas.filter(venda => venda.status === "Finalizada").length;
   const emAndamento = vendas.filter(venda => venda.status !== "Finalizada").length;
@@ -83,51 +74,49 @@ function statusClass(status) {
   return "";
 }
 
-let vendas = carregarVendas();
-let vendaSelecionadaId = vendas[0]?.id || null;
-
 function renderizarLista() {
   const tbody = document.getElementById("listaVendas");
 
   tbody.innerHTML = vendas.map(venda => `
-    <tr class="sale-row ${venda.id === vendaSelecionadaId ? 'active' : ''}" data-id="${venda.id}">
-      <td><strong>${venda.id}</strong></td>
+    <tr class="sale-row ${Number(venda.id) === Number(vendaSelecionadaId) ? 'active' : ''}" data-id="${venda.id}">
+      <td><strong>V-${String(venda.id).padStart(4, "0")}</strong></td>
       <td>${venda.cliente}</td>
       <td>${venda.dataHora}</td>
       <td>${formatarMoeda(calcularTotal(venda))}</td>
       <td><span class="pill ${statusClass(venda.status)}">${venda.status}</span></td>
     </tr>
-  `).join("");
+  `).join("") || `<tr><td colspan="5">Nenhuma venda encontrada no banco.</td></tr>`;
 
   tbody.querySelectorAll(".sale-row").forEach(row => {
     row.addEventListener("click", () => {
-      vendaSelecionadaId = row.dataset.id;
+      vendaSelecionadaId = Number(row.dataset.id);
       renderizarLista();
       renderizarDetalhe();
     });
   });
 
-  atualizarCards(vendas);
+  atualizarCards();
 }
 
 function renderizarDetalhe() {
-  const venda = vendas.find(item => item.id === vendaSelecionadaId);
+  const venda = vendas.find(item => Number(item.id) === Number(vendaSelecionadaId));
   const container = document.getElementById("detalheVenda");
   const titulo = document.getElementById("tituloDetalhe");
 
   if (!venda) {
     titulo.textContent = "Selecione uma venda";
     container.className = "detail-empty";
-    container.textContent = "Clique em uma venda para ver itens, forma de pagamento e ações.";
+    container.textContent = "Clique em uma venda para ver itens e forma de pagamento.";
     return;
   }
 
-  titulo.textContent = `Venda ${venda.id}`;
+  titulo.textContent = `Venda V-${String(venda.id).padStart(4, "0")}`;
   container.className = "detail-box";
 
   container.innerHTML = `
     <h4>${venda.cliente}</h4>
     <div class="detail-grid">
+      <div class="detail-item"><span class="detail-label">Funcionario</span><strong class="detail-value">${venda.funcionario}</strong></div>
       <div class="detail-item"><span class="detail-label">Data e hora</span><strong class="detail-value">${venda.dataHora}</strong></div>
       <div class="detail-item"><span class="detail-label">Forma de pagamento</span><strong class="detail-value">${venda.formaPagamento}</strong></div>
       <div class="detail-item"><span class="detail-label">Status</span><strong class="detail-value">${venda.status}</strong></div>
@@ -135,7 +124,7 @@ function renderizarDetalhe() {
       <div class="detail-item">
         <span class="detail-label">Itens comprados</span>
         <div class="detail-value">
-          ${venda.itens.map(item => `<div>${item.quantidade}x ${item.tipo} - ${item.descricao} (${formatarMoeda(item.valor)})</div>`).join("")}
+          ${venda.itens.map(item => `<div>${item.quantidade}x ${item.tipo} (${formatarMoeda(item.valor)})</div>`).join("") || "Sem itens detalhados"}
         </div>
       </div>
     </div>
@@ -143,23 +132,15 @@ function renderizarDetalhe() {
 }
 
 function marcarComoFinalizada() {
-  const index = vendas.findIndex(venda => venda.id === vendaSelecionadaId);
-  if (index === -1) return;
-
-  vendas[index] = { ...vendas[index], status: "Finalizada" };
-  salvarVendas(vendas);
-  renderizarLista();
-  renderizarDetalhe();
+  alert("A API atual ainda nao tem rota para alterar status da venda.");
 }
 
 function cancelarVenda() {
-  const index = vendas.findIndex(venda => venda.id === vendaSelecionadaId);
-  if (index === -1) return;
+  alert("A API atual ainda nao tem rota para cancelar venda.");
+}
 
-  const vendaAtual = vendas[index];
-  const novoStatus = vendaAtual.status === "Cancelada" ? "Em andamento" : "Cancelada";
-  vendas[index] = { ...vendaAtual, status: novoStatus };
-  salvarVendas(vendas);
+async function inicializar() {
+  await carregarVendas();
   renderizarLista();
   renderizarDetalhe();
 }
@@ -167,5 +148,4 @@ function cancelarVenda() {
 document.getElementById("finalizarVenda").addEventListener("click", marcarComoFinalizada);
 document.getElementById("cancelarVenda").addEventListener("click", cancelarVenda);
 
-renderizarLista();
-renderizarDetalhe();
+inicializar();

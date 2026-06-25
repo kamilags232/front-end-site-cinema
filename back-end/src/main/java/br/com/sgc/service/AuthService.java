@@ -45,7 +45,7 @@ public class AuthService {
         String token = jwtService.generateToken(usuario.getEmail());
         log.info("Login bem-sucedido para email: {}", dto.getEmail());
         
-        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNome());
+        return new AuthResponseDTO(token, usuario.getId(), usuario.getEmail(), usuario.getNome(), usuario.getTipo());
     }
     
     public void register(RegisterRequestDTO dto) {
@@ -59,6 +59,7 @@ public class AuthService {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(dto.getNome());
         novoUsuario.setEmail(dto.getEmail());
+        novoUsuario.setTipo(dto.getTipo() != null && !dto.getTipo().isBlank() ? dto.getTipo() : "funcionario");
         
         String senhaCriptografada = passwordEncoder.encode(dto.getSenha());
         novoUsuario.setSenha(senhaCriptografada);

@@ -96,7 +96,10 @@ function mapTipoSessao(tipoSessao) {
           return;
         }
 
-        const resposta = await fetch(API_Sessao, { method: "GET" });
+        const resposta = await fetch(API_Sessao, {
+          method: "GET",
+          headers: getHeaders()
+        });
         if (!resposta.ok) {
           alert("❌ Erro ao buscar sessões. Verifique se o back-end está rodando.");
           return;
@@ -104,8 +107,9 @@ function mapTipoSessao(tipoSessao) {
 
         const todasSessoes = await resposta.json();
         // Filtra sessões pelo filme E pela sala (tipo de sessão)
-        const sessoesFiltradasPorFilmeESala = todasSessoes.filter(s => 
-          s.cd_filme === cd_filme && s.cd_sala === cd_sala
+        const sessoesFiltradasPorFilmeESala = todasSessoes.filter(s =>
+          Number(s.cd_filme ?? s.cdFilme) === Number(cd_filme) &&
+          Number(s.cd_sala ?? s.cdSala) === Number(cd_sala)
         );
 
         // Atualiza a variável global com as sessões filtradas
@@ -124,11 +128,11 @@ function mapTipoSessao(tipoSessao) {
         
         sessoesFiltradasPorFilmeESala.forEach(sessao => {
           const option = document.createElement("option");
-          option.value = sessao.cd_sessao; // ID numérico real
+          option.value = sessao.cd_sessao ?? sessao.cdSessao; // ID numérico real
           // Extrair horário diretamente da string do banco (evita problema de timezone)
           // data_hora vem no formato ISO: "2024-11-28T14:00:00.000Z"
-          const dataHoraStr = sessao.data_hora;
-          const horarioParts = dataHoraStr.match(/T(\d{2}):(\d{2})/);
+          const dataHoraStr = sessao.data_hora || sessao.dataHora || "";
+          const horarioParts = String(dataHoraStr).match(/T(\d{2}):(\d{2})/);
           const horario = horarioParts ? `${horarioParts[1]}:${horarioParts[2]}` : dataHoraStr;
           option.textContent = horario;
           showtimeSelect.appendChild(option);
@@ -158,7 +162,9 @@ function mapTipoSessao(tipoSessao) {
         const url = `${API_Assento}/sessao/${sessaoIdGlobal}`;
         console.log("🔍 Buscando assentos ocupados:", url);
         
-        const resposta = await fetch(url);
+        const resposta = await fetch(url, {
+          headers: getHeaders()
+        });
         if (resposta.ok) {
           const data = await resposta.json();
           let assentosOcupados = [];
@@ -669,7 +675,7 @@ function mapTipoSessao(tipoSessao) {
         document.body.appendChild(successModal);
 
         const finish = () => {
-          localStorage.clear();
+          localStorage.removeItem("selectedMovie");
           window.location.href = "index.html";
         };
 

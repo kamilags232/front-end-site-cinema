@@ -45,7 +45,7 @@ public class AuthService {
         String token = jwtService.generateToken(usuario.getEmail());
         log.info("Login bem-sucedido para email: {}", dto.getEmail());
         
-        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNome(), usuario.getTipo());
+        return new AuthResponseDTO(token, usuario.getId(), usuario.getEmail(), usuario.getNome(), usuario.getTipo());
     }
     
     public void register(RegisterRequestDTO dto) {

@@ -32,14 +32,14 @@ function normalizarVenda(venda) {
     const produtoId = item.produto?.id;
     return {
       categoria: produtoCategoria(produtoId),
-      nome: produtoNome(produtoId),
+      nome: item.produto?.nome || produtoNome(produtoId),
       quantidade: Number(item.quantidade || 0),
       valor: Number(item.valorParcial || 0)
     };
   }) : [];
 
   return {
-    id: venda.id,
+    id: venda.id || venda.nrRecibo,
     cliente: venda.cliente?.nome || venda.clienteNome || "Cliente nao informado",
     filme: venda.filme || "Filme nao informado",
     sessao: venda.sessao || "Sessao nao informada",

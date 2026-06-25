@@ -8,15 +8,16 @@ let produtos = [];
 let usandoFallback = false;
 
 const estoqueBombonierePadrao = [
-  { id: 1, nome: "Pipoca Pequena", estoque: 24, preco: 15.0, descricao: "Porcao individual", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
-  { id: 2, nome: "Pipoca Media", estoque: 18, preco: 20.0, descricao: "Classica para compartilhar", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
-  { id: 3, nome: "Pipoca Grande", estoque: 12, preco: 25.0, descricao: "Ideal para grupos", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
-  { id: 4, nome: "Refrigerante 300ml", estoque: 48, preco: 5.0, descricao: "Lata gelada", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
-  { id: 5, nome: "Refrigerante 500ml", estoque: 36, preco: 10.0, descricao: "Padrao medio", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
-  { id: 6, nome: "Refrigerante 700ml", estoque: 20, preco: 15.0, descricao: "Copo grande", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
-  { id: 7, nome: "Barra de Chocolate 90g", estoque: 30, preco: 7.0, descricao: "Opcao doce", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
-  { id: 8, nome: "M&M 80g", estoque: 28, preco: 4.5, descricao: "Snack rapido", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
-  { id: 9, nome: "Fini 80g", estoque: 22, preco: 7.5, descricao: "Guloseima colorida", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" }
+  { id: 1, nome: "Combo Pipoca Media + Refri 500ml", estoque: 20, preco: 25.0, descricao: "Combo da bomboniere", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
+  { id: 2, nome: "Pipoca Pequena", estoque: 24, preco: 15.0, descricao: "Porcao individual", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
+  { id: 3, nome: "Pipoca Media", estoque: 18, preco: 20.0, descricao: "Classica para compartilhar", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
+  { id: 4, nome: "Pipoca Grande", estoque: 12, preco: 25.0, descricao: "Ideal para grupos", estoqueMinimo: 5, tipoProduto: "BOMBONIERE" },
+  { id: 5, nome: "Refrigerante 300ml", estoque: 48, preco: 5.0, descricao: "Lata gelada", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
+  { id: 6, nome: "Refrigerante 500ml", estoque: 36, preco: 10.0, descricao: "Padrao medio", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
+  { id: 7, nome: "Refrigerante 700ml", estoque: 20, preco: 15.0, descricao: "Copo grande", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
+  { id: 8, nome: "Barra de Chocolate 90g", estoque: 30, preco: 7.0, descricao: "Opcao doce", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
+  { id: 9, nome: "M&M 80g", estoque: 28, preco: 4.5, descricao: "Snack rapido", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" },
+  { id: 10, nome: "Fini 80g", estoque: 22, preco: 7.5, descricao: "Guloseima colorida", estoqueMinimo: 10, tipoProduto: "BOMBONIERE" }
 ];
 
 const estoqueIngressosPadrao = [

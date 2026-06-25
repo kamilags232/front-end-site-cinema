@@ -8,11 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.sgc.domain.model.Cliente;
 import br.com.sgc.domain.model.ItemVenda;
+import br.com.sgc.domain.model.ItemVendaId;
 import br.com.sgc.domain.model.Produto;
 import br.com.sgc.domain.model.Usuario;
 import br.com.sgc.domain.model.Venda;
@@ -52,8 +55,7 @@ public class VendaService {
         Cliente cliente = clienteRepository.findById(dto.getCdCliente())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(dto.getCdCliente())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        Usuario usuario = buscarUsuarioDaVenda(dto);
 
         Venda venda = new Venda();
         venda.setCliente(cliente);
@@ -81,6 +83,7 @@ public class VendaService {
                 ItemVenda itemVenda = new ItemVenda();
                 itemVenda.setVenda(venda);
                 itemVenda.setProduto(produto);
+                itemVenda.setId(new ItemVendaId(null, produto.getId()));
                 itemVenda.setQuantidade(quantidade);
                 itemVenda.setValorParcial(valorParcial);
 
@@ -91,6 +94,21 @@ public class VendaService {
 
         venda.setValorTotal(valorTotal);
         return vendaRepository.save(venda);
+    }
+
+    private Usuario buscarUsuarioDaVenda(VendaDTO dto) {
+        if (dto.getUsuarioId() != null) {
+            return usuarioRepository.findById(dto.getUsuarioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName() != null) {
+            return usuarioRepository.findByEmail(authentication.getName())
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuário logado não encontrado"));
+        }
+
+        throw new ResourceNotFoundException("Usuário da venda não informado");
     }
 
     @Transactional(readOnly = true)

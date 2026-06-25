@@ -21,6 +21,7 @@ public class CinemaDataSeeder implements CommandLineRunner {
         seedFilmes();
         seedSalas();
         seedSessoes();
+        seedProdutos();
     }
 
     private void seedFilmes() {
@@ -91,5 +92,34 @@ public class CinemaDataSeeder implements CommandLineRunner {
                 );
             }
         }
+    }
+
+    private void seedProdutos() {
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tb_produto", Integer.class);
+        if (total != null && total > 0) {
+            return;
+        }
+
+        List<Object[]> produtos = List.of(
+                new Object[]{"Combo Pipoca Media + Refri 500ml", "Combo da bomboniere", 25.00, 20, 5, "BOMBONIERE"},
+                new Object[]{"Pipoca Pequena", "Porcao individual", 15.00, 24, 5, "BOMBONIERE"},
+                new Object[]{"Pipoca Media", "Classica para compartilhar", 20.00, 18, 5, "BOMBONIERE"},
+                new Object[]{"Pipoca Grande", "Ideal para grupos", 25.00, 12, 5, "BOMBONIERE"},
+                new Object[]{"Refrigerante 300ml", "Lata gelada", 5.00, 48, 10, "BOMBONIERE"},
+                new Object[]{"Refrigerante 500ml", "Padrao medio", 10.00, 36, 10, "BOMBONIERE"},
+                new Object[]{"Refrigerante 700ml", "Copo grande", 15.00, 20, 10, "BOMBONIERE"},
+                new Object[]{"Barra de Chocolate 90g", "Opcao doce", 7.00, 30, 10, "BOMBONIERE"},
+                new Object[]{"M&M 80g", "Snack rapido", 4.50, 28, 10, "BOMBONIERE"},
+                new Object[]{"Fini 80g", "Guloseima colorida", 7.50, 22, 10, "BOMBONIERE"},
+                new Object[]{"Inteira", "Valor cheio", 30.00, 200, 20, "INGRESSO"},
+                new Object[]{"Meia", "Estudante / elegiveis", 15.00, 200, 20, "INGRESSO"},
+                new Object[]{"Promocional", "Campanhas", 20.00, 100, 20, "INGRESSO"},
+                new Object[]{"VIP", "Salas especiais", 40.00, 80, 10, "INGRESSO"}
+        );
+
+        produtos.forEach(produto -> jdbcTemplate.update(
+                "INSERT INTO tb_produto (nome, descricao, preco, estoque, estoque_minimo, tipo_produto) VALUES (?, ?, ?, ?, ?, ?)",
+                produto
+        ));
     }
 }

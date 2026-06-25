@@ -140,6 +140,7 @@ async function enviarPedido(dadosCompra) {
 
     const vendaPayload = {
       clienteId: cd_cliente,
+      usuarioId: JSON.parse(localStorage.getItem("usuarioLogado") || "{}").id,
       dt_hr_venda: agoraLocalParaBackend(),
       valor_total: dadosCompra.total || 0,
       tipoPagamento: dadosCompra.pagamento || "dinheiro"
@@ -159,9 +160,10 @@ async function enviarPedido(dadosCompra) {
     }
 
     const vendaCriada = await resVenda.json();
-    const nr_recibo = vendaCriada.nr_recibo;
+    const nr_recibo = vendaCriada.nr_recibo || vendaCriada.nrRecibo || vendaCriada.id;
     const sessoesDoFilme = dadosCompra.sessoesDoFilme || [];
-    const sessaoSelecionada = sessoesDoFilme.find(s => s.cd_sessao === dadosCompra.sessaoId);
+    const sessaoSelecionada = sessoesDoFilme.find(s => Number(s.cd_sessao ?? s.cdSessao) === Number(dadosCompra.sessaoId));
+    const cdSessao = sessaoSelecionada?.cd_sessao ?? sessaoSelecionada?.cdSessao;
 
     if (!sessaoSelecionada) {
       alert("Sessao selecionada nao encontrada.");
@@ -174,19 +176,19 @@ async function enviarPedido(dadosCompra) {
       const assentoNumero = dadosCompra.assentos[i];
       const tipoIngresso = dadosCompra.tiposIngresso?.[i] || "inteira";
 
-      const resAssentos = await fetch(`${API_Assento}/sessao/${sessaoSelecionada.cd_sessao}`, {
+      const resAssentos = await fetch(`${API_Assento}/sessao/${cdSessao}`, {
         method: "GET",
         headers: getHeaders()
       });
 
       const assentosSessao = resAssentos.ok ? await resAssentos.json() : [];
-      const assentoExistente = assentosSessao.find(a => a.numero_assento === assentoNumero);
-      let cd_assento = assentoExistente?.cd_assento;
+      const assentoExistente = assentosSessao.find(a => (a.numero_assento ?? a.numeroAssento) === assentoNumero);
+      let cd_assento = assentoExistente?.cd_assento ?? assentoExistente?.cdAssento;
 
       if (!cd_assento) {
         const novoAssentoPayload = {
           numero_assento: assentoNumero,
-          cd_sessao: sessaoSelecionada.cd_sessao,
+          cd_sessao: cdSessao,
           ocupado: false
         };
 
@@ -202,14 +204,14 @@ async function enviarPedido(dadosCompra) {
         }
 
         const novoAssentoCriado = await resNovoAssento.json();
-        cd_assento = novoAssentoCriado.cd_assento;
+        cd_assento = novoAssentoCriado.cd_assento ?? novoAssentoCriado.cdAssento;
       }
 
       const ingressoPayload = {
         nr_recibo,
-        cd_sessao: sessaoSelecionada.cd_sessao,
+        cd_sessao: cdSessao,
         cd_assento,
-        tp_ingresso: tipoIngresso.slice(0, 10),
+        tp_ingresso: tipoIngresso,
         valor_ingresso: Number(valorPorAssento.toFixed(2))
       };
 
@@ -229,7 +231,7 @@ async function enviarPedido(dadosCompra) {
         headers: getHeaders(),
         body: JSON.stringify({
           numero_assento: assentoNumero,
-          cd_sessao: sessaoSelecionada.cd_sessao,
+          cd_sessao: cdSessao,
           ocupado: true
         })
       });
@@ -257,19 +259,19 @@ async function criarVendasDeLanche(dadosCompra, nr_recibo) {
   }
 
   const lancheMap = {
-    "Combo Pipoca Media + Refri 500ml": { cd_lanche: 1, valor: 25 },
-    "Combo Pipoca Média + Refri 500ml": { cd_lanche: 1, valor: 25 },
-    "Pipoca Pequena": { cd_lanche: 2, valor: 15 },
-    "Pipoca Media": { cd_lanche: 3, valor: 20 },
-    "Pipoca Média": { cd_lanche: 3, valor: 20 },
-    "Pipoca Grande": { cd_lanche: 4, valor: 25 },
-    "Refrigerante 300ml": { cd_lanche: 5, valor: 5 },
-    "Refrigerante 500ml": { cd_lanche: 6, valor: 10 },
-    "Refrigerante 700ml": { cd_lanche: 7, valor: 15 },
-    "Barra de Chocolate 90g": { cd_lanche: 8, valor: 7 },
-    "M&M 80g": { cd_lanche: 9, valor: 4.5 },
-    "Fini 80g": { cd_lanche: 10, valor: 7.5 },
-    "Fini 80g (Tubes, Beijo, Dentadura)": { cd_lanche: 10, valor: 7.5 }
+    "Combo Pipoca Media + Refri 500ml": { cd_lanche: 1, valor: 25, nome_produto: "Combo Pipoca Media + Refri 500ml" },
+    "Combo Pipoca Média + Refri 500ml": { cd_lanche: 1, valor: 25, nome_produto: "Combo Pipoca Media + Refri 500ml" },
+    "Pipoca Pequena": { cd_lanche: 2, valor: 15, nome_produto: "Pipoca Pequena" },
+    "Pipoca Media": { cd_lanche: 3, valor: 20, nome_produto: "Pipoca Media" },
+    "Pipoca Média": { cd_lanche: 3, valor: 20, nome_produto: "Pipoca Media" },
+    "Pipoca Grande": { cd_lanche: 4, valor: 25, nome_produto: "Pipoca Grande" },
+    "Refrigerante 300ml": { cd_lanche: 5, valor: 5, nome_produto: "Refrigerante 300ml" },
+    "Refrigerante 500ml": { cd_lanche: 6, valor: 10, nome_produto: "Refrigerante 500ml" },
+    "Refrigerante 700ml": { cd_lanche: 7, valor: 15, nome_produto: "Refrigerante 700ml" },
+    "Barra de Chocolate 90g": { cd_lanche: 8, valor: 7, nome_produto: "Barra de Chocolate 90g" },
+    "M&M 80g": { cd_lanche: 9, valor: 4.5, nome_produto: "M&M 80g" },
+    "Fini 80g": { cd_lanche: 10, valor: 7.5, nome_produto: "Fini 80g" },
+    "Fini 80g (Tubes, Beijo, Dentadura)": { cd_lanche: 10, valor: 7.5, nome_produto: "Fini 80g" }
   };
 
   const lanchesArray = dadosCompra.lanches.split(",").map(lanche => lanche.trim());
@@ -296,6 +298,7 @@ async function criarVendasDeLanche(dadosCompra, nr_recibo) {
     const vendaLanchePayload = {
       nr_recibo,
       cd_lanche: lancheInfo.cd_lanche,
+      nome_lanche: lancheInfo.nome_produto,
       quantidade,
       valor_parcial: quantidade * lancheInfo.valor
     };

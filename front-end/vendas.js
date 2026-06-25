@@ -18,15 +18,16 @@ function produtoNome(id) {
 
 function normalizarVenda(venda) {
   const itens = Array.isArray(venda.itens) ? venda.itens.map(item => ({
-    tipo: produtoNome(item.produto?.id),
-    descricao: produtoNome(item.produto?.id),
+    tipo: item.produto?.nome || produtoNome(item.produto?.id),
+    descricao: item.produto?.nome || produtoNome(item.produto?.id),
     quantidade: Number(item.quantidade || 0),
     valor: Number(item.valorParcial || 0)
   })) : [];
 
   return {
-    id: venda.id,
+    id: venda.id || venda.nrRecibo,
     cliente: venda.cliente?.nome || venda.clienteNome || "Cliente nao informado",
+    funcionario: venda.usuario?.nome || venda.funcionarioNome || "Funcionario nao informado",
     dataHora: venda.dataHora || venda.dt_hr_venda || "-",
     formaPagamento: venda.tipoPagamento || "-",
     status: "Finalizada",
@@ -115,6 +116,7 @@ function renderizarDetalhe() {
   container.innerHTML = `
     <h4>${venda.cliente}</h4>
     <div class="detail-grid">
+      <div class="detail-item"><span class="detail-label">Funcionario</span><strong class="detail-value">${venda.funcionario}</strong></div>
       <div class="detail-item"><span class="detail-label">Data e hora</span><strong class="detail-value">${venda.dataHora}</strong></div>
       <div class="detail-item"><span class="detail-label">Forma de pagamento</span><strong class="detail-value">${venda.formaPagamento}</strong></div>
       <div class="detail-item"><span class="detail-label">Status</span><strong class="detail-value">${venda.status}</strong></div>

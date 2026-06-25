@@ -25,6 +25,7 @@ async function login(event) {
 
         localStorage.setItem("token", dados.token);
         localStorage.setItem("usuarioLogado", JSON.stringify({
+            id: dados.id,
             nome: dados.nome,
             email: dados.email,
             usuario: dados.email === "Anna.ns@cinemonroll.com" ? "Anna.ns" : dados.email,

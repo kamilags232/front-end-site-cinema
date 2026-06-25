@@ -73,14 +73,32 @@ function preencherTabelaUsuarios(usuarios) {
 
 async function carregarDashboard() {
     try {
-        const [usuarios, produtos, vendas] = await Promise.all([
+        const [usuariosResult, produtosResult, vendasResult] = await Promise.allSettled([
             adminRequest("/usuarios"),
             listarPagina("/produtos"),
             listarPagina("/vendas")
         ]);
 
-        const totalVendas = vendas.reduce((total, venda) => total + Number(venda.valorTotal || 0), 0);
-        const estoqueBaixo = produtos.filter(produto => Number(produto.estoque || 0) <= Number(produto.estoqueMinimo || 0)).length;
+        const usuarios = usuariosResult.status === "fulfilled"
+            ? usuariosResult.value
+            : [];
+
+        const produtos = produtosResult.status === "fulfilled"
+            ? produtosResult.value
+            : [];
+
+        // 🔥 agora é array direto
+        const vendas = vendasResult.status === "fulfilled"
+            ? vendasResult.value
+            : [];
+
+        const totalVendas = vendas.reduce((total, venda) => {
+            return total + Number(venda.valorTotal || 0);
+        }, 0);
+
+        const estoqueBaixo = produtos.filter(p =>
+            Number(p.estoque || 0) <= Number(p.estoqueMinimo || 0)
+        ).length;
 
         document.getElementById("funcionarios").textContent = usuarios.length;
         document.getElementById("produtos").textContent = produtos.length;
@@ -88,13 +106,9 @@ async function carregarDashboard() {
         document.getElementById("estoque").textContent = estoqueBaixo;
 
         preencherTabelaUsuarios(usuarios);
+
     } catch (erro) {
         console.error("Erro ao carregar dashboard:", erro);
-        document.getElementById("funcionarios").textContent = 0;
-        document.getElementById("produtos").textContent = 0;
-        document.getElementById("vendas").textContent = formatarMoeda(0);
-        document.getElementById("estoque").textContent = 0;
-        preencherTabelaUsuarios([]);
     }
 }
 

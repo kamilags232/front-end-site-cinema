@@ -17,9 +17,11 @@ public class VendaResponseDto {
         this.id = venda.getId();
         this.valorTotal = venda.getValorTotal();
         this.tipoPagamento = venda.getTipoPagamento();
-        this.itens = venda.getItens().stream()
-                .map(ItemVendaResponseDto::new)
-                .collect(Collectors.toList());
+        this.itens = venda.getItens() == null
+        ? new ArrayList<>()
+        : venda.getItens().stream()
+            .map(ItemVendaResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     public Long getId() {

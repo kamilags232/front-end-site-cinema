@@ -2,7 +2,7 @@
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/bd_cinema}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:silva2236}
+    password: ${DB_PASSWORD:123123mila}
   jpa:
     hibernate:
       ddl-auto: none
